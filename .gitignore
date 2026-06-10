@@ -1,0 +1,33 @@
+# macOS
+.DS_Store
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Packaging and build outputs
+build/
+dist/
+*.egg-info/
+submission.zip
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Local experiment outputs
+tmp_tournament_test/
