@@ -4,6 +4,7 @@ import argparse
 import inspect
 import os
 import random
+import subprocess
 import sys
 import numpy as np
 from collections import Counter, defaultdict
@@ -23,8 +24,11 @@ from scml.oneshot.agents import (
 )
 from scml.oneshot.agents.rand import RandDistOneShotAgent
 from scml.utils import anac2024_oneshot
+import negmas.tournaments.tournaments as negmas_tournaments
 
 from myagent.bayesian_agent import BayesianAgent
+
+negmas_tournaments.MAX_TASKS_PER_CHILD = None
 
 
 TARGET_TYPES = {
@@ -50,27 +54,39 @@ def _ensure_hash_seed(seed: int):
     if os.environ.get("PYTHONHASHSEED") == str(seed):
         return
 
+    module = "myagent.helpers.bayes_classification_eval"
+    if Path(sys.argv[0]).name == "bayes_clasifaication_eval.py":
+        module = "myagent.helpers.bayes_clasifaication_eval"
+
     env = os.environ.copy()
     env["PYTHONHASHSEED"] = str(seed)
-    os.execvpe(sys.executable, [sys.executable, *sys.argv], env)
+    completed = subprocess.run(
+        [sys.executable, "-m", module, *sys.argv[1:]],
+        cwd=PROJECT_ROOT,
+        env=env,
+    )
+    raise SystemExit(completed.returncode)
 
 
 def _run_seeded_tournament(args, world_done):
+    opponent_pool = [
+        RandomOneShotAgent,
+        EqualDistOneShotAgent,
+        GreedyOneShotAgent,
+        SyncRandomOneShotAgent,
+        RandDistOneShotAgent,
+    ]
     kwargs = {
-        "competitors": [
-            BayesianAgent,
-            RandomOneShotAgent,
-            EqualDistOneShotAgent,
-            GreedyOneShotAgent,
-            SyncRandomOneShotAgent,
-            RandDistOneShotAgent,
-        ],
+        "competitors": [BayesianAgent, GreedyOneShotAgent],
+        "non_competitors": opponent_pool,
         "n_steps": args.steps,
         "n_configs": args.configs,
         "max_worlds_per_config": args.worlds,
-        "n_competitors_per_world": 4,
+        "n_competitors_per_world": 2,
         "tournament_path": Path(args.path),
         "parallelism": "serial",
+        "compact": True,
+        "forced_logs_fraction": 0.0,
         "verbose": False,
         "world_progress_callback": world_done,
     }

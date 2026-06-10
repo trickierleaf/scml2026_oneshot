@@ -83,6 +83,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
         self._received_first_offer_history = defaultdict(list)
         self._logit_history = defaultdict(list)
         self._evidence_counts = defaultdict(lambda: defaultdict(int))
+        self._history_pattern_observed = defaultdict(set)
         self._first_offer_trials_by_price = defaultdict(lambda: defaultdict(int))
         self._first_offer_accepts_by_price = defaultdict(lambda: defaultdict(int))
         self._first_offer_reoffers_by_price = defaultdict(lambda: defaultdict(int))
@@ -120,6 +121,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
         self._received_first_offer_history.setdefault(partner, [])
         self._logit_history.setdefault(partner, [])
         self._evidence_counts.setdefault(partner, defaultdict(int))
+        self._history_pattern_observed.setdefault(partner, set())
         self._first_offer_trials_by_price.setdefault(partner, defaultdict(int))
         self._first_offer_accepts_by_price.setdefault(partner, defaultdict(int))
         self._first_offer_reoffers_by_price.setdefault(partner, defaultdict(int))
@@ -323,8 +325,9 @@ class BayesianAgent(SyncRandomOneShotAgent):
 
         posteriors = self.opponent_posteriors(partner)
         best = max(posteriors, key=posteriors.get)
+        threshold = 0.51 if best == "GreedyOneShotAgent" else self.classification_threshold
 
-        if posteriors[best] >= self.classification_threshold:
+        if posteriors[best] >= threshold:
             return best
 
         return "Unknown"
@@ -1043,120 +1046,96 @@ class BayesianAgent(SyncRandomOneShotAgent):
         )
         if len(history) > 30:
             del history[:-30]
+        self._observe_binary_offer_history(partner)
         return
 
-        issues = self._issues_for(partner)
-        qmin = int(issues[QUANTITY].min_value)
-        qmax = max(qmin, int(issues[QUANTITY].max_value))
-        q_span = max(1, qmax - qmin)
-        q_ratio = (quantity - qmin) / q_span
-
-        evidence = {name: -0.02 for name in self.OPPONENT_TYPES}
-        evidence["Other"] = -0.01
-
-        evidence["SyncRandomDistOneShotAgent"] += 0.08
-        evidence["EqualDistOneShotAgent"] += 0.10
-        evidence["GreedyOneShotAgent"] += 0.10
-
-        first_offer = round_index <= 0
-        if t < 0.5:
-            if price_good:
-                evidence["GreedyOneShotAgent"] += 0.25
-            else:
-                evidence["GreedyOneShotAgent"] -= 2.20
-                evidence["RandomOneShotAgent"] += 0.50
-                evidence["SyncRandomDistOneShotAgent"] += 0.35
-                evidence["EqualDistOneShotAgent"] += 0.20
-
-        if first_offer:
-            if price_good:
-                evidence["EqualDistOneShotAgent"] += 0.70
-                evidence["SyncRandomDistOneShotAgent"] += 0.65
-                evidence["GreedyOneShotAgent"] += 0.65
-                evidence["RandomOneShotAgent"] -= 0.20
-            else:
-                evidence["RandomOneShotAgent"] += 0.35
-                evidence["Other"] += 0.20
-                evidence["EqualDistOneShotAgent"] -= 0.15
-                evidence["SyncRandomDistOneShotAgent"] -= 0.10
-                evidence["GreedyOneShotAgent"] -= 0.25
-            if quantity > 3:
-                evidence["EqualDistOneShotAgent"] -= 0.80
-                evidence["SyncRandomDistOneShotAgent"] += 0.20
-                evidence["GreedyOneShotAgent"] += 0.15
-                evidence["RandomOneShotAgent"] += 0.35
-            elif price_good:
-                evidence["EqualDistOneShotAgent"] += 0.35
-                evidence["GreedyOneShotAgent"] -= 0.35
-        else:
-            if price_good:
-                evidence["GreedyOneShotAgent"] += 0.35
-            else:
-                # SyncRandomDist/EqualDist counter prices are random. Random also
-                # has no price structure. Greedy should move away from ideal only
-                # as time passes, which is handled by the history trend below.
-                evidence["SyncRandomDistOneShotAgent"] += 0.42
-                evidence["EqualDistOneShotAgent"] += 0.25
-                evidence["RandomOneShotAgent"] += 0.12
-                if t < 0.35:
-                    evidence["GreedyOneShotAgent"] -= 0.25
-
-        if history:
-            previous = history[-1]
-            previous_price_good = bool(previous["price_good"])
-            # Greedy tends to concede: good-for-opponent prices can turn bad
-            # later, while SyncRandomDist/EqualDist counter prices simply flip
-            # randomly.
-            if t >= previous["time"] and previous_price_good and not price_good:
-                evidence["GreedyOneShotAgent"] += 0.65
-                evidence["SyncRandomDistOneShotAgent"] += 0.05
-                evidence["RandomOneShotAgent"] += 0.10
-            elif t >= previous["time"] and not previous_price_good and price_good:
-                evidence["RandomOneShotAgent"] += 0.15
-                evidence["SyncRandomDistOneShotAgent"] += 0.38
-                evidence["EqualDistOneShotAgent"] += 0.15
-                evidence["GreedyOneShotAgent"] -= 0.45
-            elif t >= previous["time"] and previous_price_good == price_good:
-                evidence["SyncRandomDistOneShotAgent"] += 0.12
-                evidence["EqualDistOneShotAgent"] += 0.08
-
-        if quantity <= 3:
-            evidence["EqualDistOneShotAgent"] += 0.12
-            evidence["SyncRandomDistOneShotAgent"] += 0.10
-            if first_offer:
-                evidence["EqualDistOneShotAgent"] += 0.18
-        elif q_ratio >= 0.80:
-            if price_good:
-                evidence["RandomOneShotAgent"] += 0.05
-                evidence["GreedyOneShotAgent"] += 0.35
-                evidence["SyncRandomDistOneShotAgent"] -= 0.20
-            else:
-                evidence["RandomOneShotAgent"] += 0.35
-                evidence["GreedyOneShotAgent"] += 0.10
-                evidence["SyncRandomDistOneShotAgent"] -= 0.35
-            evidence["EqualDistOneShotAgent"] -= 0.25
-        elif q_ratio >= 0.45:
-            evidence["GreedyOneShotAgent"] += 0.05
-            evidence["RandomOneShotAgent"] += 0.05
-            evidence["EqualDistOneShotAgent"] -= 0.10
-        else:
-            evidence["SyncRandomDistOneShotAgent"] += 0.15
-
-        history.append(
-            {
-                "step": self.awi.current_step,
-                "round": round_index,
-                "time": t,
-                "quantity": quantity,
-                "price": price,
-                "price_good": price_good,
-                "price_label": "good" if price_good else "bad",
-            }
+    def _add_history_pattern_logit(
+        self,
+        partner,
+        *,
+        greedy: float = 0.0,
+        non_greedy: float = 0.0,
+        reason: str,
+    ):
+        key = (int(self.awi.current_step), reason)
+        if key in self._history_pattern_observed[partner]:
+            return
+        self._history_pattern_observed[partner].add(key)
+        self._add_evidence_count(partner, reason)
+        self._add_logit_evidence(
+            partner,
+            greedy=greedy,
+            non_greedy=non_greedy,
+            reason=reason,
         )
-        if len(history) > 30:
-            del history[:-30]
-        self._add_evidence(partner, evidence)
-        self._observe_history_pattern(partner)
+
+    def _observe_binary_offer_history(self, partner):
+        history = self._opponent_offer_history[partner][-8:]
+        if len(history) < 4:
+            return
+
+        quantities = [max(0, int(item["quantity"])) for item in history]
+        price_goods = [bool(item["price_good"]) for item in history]
+        if not quantities:
+            return
+
+        issues = self._issues_for(partner)
+        qmax = max(1, int(issues[QUANTITY].max_value))
+        mean = sum(quantities) / len(quantities)
+        variance = sum((quantity - mean) ** 2 for quantity in quantities) / len(quantities)
+        coefficient = math.sqrt(variance) / max(1.0, mean)
+        mean_ratio = mean / qmax
+        quantity_range = max(quantities) - min(quantities)
+        small_ratio = sum(quantity <= max(2, math.ceil(0.35 * qmax)) for quantity in quantities) / len(quantities)
+        good_ratio = sum(price_goods) / len(price_goods)
+        price_flip_ratio = sum(
+            previous != current
+            for previous, current in zip(price_goods, price_goods[1:], strict=False)
+        ) / max(1, len(price_goods) - 1)
+
+        early = history[: max(1, len(history) // 2)]
+        late = history[max(1, len(history) // 2) :]
+        early_good_ratio = sum(bool(item["price_good"]) for item in early) / len(early)
+        late_good_ratio = sum(bool(item["price_good"]) for item in late) / len(late)
+
+        stable_quantity = coefficient <= 0.30 or quantity_range <= 1
+        if small_ratio >= 0.70 and stable_quantity:
+            self._add_history_pattern_logit(
+                partner,
+                non_greedy=0.70,
+                reason="history_small_stable_quantity",
+            )
+        elif (
+            small_ratio >= 0.60
+            and coefficient >= 0.45
+            and (good_ratio <= 0.65 or price_flip_ratio >= 0.30)
+        ):
+            self._add_history_pattern_logit(
+                partner,
+                non_greedy=0.40,
+                reason="history_small_variable_quantity",
+            )
+
+        if price_flip_ratio >= 0.40 and coefficient >= 0.35 and good_ratio < 0.90:
+            self._add_history_pattern_logit(
+                partner,
+                non_greedy=0.35,
+                reason="history_random_like_flips",
+            )
+
+        if good_ratio >= 0.75 and mean_ratio >= 0.55 and stable_quantity:
+            self._add_history_pattern_logit(
+                partner,
+                greedy=0.35,
+                reason="history_large_selfish_stable",
+            )
+
+        if early_good_ratio >= 0.75 and late_good_ratio <= early_good_ratio - 0.35:
+            self._add_history_pattern_logit(
+                partner,
+                greedy=0.85,
+                reason="history_selfish_then_concedes",
+            )
 
     def _observe_history_pattern(self, partner):
         return
