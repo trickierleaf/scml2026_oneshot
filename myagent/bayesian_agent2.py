@@ -212,7 +212,10 @@ class BayesianAgent2(RDVOOneShotAgent):
     def _counter_or_accept_response(self, partner, current_offer, counter_offer):
         if counter_offer is None:
             return self._unneeded_response()
-        if self._same_offer(counter_offer, current_offer):
+        if self._same_offer(counter_offer, current_offer) or self._same_quantity_offer(
+            counter_offer,
+            current_offer,
+        ):
             return SAOResponse(
                 ResponseType.ACCEPT_OFFER,
                 current_offer,
@@ -2159,6 +2162,12 @@ class BayesianAgent2(RDVOOneShotAgent):
             and int(left[TIME]) == int(right[TIME])
             and int(left[UNIT_PRICE]) == int(right[UNIT_PRICE])
         )
+
+    def _same_quantity_offer(self, left, right) -> bool:
+        if left is None or right is None:
+            return False
+
+        return int(left[QUANTITY]) == int(right[QUANTITY])
 
 
 BayesianSyncRandomAgent2 = BayesianAgent2
