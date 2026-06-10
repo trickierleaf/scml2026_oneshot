@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import inspect
 import os
 import random
+import sys
 import numpy as np
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -32,6 +34,50 @@ TARGET_TYPES = {
 
 def _agent_object(adapter):
     return getattr(adapter, "adapted_object", adapter)
+
+
+def _seed_everything(seed: int):
+    os.environ.setdefault("PYTHONHASHSEED", str(seed))
+    random.seed(seed)
+    np.random.seed(seed)
+
+
+def _ensure_hash_seed(seed: int):
+    if os.environ.get("PYTHONHASHSEED") == str(seed):
+        return
+
+    env = os.environ.copy()
+    env["PYTHONHASHSEED"] = str(seed)
+    os.execvpe(sys.executable, [sys.executable, *sys.argv], env)
+
+
+def _run_seeded_tournament(args, world_done):
+    kwargs = {
+        "competitors": [
+            BayesianAgent,
+            RandomOneShotAgent,
+            EqualDistOneShotAgent,
+            GreedyOneShotAgent,
+            SyncRandomOneShotAgent,
+            RandDistOneShotAgent,
+        ],
+        "n_steps": args.steps,
+        "n_configs": args.configs,
+        "max_worlds_per_config": args.worlds,
+        "n_competitors_per_world": 4,
+        "tournament_path": Path(args.path),
+        "parallelism": "serial",
+        "verbose": False,
+        "world_progress_callback": world_done,
+    }
+
+    parameters = inspect.signature(anac2024_oneshot).parameters
+    for seed_arg in ("random_seed", "seed", "base_seed"):
+        if seed_arg in parameters:
+            kwargs[seed_arg] = args.seed
+            break
+
+    return anac2024_oneshot(**kwargs)
 
 
 def _collect_world_predictions(world, samples):
@@ -229,10 +275,15 @@ def main():
     parser.add_argument("--worlds", type=int, default=12)
     parser.add_argument("--path", default="tmp_tournament_test/bayes_prod_eval")
     parser.add_argument("--samples", action="store_true")
-    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Seed used for Python, NumPy, and SCML tournament generation if supported.",
+    )
     args = parser.parse_args()
-    random.seed(args.seed)
-    np.random.seed(args.seed)
+    _ensure_hash_seed(args.seed)
+    _seed_everything(args.seed)
 
     samples = []
 
@@ -240,24 +291,7 @@ def main():
         if world is not None:
             _collect_world_predictions(world, samples)
 
-    anac2024_oneshot(
-        competitors=[
-            BayesianAgent,
-            RandomOneShotAgent,
-            EqualDistOneShotAgent,
-            GreedyOneShotAgent,
-            SyncRandomOneShotAgent,
-            RandDistOneShotAgent,
-        ],
-        n_steps=args.steps,
-        n_configs=args.configs,
-        max_worlds_per_config=args.worlds,
-        n_competitors_per_world=4,
-        tournament_path=Path(args.path),
-        parallelism="serial",
-        verbose=False,
-        world_progress_callback=world_done,
-    )
+    _run_seeded_tournament(args, world_done)
 
     _print_report(samples)
 
