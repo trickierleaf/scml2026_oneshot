@@ -37,6 +37,8 @@ class BayesianAgent(SyncRandomOneShotAgent):
         max_counter_partners: int = 4,
         counter_beam_width: int = 24,
         max_accept_subsets: int = 16,
+        seller_quantity_bias: float = 0.9,
+        buyer_quantity_bias: float = 1.1,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -61,6 +63,8 @@ class BayesianAgent(SyncRandomOneShotAgent):
         self.max_counter_partners = int(max_counter_partners)
         self.counter_beam_width = int(counter_beam_width)
         self.max_accept_subsets = int(max_accept_subsets)
+        self.seller_quantity_bias = float(seller_quantity_bias)
+        self.buyer_quantity_bias = float(buyer_quantity_bias)
 
     # ---------------------------------------------------------------------
     # Initialization and small utilities
@@ -1436,9 +1440,10 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 )
             else:
                 selected_greedy_partners = greedy_partners[:1]
-                greedy_quantities = [math.ceil(needs * 0.7)]
+                greedy_quantity = min(7, int(needs))
+                greedy_quantities = [greedy_quantity]
                 scaled_target = self._success_adjusted_quantity(
-                    needs * 0.3,
+                    max(0, int(needs) - greedy_quantity),
                     success_rate,
                 )
 
@@ -2678,7 +2683,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
         if greedy_partners:
             selected_greedy = greedy_partners[:2]
             if len(selected_greedy) == 1:
-                quantities = [math.ceil(needs * 0.7)]
+                quantities = [min(7, int(needs))]
             else:
                 quantities = self._split_greedy_eighty_quantities(needs)
             for partner, quantity in zip(selected_greedy, quantities, strict=False):
@@ -2749,10 +2754,27 @@ class BayesianAgent(SyncRandomOneShotAgent):
         return max(1, math.ceil(quantity * self._small_dist_quantity_multiplier()))
 
     def _offer(self, partner, quantity: int, price: int) -> Outcome | None:
+        quantity = self._role_biased_quantity(partner, quantity)
         quantity = self._clamp_quantity(partner, quantity)
         if quantity <= 0 and not self.awi.allow_zero_quantity:
             return None
         return (quantity, self.awi.current_step, int(price))
+
+    def _role_biased_quantity(self, partner, quantity: int) -> int:
+        # Sellers are penalized for over-commitment (shortfall) so bias
+        # quantities down; buyers should avoid under-procurement so bias up.
+        # Greedy partners keep their exact quantities; exploration probes are
+        # left untouched to avoid distorting classification evidence.
+        quantity = int(quantity)
+        if quantity <= 0:
+            return quantity
+        if self._exploration_enabled():
+            return quantity
+        if self.opponent_type(partner) == "GreedyOneShotAgent":
+            return quantity
+        if self._is_seller_to(partner):
+            return max(1, math.floor(quantity * self.seller_quantity_bias))
+        return math.ceil(quantity * self.buyer_quantity_bias)
 
     def _counter_or_accept_response(self, partner, current_offer, counter_offer):
         if counter_offer is None:
