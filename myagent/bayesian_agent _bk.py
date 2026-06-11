@@ -806,6 +806,15 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 non_greedy=0.15,
                 reason="good_first_offer_rejected",
             )
+            if self._consecutive_good_first_offer_rejections(partner) >= 3:
+                self._add_evidence_count(
+                    partner,
+                    "two_good_first_offer_rejections",
+                )
+                self._veto_non_greedy(
+                    partner,
+                    "two_good_first_offer_rejections",
+                )
         elif accepted:
             self._add_logit_evidence(
                 partner,
@@ -818,6 +827,17 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 non_greedy=0.05,
                 reason="neutral_first_offer_rejected",
             )
+
+    def _consecutive_good_first_offer_rejections(self, partner) -> int:
+        count = 1
+        for item in reversed(self._own_offer_result_history.get(partner, [])):
+            if not item.get("initial", False):
+                continue
+            if item.get("price_label") == "good" and not item.get("accepted", False):
+                count += 1
+                continue
+            break
+        return count
 
     def _observe_own_first_offer_counter(self, partner, sent_offer, counter_offer):
         if sent_offer is None or sent_offer.get("first_result_observed", False):
@@ -932,6 +952,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 "step": self.awi.current_step,
                 "relative_time": float(sent_offer.get("relative_time", 1.0)),
                 "initial": bool(sent_offer.get("initial", False)),
+                "price_label": sent_offer.get("price_label", "neutral"),
                 "price_good": price_good,
                 "accepted": bool(accepted),
             }
@@ -1429,15 +1450,19 @@ class BayesianAgent(SyncRandomOneShotAgent):
         if greedy_partners:
             if len(greedy_partners) >= 2:
                 selected_greedy_partners = greedy_partners[:2]
-                greedy_quantities = self._split_greedy_eighty_quantities(needs)
-                scaled_target = self._success_adjusted_quantity(
+                greedy_base = needs * 0.4
+                greedy_quantities = [
+                    math.ceil(greedy_base),
+                    math.floor(greedy_base),
+                ]
+                scaled_target = self._cautious_success_adjusted_quantity(
                     needs * 0.2,
                     success_rate,
                 )
             else:
                 selected_greedy_partners = greedy_partners[:1]
                 greedy_quantities = [math.ceil(needs * 0.7)]
-                scaled_target = self._success_adjusted_quantity(
+                scaled_target = self._cautious_success_adjusted_quantity(
                     needs * 0.3,
                     success_rate,
                 )
@@ -1466,7 +1491,14 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 success_scaled_partners,
                 opponent_types,
             )
-            if self._is_process_one_agent():
+            if not greedy_partners:
+                self._assign_success_weighted_quantities(
+                    proposals,
+                    success_scaled_partners,
+                    scaled_target,
+                    price_getter=self._best_price_for_me,
+                )
+            elif self._is_process_one_agent():
                 self._assign_success_weighted_quantities(
                     proposals,
                     success_scaled_partners,
@@ -1539,18 +1571,15 @@ class BayesianAgent(SyncRandomOneShotAgent):
         success_rate = max(0.05, min(1.0, float(success_rate)))
         return math.ceil(target_quantity / success_rate)
 
-    def _split_greedy_eighty_quantities(self, needs: int) -> list[int]:
-        total = max(0, math.ceil(int(needs) * 0.8))
-        if total <= 0:
-            return [0, 0]
-
-        difference = 2 if total % 2 == 0 else 3
-        if total < difference:
-            return [total, 0]
-
-        high = (total + difference) // 2
-        low = total - high
-        return [high, low]
+    def _cautious_success_adjusted_quantity(
+        self,
+        target_quantity: float,
+        success_rate: float,
+    ) -> int:
+        base = max(0, math.ceil(float(target_quantity)))
+        adjusted = self._success_adjusted_quantity(target_quantity, success_rate)
+        cap = max(base, math.ceil(float(target_quantity) * 1.5))
+        return min(adjusted, cap)
 
     def _half_quantity_caps(self, needs: int, count: int):
         if needs <= 0 or count <= 0:
@@ -1601,7 +1630,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 quantity_caps.extend([0] * (len(partners) - len(quantity_caps)))
 
         weights = [
-            0.75 + 0.5 * self._partner_non_greedy_initial_offer_success_rate(partner)
+            self._partner_initial_offer_success_weight(partner)
             for partner in partners
         ]
         total_weight = sum(weights)
@@ -1688,6 +1717,22 @@ class BayesianAgent(SyncRandomOneShotAgent):
         if not results:
             return self._non_greedy_initial_offer_success_rate()
         return sum(results) / len(results)
+
+    def _partner_initial_offer_success_weight(self, partner) -> float:
+        results = self._partner_non_greedy_initial_offer_results.get(partner, [])
+        if not results:
+            rate = self._non_greedy_initial_offer_success_rate()
+            trials = 0
+        else:
+            trials = len(results)
+            rate = (sum(results) + 1.0) / (trials + 2.0)
+
+        confidence = min(1.0, trials / 5.0)
+        blended_rate = (
+            self.non_greedy_success_default * (1.0 - confidence)
+            + rate * confidence
+        )
+        return max(0.20, 0.25 + 1.75 * blended_rate)
 
     def _strong_initial_greedy_partner(self, partner) -> bool:
         greedy_probability = self.opponent_posteriors(partner).get(
@@ -2677,10 +2722,13 @@ class BayesianAgent(SyncRandomOneShotAgent):
 
         if greedy_partners:
             selected_greedy = greedy_partners[:2]
+            greedy_target = math.floor(needs * 0.8)
             if len(selected_greedy) == 1:
-                quantities = [math.ceil(needs * 0.7)]
+                quantities = [min(8, greedy_target)]
             else:
-                quantities = self._split_greedy_eighty_quantities(needs)
+                high = math.ceil(greedy_target / 2)
+                low = math.floor(greedy_target / 2)
+                quantities = [high, low]
             for partner, quantity in zip(selected_greedy, quantities, strict=False):
                 quantity = self._clamp_quantity(partner, quantity)
                 proposals[partner] = self._offer(partner, quantity, self._worst_price_for_me(partner))
