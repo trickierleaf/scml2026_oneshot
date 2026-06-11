@@ -2774,7 +2774,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
             return quantity
         if self._is_seller_to(partner):
             return max(1, math.floor(quantity * self.seller_quantity_bias))
-        return math.ceil(quantity * self.buyer_quantity_bias)
+        return int(quantity * self.buyer_quantity_bias + 0.5)
 
     def _counter_or_accept_response(self, partner, current_offer, counter_offer):
         if counter_offer is None:
