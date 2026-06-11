@@ -37,8 +37,9 @@ class BayesianAgent(SyncRandomOneShotAgent):
         max_counter_partners: int = 4,
         counter_beam_width: int = 24,
         max_accept_subsets: int = 16,
-        seller_quantity_bias: float = 0.9,
-        buyer_quantity_bias: float = 1.1,
+        seller_quantity_bias: float = 1.0,
+        buyer_quantity_bias: float = 1.0,
+        seller_greedy_fill_threshold: float = 0.51,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -65,6 +66,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
         self.max_accept_subsets = int(max_accept_subsets)
         self.seller_quantity_bias = float(seller_quantity_bias)
         self.buyer_quantity_bias = float(buyer_quantity_bias)
+        self.seller_greedy_fill_threshold = float(seller_greedy_fill_threshold)
 
     # ---------------------------------------------------------------------
     # Initialization and small utilities
@@ -1749,6 +1751,43 @@ class BayesianAgent(SyncRandomOneShotAgent):
             if not side_partners:
                 continue
 
+            seller_greedy_fill = None
+            if all_partners == self.awi.my_consumers and not self._has_exact_offer_subset(
+                side_partners,
+                current_offers,
+                int(needs),
+            ):
+                seller_greedy_fill = self._seller_greedy_fill_plan(
+                    side_partners,
+                    current_offers,
+                    int(needs),
+                )
+            if seller_greedy_fill is not None:
+                accepted_partners, greedy_partner, remaining_needs = seller_greedy_fill
+                for partner in side_partners:
+                    if partner in accepted_partners:
+                        responses[partner] = SAOResponse(
+                            ResponseType.ACCEPT_OFFER,
+                            current_offers[partner],
+                        )
+                    elif partner == greedy_partner and remaining_needs > 0:
+                        counter_offer = self._raw_offer(
+                            partner,
+                            remaining_needs,
+                            self._worst_price_for_me(partner),
+                        )
+                        responses[partner] = (
+                            self._unneeded_response()
+                            if counter_offer is None
+                            else SAOResponse(
+                                ResponseType.REJECT_OFFER,
+                                counter_offer,
+                            )
+                        )
+                    else:
+                        responses[partner] = self._unneeded_response()
+                continue
+
             special_acceptance = None
             if apply_eighty_percent_rule and not self._has_exact_offer_subset(
                 side_partners,
@@ -2630,6 +2669,66 @@ class BayesianAgent(SyncRandomOneShotAgent):
         candidates.sort()
         return candidates[0][-1]
 
+    def _seller_greedy_fill_plan(self, partners, offers, needs: int):
+        if needs <= 0:
+            return None
+
+        greedy_partners = [
+            partner
+            for partner in partners
+            if self._greedy_fill_probability(partner)
+            >= self.seller_greedy_fill_threshold
+        ]
+        if not greedy_partners:
+            return None
+
+        greedy_partners.sort(
+            key=self._greedy_fill_probability,
+            reverse=True,
+        )
+        greedy_partner = greedy_partners[0]
+        non_greedy_partners = [
+            partner
+            for partner in partners
+            if partner != greedy_partner
+        ]
+
+        accepted_partners = self._max_under_needs_subset_for_seller(
+            non_greedy_partners,
+            offers,
+            needs,
+        )
+        accepted_quantity = sum(
+            int(offers[partner][QUANTITY])
+            for partner in accepted_partners
+        )
+        remaining_needs = max(0, int(needs) - accepted_quantity)
+        if remaining_needs <= 0:
+            return None
+        return set(accepted_partners), greedy_partner, remaining_needs
+
+    def _greedy_fill_probability(self, partner) -> float:
+        if partner in self._non_greedy_veto:
+            return 0.0
+        return self.opponent_posteriors(partner).get("GreedyOneShotAgent", 0.0)
+
+    def _max_under_needs_subset_for_seller(self, partners, offers, needs: int):
+        best = None
+        for size in range(0, len(partners) + 1):
+            for partner_ids in combinations(partners, size):
+                total = sum(int(offers[partner][QUANTITY]) for partner in partner_ids)
+                if total > needs:
+                    continue
+                price_value = sum(
+                    int(offers[partner][QUANTITY])
+                    * float(offers[partner][UNIT_PRICE])
+                    for partner in partner_ids
+                )
+                candidate = (total, price_value, -len(partner_ids), partner_ids)
+                if best is None or candidate > best:
+                    best = candidate
+        return tuple() if best is None else best[-1]
+
     def _counter_remainder_partners(self, partners, opponent_types, count: int = 2):
         if not partners or count <= 0:
             return []
@@ -2760,6 +2859,12 @@ class BayesianAgent(SyncRandomOneShotAgent):
             return None
         return (quantity, self.awi.current_step, int(price))
 
+    def _raw_offer(self, partner, quantity: int, price: int) -> Outcome | None:
+        quantity = self._clamp_quantity(partner, quantity)
+        if quantity <= 0 and not self.awi.allow_zero_quantity:
+            return None
+        return (quantity, self.awi.current_step, int(price))
+
     def _role_biased_quantity(self, partner, quantity: int) -> int:
         # Sellers are penalized for over-commitment (shortfall) so bias
         # quantities down; buyers should avoid under-procurement so bias up.
@@ -2774,7 +2879,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
             return quantity
         if self._is_seller_to(partner):
             return max(1, math.floor(quantity * self.seller_quantity_bias))
-        return int(quantity * self.buyer_quantity_bias + 0.5)
+        return int(quantity * self.buyer_quantity_bias)
 
     def _counter_or_accept_response(self, partner, current_offer, counter_offer):
         if counter_offer is None:
