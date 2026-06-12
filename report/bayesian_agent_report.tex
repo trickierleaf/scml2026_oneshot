@@ -1,0 +1,275 @@
+\documentclass[11pt]{article}
+
+\usepackage[a4paper,margin=1in]{geometry}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\title{BayesianAgent: A Partner-Aware OneShot Negotiation Agent}
+\author{Kouta Ito}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This report describes \texttt{BayesianAgent}, a negotiation agent for the
+SCML OneShot setting.  The agent extends a random synchronous OneShot agent
+with a lightweight Bayesian-style opponent classifier, first-offer probing,
+partner-dependent quantity allocation, and specialized counter-offer handling.
+The main design goal is to exploit predictable behavior of
+\texttt{GreedyOneShotAgent}-like opponents while retaining robust behavior
+against non-greedy partners such as random and equal-distribution agents.
+The agent continuously updates a two-class belief over each partner,
+distinguishing \texttt{GreedyOneShotAgent} from \texttt{NonGreedy}, and uses
+that belief to decide where to send offers, which offers to accept, and when to
+send opponent-favorable counter offers.
+\end{abstract}
+
+\section{Problem Setting}
+
+In the OneShot track, an agent negotiates independently with multiple
+suppliers and consumers at each production step.  Each negotiation outcome is
+an offer tuple
+\[
+  o = (q, t, p),
+\]
+where \(q\) is the quantity, \(t\) is the delivery step, and \(p\) is the unit
+price.  The agent must satisfy its required input and output quantities while
+avoiding costly shortage, disposal, or low-profit agreements.  Because
+negotiations happen simultaneously, a good policy must reason not only about
+single offers but also about combinations of offers from several partners.
+
+The implementation follows the spirit of cautious OneShot agents: it avoids
+blindly accepting the set of offers with the smallest absolute quantity
+mismatch, and instead treats selling and buying differently.  The current
+\texttt{BayesianAgent} combines this cautious quantity matching with a
+behavioral model of opponents.  Its most important assumption is that greedy
+partners tend to accept offers that are favorable to themselves, while
+non-greedy partners often follow distributional or random patterns.
+
+\section{Opponent Model}
+
+\subsection{Two-Class Posterior}
+
+For each partner \(i\), the agent maintains logits for two opponent classes:
+\[
+  C \in \{\text{GreedyOneShotAgent}, \text{NonGreedy}\}.
+\]
+The posterior is computed with a softmax:
+\[
+  P(C=k \mid D_i)
+  =
+  \frac{\exp(z_{i,k}/\tau)}
+       {\sum_{k'} \exp(z_{i,k'}/\tau)},
+\]
+where \(z_{i,k}\) is the accumulated logit evidence and \(\tau\) is the
+temperature parameter \texttt{softmax\_temperature}.  The default temperature is
+\(1.0\).  If a partner is vetoed as non-greedy, the posterior is forced to
+\[
+  P(\text{GreedyOneShotAgent}) = 0,\qquad
+  P(\text{NonGreedy}) = 1.
+\]
+
+The public classification function \texttt{opponent\_type()} first checks the
+number of observations.  If the partner has too few observations, it returns
+\texttt{Unknown}.  Otherwise, the most probable class is selected.  A partner is
+treated as greedy when \texttt{GreedyOneShotAgent} is the most likely class and
+its probability is at least \(0.51\).  Non-greedy classification uses the
+general \texttt{classification\_threshold}, whose default value is \(0.60\).
+
+\subsection{Evidence from First Offers}
+
+The classifier is driven mainly by first-offer outcomes.  The agent labels each
+price from the opponent's perspective:
+\[
+\text{opponent score} = 1 - \text{price score for me}.
+\]
+If the score is at least \(0.80\), the price is labeled \texttt{good}; if it is
+at most \(0.20\), it is labeled \texttt{bad}; otherwise it is
+\texttt{neutral}.  This convention is important: a \texttt{bad} price means bad
+for the opponent and therefore good for the agent.
+
+The main evidence rules are summarized in Table~\ref{tab:evidence}.  A
+particularly strong rule is that if the agent sends a first offer with a price
+that is bad for the opponent and the partner accepts it, the partner is vetoed
+as \texttt{NonGreedy}.  This reflects the idea that a purely greedy opponent
+should rarely accept an opponent-unfavorable price.  Conversely, accepting a
+good first offer is strong evidence for greedy behavior.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lll}
+\toprule
+Observation & Interpretation & Update \\
+\midrule
+Bad first offer accepted & opponent accepts unfavorable price & hard non-greedy veto \\
+Bad first offer rejected & compatible with greedy behavior & small greedy evidence \\
+Good first offer accepted & compatible with greedy behavior & strong greedy evidence \\
+Good first offer rejected & suspicious for greedy behavior & small non-greedy evidence \\
+Neutral first offer accepted & weak greedy signal & small greedy evidence \\
+Neutral first offer rejected & weak non-greedy signal & small non-greedy evidence \\
+\bottomrule
+\end{tabular}
+\caption{Main first-offer evidence used by \texttt{BayesianAgent}.}
+\label{tab:evidence}
+\end{table}
+
+The agent also records whether non-greedy probes succeed.  These records are
+used later to weight offers toward partners that have historically accepted
+the agent's first proposals.
+
+\section{First-Proposal Strategy}
+
+\subsection{Exploration Phase}
+
+At the beginning of the game, the agent enters an exploration phase.  This is
+controlled by \texttt{exploration\_days}, \texttt{max\_exploration\_days}, and
+the ratio of still-unknown partners.  During exploration, the agent distributes
+offers over available suppliers and consumers and alternates between prices
+that are good and bad for the opponent:
+\[
+  p =
+  \begin{cases}
+    \text{worst price for me}, & \text{if probing with an opponent-good price},\\
+    \text{best price for me},  & \text{otherwise}.
+  \end{cases}
+\]
+This creates informative accept/reject observations.  A greedy partner should
+be more likely to accept an opponent-good price and reject an opponent-bad
+price, whereas random or distributional agents may not follow this pattern.
+
+\subsection{Greedy-Aware Allocation}
+
+After exploration, first proposals are generated by
+\texttt{\_greedy\_only\_first\_proposals()}.  Partners classified as greedy are
+ranked by their greedy posterior.  If there is one greedy partner, the current
+implementation sends
+\[
+  \min(7, \text{needs})
+\]
+units to that partner at the opponent-good price.  If there are two or more
+greedy partners, the agent first computes an \(80\%\) greedy target:
+\[
+  Q_G = \lceil 0.8 \cdot \text{needs} \rceil.
+\]
+This target is split between the two highest-probability greedy partners with
+an intentional imbalance: an even \(Q_G\) is split with a difference of two
+units, while an odd \(Q_G\) is split with a difference of three units.  The
+larger quantity is assigned to the partner with the higher greedy probability.
+This design avoids sending identical probes to two greedy partners and
+emphasizes the more reliable one.
+
+Any remaining target quantity is assigned to non-greedy or unknown partners.
+The allocation is weighted by each partner's historical first-offer success
+rate:
+\[
+  w_i = 0.75 + 0.5 \cdot r_i,
+\]
+where \(r_i\) is the estimated success rate for partner \(i\).  A higher
+success rate therefore gives the partner a larger share of the remaining
+quantity.  When no partner-specific history is available, the agent falls back
+to the global non-greedy success estimate.
+
+\section{Counter-Offer and Acceptance Strategy}
+
+\subsection{Recording Observations}
+
+On every call to \texttt{counter\_all()}, the agent first records incoming
+offers and compares them with its latest first proposals.  If a partner replies
+to a first proposal with a different offer, the reply is treated as a counter
+observation and the corresponding first offer is marked as not accepted.  On
+success or failure callbacks, the agent updates the first-offer success
+statistics and the posterior evidence.
+
+\subsection{Exact and Near-Exact Quantity Handling}
+
+The agent starts from the response generated by the parent synchronous random
+agent, but then rewrites the responses using its own quantity logic.  If the
+accepted set already satisfies or exceeds the required quantity, all remaining
+negotiations on that side are ended.  Otherwise, the remaining need is
+distributed among counter partners.  When only one counter partner is left, the
+agent gradually concedes the counter quantity toward the opponent's currently
+offered quantity as negotiation time approaches the deadline.
+
+The implementation includes a practical efficiency rule: if the counter offer
+would have the same quantity as the incoming offer, the agent accepts the
+incoming offer instead of re-offering the same quantity.  This avoids wasting a
+negotiation step on an equivalent counter.
+
+\subsection{Seller Greedy-Fill Rule}
+
+The most specialized counter rule is used when the agent is a seller.  If there
+is no exact subset of consumer offers whose total equals the needed sales
+quantity, and if at least one partner has greedy probability at least
+\(\theta_G = 0.51\), the agent selects the most greedy partner as a fill
+partner.  All other partners remain eligible for acceptance.  Among these
+non-fill partners, the agent selects the subset with the largest total quantity
+not exceeding the need:
+\[
+  S^\star =
+  \arg\max_{S}
+  \sum_{i \in S} q_i
+  \quad
+  \text{s.t.}
+  \quad
+  \sum_{i \in S} q_i \le \text{needs}.
+\]
+Ties are broken by higher total revenue and then by fewer accepted partners.
+The remaining quantity,
+\[
+  q_{\text{rem}} =
+  \text{needs} - \sum_{i \in S^\star} q_i,
+\]
+is offered to the most greedy partner at the price that is good for the
+opponent.  For a seller, this is the worst price for the agent, which is the
+price most likely to be accepted by a greedy buyer.  This rule is designed for
+cases where accepting many non-greedy offers nearly fills the need, and a
+single greedy counter can complete the quantity exactly.
+
+\section{Discussion}
+
+\texttt{BayesianAgent} is built around a simple but useful separation of
+concerns.  Classification is based on first-offer behavior, first proposals use
+the resulting classification to decide where to place quantity, and counter
+responses use subset reasoning to avoid harmful over-acceptance or
+under-satisfaction.  The agent is intentionally conservative in its opponent
+model: it only distinguishes greedy from non-greedy behavior, avoiding a larger
+multi-class model that may overfit sparse observations.
+
+The main strength of this design is adaptivity.  Against greedy agents, the
+agent can offer opponent-good prices in exchange for reliable quantity
+matching.  Against non-greedy agents, it can spread quantity according to
+empirical success rates.  The seller greedy-fill rule further improves
+simultaneous offer handling by accepting the best under-need subset and using a
+greedy partner to complete the remaining quantity.
+
+The main limitation is that early posterior estimates can be noisy.  At the
+beginning of a simulation, many partners have probabilities close to \(0.5\),
+so a threshold near \(0.51\) can classify partners aggressively once a small
+amount of evidence appears.  This behavior is useful for exploiting greedy
+partners quickly, but it may also misclassify random partners.  Future work
+could introduce confidence intervals, side-specific thresholds, or separate
+models for quantity behavior and price behavior.
+
+\section{Conclusion}
+
+\texttt{BayesianAgent} combines a lightweight Bayesian-style classifier with
+partner-aware offer allocation and cautious counter-offer selection.  Its
+strategy is designed for the simultaneous nature of OneShot negotiation:
+learning which partners are greedy, allocating first proposals according to
+that belief, and repairing imperfect offer sets with targeted counters.  The
+agent remains simple enough to run inside tournament constraints while
+capturing several important behavioral regularities of common OneShot agents.
+
+\begin{thebibliography}{9}
+\bibitem{scml}
+SCML OneShot and NegMAS documentation and tournament environment.
+
+\bibitem{cautious}
+Team Miyajima, \emph{CautiousOneShotAgent} report, ANAC 2024 SCML OneShot
+track.
+\end{thebibliography}
+
+\end{document}

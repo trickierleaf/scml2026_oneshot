@@ -1540,6 +1540,8 @@ class BayesianAgent(SyncRandomOneShotAgent):
     def _minimum_two_dist_quantity(self, target_quantity, partners, opponent_types):
         if not partners:
             return 0
+        if int(target_quantity) <= 0:
+            return 0
         return max(int(target_quantity), min(2, len(partners)))
 
     def _success_adjusted_quantity(self, target_quantity: float, success_rate: float) -> int:
