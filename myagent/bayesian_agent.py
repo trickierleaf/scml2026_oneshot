@@ -1442,7 +1442,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 )
             else:
                 selected_greedy_partners = greedy_partners[:1]
-                greedy_quantity = min(7, int(needs))
+                greedy_quantity = self._single_greedy_quantity(needs)
                 greedy_quantities = [greedy_quantity]
                 scaled_target = self._success_adjusted_quantity(
                     max(0, int(needs) - greedy_quantity),
@@ -1547,6 +1547,12 @@ class BayesianAgent(SyncRandomOneShotAgent):
     def _success_adjusted_quantity(self, target_quantity: float, success_rate: float) -> int:
         success_rate = max(0.05, min(1.0, float(success_rate)))
         return math.ceil(target_quantity / success_rate)
+
+    def _single_greedy_quantity(self, needs: int) -> int:
+        needs = int(needs)
+        if needs == 7:
+            return 6
+        return min(7, needs)
 
     def _split_greedy_eighty_quantities(self, needs: int) -> list[int]:
         total = max(0, math.ceil(int(needs) * 0.8))
@@ -1832,6 +1838,19 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 )
                 if len(counter_partners) == 1:
                     partner = counter_partners[0]
+                    if self._near_remaining_need_single_partner_response(
+                        partner,
+                        current_offers[partner],
+                        remaining_needs,
+                    ):
+                        responses[partner] = SAOResponse(
+                            ResponseType.ACCEPT_OFFER,
+                            current_offers[partner],
+                        )
+                        for other in remaining_partners:
+                            if other != partner:
+                                responses[other] = self._unneeded_response()
+                        continue
                     if t >= 0.95:
                         responses[partner] = self._final_single_partner_response(
                             partner,
@@ -1845,11 +1864,18 @@ class BayesianAgent(SyncRandomOneShotAgent):
                             if other != partner:
                                 responses[other] = self._unneeded_response()
                         continue
+                    accepted_offer_map = {
+                        accepted_partner: current_offers[accepted_partner]
+                        for accepted_partner in accepted_partners
+                    }
+                    counter_price = self._conceded_price_for_me(partner, t)
                     counter_quantities[partner] = self._conceded_counter_quantity(
                         partner,
                         counter_quantities.get(partner, 0),
                         current_offers[partner],
                         t,
+                        accepted_offers=accepted_offer_map,
+                        price=counter_price,
                     )
                 for partner in remaining_partners:
                     if partner not in counter_partners:
@@ -1901,6 +1927,16 @@ class BayesianAgent(SyncRandomOneShotAgent):
             )
             if len(counter_partners) == 1:
                 partner = counter_partners[0]
+                if self._near_remaining_need_single_partner_response(
+                    partner,
+                    current_offers[partner],
+                    remaining_needs,
+                ):
+                    responses[partner] = SAOResponse(
+                        ResponseType.ACCEPT_OFFER,
+                        current_offers[partner],
+                    )
+                    continue
                 if t >= 0.95:
                     responses[partner] = self._final_single_partner_response(
                         partner,
@@ -1911,11 +1947,18 @@ class BayesianAgent(SyncRandomOneShotAgent):
                         },
                     )
                     continue
+                accepted_offer_map = {
+                    accepted_partner: current_offers[accepted_partner]
+                    for accepted_partner in accepted_partners
+                }
+                counter_price = self._conceded_price_for_me(partner, t)
                 counter_quantities[partner] = self._conceded_counter_quantity(
                     partner,
                     counter_quantities.get(partner, 0),
                     current_offers[partner],
                     t,
+                    accepted_offers=accepted_offer_map,
+                    price=counter_price,
                 )
             for partner in counter_partners:
                 quantity = counter_quantities.get(partner, 0)
@@ -2601,7 +2644,16 @@ class BayesianAgent(SyncRandomOneShotAgent):
         )
         return value - 0.05 * expected_gap - 0.02 * offered_gap
 
-    def _conceded_counter_quantity(self, partner, desired_quantity: int, offer, t: float) -> int:
+    def _conceded_counter_quantity(
+        self,
+        partner,
+        desired_quantity: int,
+        offer,
+        t: float,
+        *,
+        accepted_offers=None,
+        price: int | None = None,
+    ) -> int:
         desired_quantity = int(desired_quantity)
         if offer is None or t <= 0.5:
             return desired_quantity
@@ -2611,7 +2663,55 @@ class BayesianAgent(SyncRandomOneShotAgent):
             desired_quantity
             + (opponent_quantity - desired_quantity) * concession
         )
-        return self._clamp_quantity(partner, quantity)
+        quantity = self._clamp_quantity(partner, quantity)
+        return self._non_losing_conceded_quantity(
+            partner,
+            desired_quantity,
+            quantity,
+            accepted_offers or {},
+            self._conceded_price_for_me(partner, t) if price is None else int(price),
+        )
+
+    def _non_losing_conceded_quantity(
+        self,
+        partner,
+        desired_quantity: int,
+        target_quantity: int,
+        accepted_offers,
+        price: int,
+    ) -> int:
+        desired_quantity = self._clamp_quantity(partner, desired_quantity)
+        target_quantity = self._clamp_quantity(partner, target_quantity)
+        if target_quantity == desired_quantity:
+            return desired_quantity
+
+        accepted_offers = dict(accepted_offers)
+        try:
+            no_deal_utility = self.ufun.from_offers(accepted_offers)
+        except Exception:
+            return desired_quantity
+
+        step = 1 if target_quantity > desired_quantity else -1
+        best_quantity = desired_quantity
+        for quantity in range(
+            desired_quantity,
+            target_quantity + step,
+            step,
+        ):
+            candidate_offer = self._raw_offer(partner, quantity, price)
+            if candidate_offer is None:
+                continue
+            candidate_offers = dict(accepted_offers)
+            candidate_offers[partner] = candidate_offer
+            try:
+                utility = self.ufun.from_offers(candidate_offers)
+            except Exception:
+                return best_quantity
+            if utility >= no_deal_utility:
+                best_quantity = quantity
+            else:
+                break
+        return best_quantity
 
     def _final_single_partner_response(self, partner, offer, accepted_offers):
         accept_offers = dict(accepted_offers)
@@ -2627,6 +2727,19 @@ class BayesianAgent(SyncRandomOneShotAgent):
         if accept_utility >= reject_utility:
             return SAOResponse(ResponseType.ACCEPT_OFFER, offer)
         return self._unneeded_response()
+
+    def _near_remaining_need_single_partner_response(
+        self,
+        partner,
+        offer,
+        remaining_needs: int,
+    ) -> bool:
+        del partner
+        if offer is None or len(offer) <= UNIT_PRICE:
+            return False
+        if int(remaining_needs) < 5:
+            return False
+        return abs(int(offer[QUANTITY]) - int(remaining_needs)) <= 1
 
     def _single_offer_profit_heuristic(self, partner, offer) -> float:
         if offer is None:
@@ -2784,7 +2897,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
         if greedy_partners:
             selected_greedy = greedy_partners[:2]
             if len(selected_greedy) == 1:
-                quantities = [min(7, int(needs))]
+                quantities = [self._single_greedy_quantity(needs)]
             else:
                 quantities = self._split_greedy_eighty_quantities(needs)
             for partner, quantity in zip(selected_greedy, quantities, strict=False):
