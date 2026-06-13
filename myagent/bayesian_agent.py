@@ -53,7 +53,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
         self.min_strategy_classifications = 3
         self.sync_equal_classification_threshold = 0.50
         self.strategy_random_threshold = 0.55
-        self.exploration_quantity_multiplier = 1.2
+        self.exploration_quantity_multiplier = 1.3
         self.small_dist_early_quantity_multiplier = 1.3
         self.small_dist_midpoint = 0.5
         self.non_greedy_success_default = 0.5
@@ -807,6 +807,15 @@ class BayesianAgent(SyncRandomOneShotAgent):
             )
         elif price_label == "good":
             self._add_evidence_count(partner, "good_first_offer_rejected")
+            quantity = int(sent_offer.get("offer", (0,))[QUANTITY])
+            if quantity <= 3:
+                self._add_evidence_count(partner, "small_good_first_offer_rejected")
+                self._add_logit_evidence(
+                    partner,
+                    non_greedy=2.0,
+                    reason="small_good_first_offer_rejected",
+                )
+                return
             self._add_logit_evidence(
                 partner,
                 non_greedy=0.15,
