@@ -1474,15 +1474,25 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 opponent_types,
             )
             if self._is_process_one_agent():
+                quantity_caps = self._half_quantity_caps(
+                    int(needs),
+                    len(success_scaled_partners),
+                )
+                if not greedy_partners:
+                    scaled_target = min(
+                        int(scaled_target),
+                        math.ceil(int(needs) * 1.5),
+                    )
+                    quantity_caps = self._non_greedy_dist_quantity_caps(
+                        int(needs),
+                        len(success_scaled_partners),
+                    )
                 self._assign_success_weighted_quantities(
                     proposals,
                     success_scaled_partners,
                     scaled_target,
                     price_getter=self._best_price_for_me,
-                    quantity_caps=self._half_quantity_caps(
-                        int(needs),
-                        len(success_scaled_partners),
-                    ),
+                    quantity_caps=quantity_caps,
                 )
             else:
                 self._assign_equal_quantities(
@@ -1576,6 +1586,24 @@ class BayesianAgent(SyncRandomOneShotAgent):
         if count == 1:
             return [high]
         return [low if index % 2 == 0 else high for index in range(count)]
+
+    def _non_greedy_dist_quantity_caps(self, needs: int, count: int):
+        if needs <= 0 or count <= 0:
+            return []
+        if count in (4, 5) and needs >= 9:
+            return [4] + [3] * (count - 1)
+        if count >= 6:
+            cap = 2 if needs <= 5 else 3
+        elif count == 5:
+            cap = 3 if needs <= 8 else 4
+        else:
+            if needs <= 5:
+                cap = 2
+            elif needs <= 8:
+                cap = 3
+            else:
+                cap = 4
+        return [cap] * count
 
     def _assign_equal_quantities(self, proposals, partners, target_quantity, price_getter):
         partners = list(partners)
