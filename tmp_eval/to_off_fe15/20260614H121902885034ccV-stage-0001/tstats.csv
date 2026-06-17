@@ -1,7 +1,0 @@
-index,a,b,t,p,n_a,n_b,n_effective
-0,scml.oneshot.sysagents.DefaultOneShotAdapter:cautious.CautiousOneShotAgent,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent,10.652047615059333,1.666535808142984e-17,45,45,45
-1,scml.oneshot.sysagents.DefaultOneShotAdapter:cautious.CautiousOneShotAgent,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.SyncRandomOneShotAgent,2.0673964342781925,0.04163396798754007,45,45,45
-2,scml.oneshot.sysagents.DefaultOneShotAdapter:cautious.CautiousOneShotAgent,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.greedy.GreedyOneShotAgent,10.239995194950493,1.1578488790378904e-16,45,45,45
-3,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.SyncRandomOneShotAgent,-8.649418272775332,2.161724744704391e-13,45,45,45
-4,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.greedy.GreedyOneShotAgent,0.4121078682600089,0.6812625186233987,45,45,45
-5,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.SyncRandomOneShotAgent,scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.greedy.GreedyOneShotAgent,8.408256044810724,6.764420004503104e-13,45,45,45
