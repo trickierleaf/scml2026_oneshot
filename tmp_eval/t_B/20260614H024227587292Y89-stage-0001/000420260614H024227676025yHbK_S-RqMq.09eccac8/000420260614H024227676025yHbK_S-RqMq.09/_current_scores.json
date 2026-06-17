@@ -1,0 +1,23 @@
+{
+  "extra_scores_combined_scores": [
+    {
+      "score": 0.8917396238764826,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent"
+    },
+    {
+      "score": 1.03300027078859,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.SyncRandomOneShotAgent"
+    }
+  ],
+  "ids": "['00Ra@0', '04Sy@1']",
+  "log_file_names": "[None]",
+  "n_steps": 50,
+  "names": "['00Ra@0', '04Sy@1']",
+  "relative_time": 1.0,
+  "scores": "[np.float64(0.8917396238764826), np.float64(1.03300027078859)]",
+  "step": 50,
+  "time": 11.35361470002681,
+  "time_limit": 900,
+  "types": "['scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent', 'scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.SyncRandomOneShotAgent']",
+  "world_names": "['000420260614H024227676025yHbK_S-RqMq.09']"
+}

@@ -39,7 +39,25 @@ class BayesianAgent(SyncRandomOneShotAgent):
         max_accept_subsets: int = 16,
         seller_quantity_bias: float = 1.0,
         buyer_quantity_bias: float = 1.0,
-        seller_greedy_fill_threshold: float = 0.51,
+        seller_greedy_fill_threshold: float = 0.55,
+        nongreedy_alloc_mode: str = "mse",
+        nongreedy_util_over_offer: float = 1.5,
+        nongreedy_price_discipline: bool = False,
+        nongreedy_price_hold_until: float = 0.55,
+        nongreedy_price_conf: float = 0.60,
+        non_greedy_shortfall_mse_weight: float = 1.5,
+        greedy_opt_quantities: bool = False,
+        greedy_offer_cap: int = 8,
+        greedy_max_partners: int = 3,
+        greedy_single_cap: int = 7,
+        greedy_two_total: float = 0.8,
+        greedy_two_total_conf: float = 1.0,
+        nongreedy_counter_mode: str = "equal",
+        nongreedy_counter_auto_max_partners: int = 2,
+        nongreedy_counter_mse_min_partners: int = 2,
+        accept_count_aware: bool = False,
+        accept_count_boost: float = 3.0,
+        exploration_mse_quantity: bool = False,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -67,7 +85,49 @@ class BayesianAgent(SyncRandomOneShotAgent):
         self.seller_quantity_bias = float(seller_quantity_bias)
         self.buyer_quantity_bias = float(buyer_quantity_bias)
         self.seller_greedy_fill_threshold = float(seller_greedy_fill_threshold)
-        self.non_greedy_shortfall_mse_weight = 2.0
+        self.non_greedy_shortfall_mse_weight = float(non_greedy_shortfall_mse_weight)
+        # Greedy opponents accept any fully-conceded-price offer whose quantity is
+        # within their (unknown) need.  The need distribution is known and skewed
+        # high (P(need>=q): 7->0.85, 8->0.77, 9->0.64, 10->0.49), so q*P(accept)
+        # is maximised around q=8.  We therefore split our need evenly over the
+        # greedy partners, capped at ``greedy_offer_cap`` per partner, and lean on
+        # them as the reliable fill source (the rest is left to other partners).
+        self.greedy_opt_quantities = bool(greedy_opt_quantities)
+        self.greedy_offer_cap = int(greedy_offer_cap)
+        self.greedy_max_partners = int(greedy_max_partners)
+        self.greedy_single_cap = int(greedy_single_cap)
+        self.greedy_two_total = float(greedy_two_total)
+        self.greedy_two_total_conf = float(greedy_two_total_conf)
+        # NonGreedy counter-offer quantity allocation:
+        #   "equal" -> split the remaining need equally (legacy, no over-order)
+        #   "mse"   -> expected-squared allocation (over-orders by success rate)
+        #   "auto"  -> use mse only when few partners remain
+        self.nongreedy_counter_mode = str(nongreedy_counter_mode)
+        self.nongreedy_counter_auto_max_partners = int(nongreedy_counter_auto_max_partners)
+        # use the expected-squared (mse) counter allocation only when at least
+        # this many partners remain (single-partner counters keep their dedicated
+        # conceded-quantity handling).
+        self.nongreedy_counter_mse_min_partners = int(nongreedy_counter_mse_min_partners)
+        # Acceptance leniency aware of remaining partner count: with few partners
+        # left there is little chance to fill exactly via counters, so accept a
+        # larger quantity mismatch (behave as if later in time); with many
+        # partners stay picky.  ``accept_count_boost`` controls the strength.
+        self.accept_count_aware = bool(accept_count_aware)
+        self.accept_count_boost = float(accept_count_boost)
+        self._accept_n_active = None
+        # during the exploration phase, allocate offer quantities with the mse
+        # (expected-squared) rule to actually cover needs, while keeping the
+        # alternating probe prices for opponent classification.
+        self.exploration_mse_quantity = bool(exploration_mse_quantity)
+        # NonGreedy opening-allocation objective:
+        #   "mse"  -> legacy weighted expected-squared-error (BayesianAgent022+)
+        #   "util" -> newsvendor expected real-penalty cost using the true
+        #             per-unit disposal / shortfall costs read from self.ufun.
+        self.nongreedy_alloc_mode = str(nongreedy_alloc_mode)
+        self.nongreedy_util_over_offer = float(nongreedy_util_over_offer)
+        self.nongreedy_price_discipline = bool(nongreedy_price_discipline)
+        self.nongreedy_price_hold_until = float(nongreedy_price_hold_until)
+        self.nongreedy_price_conf = float(nongreedy_price_conf)
 
     # ---------------------------------------------------------------------
     # Initialization and small utilities
@@ -1311,7 +1371,10 @@ class BayesianAgent(SyncRandomOneShotAgent):
             if needs <= 0:
                 proposals.update({partner: None for partner in partners})
                 continue
-            proposals.update(self._equal_dist_exploration_proposals(int(needs), partners))
+            if self.exploration_mse_quantity:
+                proposals.update(self._mse_exploration_proposals(int(needs), partners))
+            else:
+                proposals.update(self._equal_dist_exploration_proposals(int(needs), partners))
 
         if proposals:
             return proposals
@@ -1352,13 +1415,52 @@ class BayesianAgent(SyncRandomOneShotAgent):
             )
         return proposals
 
+    def _mse_exploration_proposals(self, needs: int, partners: list[str]):
+        """Exploration offers that keep the alternating probe *price* (for
+        classification) but allocate *quantity* with the mse rule so the
+        exploration days actually cover needs (less score loss)."""
+        proposals = {partner: None for partner in partners}
+        n = len(partners)
+        if needs <= 0 or n <= 0:
+            return proposals
+        caps = [self._clamp_quantity(p, int(needs)) for p in partners]
+        probs = [
+            max(0.05, min(0.95, self._partner_non_greedy_initial_offer_success_rate(p)))
+            for p in partners
+        ]
+        qs = self._min_expected_squared_error_quantities(int(needs), probs, caps)
+        for index, (partner, q) in enumerate(zip(partners, qs, strict=False)):
+            if int(q) > 0:
+                proposals[partner] = self._offer(
+                    partner, int(q), self._exploration_probe_price(partner, index)
+                )
+        return proposals
+
     def _exploration_probe_price(self, partner, index: int) -> int:
         # Alternate between prices that are good and bad for the opponent.  The
         # accept/reject pattern is especially informative for Greedy agents.
         opponent_good = (self.awi.current_step + index) % 2 == 0
         return self._worst_price_for_me(partner) if opponent_good else self._best_price_for_me(partner)
 
+    def _allowed_mismatch(self, r: float):
+        mx = self.mismatch_max
+        n = self._accept_n_active
+        eff_r = r
+        if self.accept_count_aware and n is not None and n > 0:
+            # fewer remaining partners -> behave as if later in the negotiation
+            # (more lenient acceptance); many partners -> unchanged.
+            eff_r = 1.0 - (1.0 - r) * (n / (n + self.accept_count_boost))
+        eff_r = max(0.0, min(1.0, eff_r))
+        return mx * (eff_r ** self.mismatch_exp)
+
     def counter_all(self, offers, states):
+        # number of partners still presenting a current-step offer, used to make
+        # the (base) acceptance tolerance aware of how many chances remain.
+        self._accept_n_active = sum(
+            1
+            for o in offers.values()
+            if o is not None and len(o) > TIME and o[TIME] == self.awi.current_step
+        )
         current_offers = {
             partner: offer
             for partner, offer in offers.items()
@@ -1382,7 +1484,120 @@ class BayesianAgent(SyncRandomOneShotAgent):
             self._observe_received_first_offer(partner, offer)
             self._observe_offer(partner, offer, states)
 
-        return self._current_offer_responses(offers, states)
+        responses = self._current_offer_responses(offers, states)
+        if self.nongreedy_price_discipline:
+            responses = self._apply_nongreedy_sell_price_discipline(
+                responses, offers, states
+            )
+        return responses
+
+    def _apply_nongreedy_sell_price_discipline(self, responses, offers, states):
+        """NonGreedy sell-side discipline: secure *exactly* ``needed_sales`` at my
+        *best* price.
+
+        Against quantity-matching (NonGreedy) buyers, a counter that asks for a
+        quantity within what the buyer already offered — but at my best price —
+        will be accepted next round.  So instead of accepting their low-priced
+        offers (low realised price) or accepting an over-sized subset (disposal),
+        we counter the confidently-NonGreedy buyers at the best price, allocating
+        quantities that sum to exactly the remaining need and never exceed each
+        buyer's own offered quantity.  This captures both the price upside (helps
+        vs BayesianAgent022) and quantity precision / low disposal (helps vs
+        Cautious).  Near the deadline we fall back to the base behaviour plus an
+        over-acceptance trim so a deal is never lost for one price unit."""
+        # Only the (safe) over-acceptance trim is used: holding price by
+        # countering proved to lose deals against NonGreedy partners (they do
+        # not reliably accept a best-price counter within the deadline), which
+        # spiked disposal and hurt the score.
+        return self._nongreedy_overaccept_trim(responses, offers, states)
+
+    def _nongreedy_overaccept_trim(self, responses, offers, states):
+        """NonGreedy *over-acceptance trim*.
+
+        Data shows the agent's main NonGreedy weakness vs Cautious is disposal
+        from over-securing: it accepts offer-sets whose total quantity exceeds
+        its needs.  Here we drop the worst-priced accepted offers beyond ``needs``
+        (ending those negotiations) so that we keep just enough of the
+        *best-priced* offers to cover the need.  This cuts disposal toward
+        Cautious' level while simultaneously improving the realised price (we
+        keep the best-priced accepts).  Restricted to confidently-NonGreedy
+        partners so it never interferes with Greedy handling."""
+        cur_step = self.awi.current_step
+        conf = self.nongreedy_price_conf
+        allow_zero = self.awi.allow_zero_quantity
+        drop_response = (
+            SAOResponse(ResponseType.REJECT_OFFER, (0, cur_step, 0))
+            if allow_zero
+            else SAOResponse(ResponseType.END_NEGOTIATION, None)
+        )
+        updated = dict(responses)
+        for needs, all_partners, is_sell in (
+            (self.awi.needed_supplies, self.awi.my_suppliers, False),
+            (self.awi.needed_sales, self.awi.my_consumers, True),
+        ):
+            needs = int(needs)
+            accepts = []
+            for partner in all_partners:
+                resp = responses.get(partner)
+                if resp is None or getattr(resp, "response", None) != ResponseType.ACCEPT_OFFER:
+                    continue
+                offer = offers.get(partner)
+                if offer is None or len(offer) <= UNIT_PRICE or offer[TIME] != cur_step:
+                    continue
+                if self.opponent_posteriors(partner).get("NonGreedy", 0.0) < conf:
+                    continue
+                accepts.append((partner, int(offer[QUANTITY]), float(offer[UNIT_PRICE])))
+            total = sum(q for _, q, _ in accepts)
+            if not accepts or total <= needs:
+                continue
+            # worst price for me first: a seller's worst accept is the lowest
+            # unit price; a buyer's worst is the highest unit price.
+            accepts.sort(key=lambda x: x[2], reverse=(not is_sell))
+            kept_total = total
+            for partner, quantity, _price in accepts:
+                if kept_total - quantity >= needs:  # safe to drop, still covers needs
+                    updated[partner] = drop_response
+                    kept_total -= quantity
+                if kept_total <= needs:
+                    break
+        return updated
+
+    # Empirical CDF of a greedy opponent's per-day need (exogenous quantity),
+    # i.e. P(need >= q).  A greedy agent accepts a fully-conceded-price offer iff
+    # its quantity is within its need, so this is exactly P(it accepts q).
+    GREEDY_NEED_SURVIVAL = {
+        0: 1.0, 1: 0.999, 2: 0.997, 3: 0.991, 4: 0.976, 5: 0.949,
+        6: 0.911, 7: 0.854, 8: 0.772, 9: 0.643, 10: 0.489,
+    }
+
+    def _greedy_accept_prob(self, q: int) -> float:
+        q = int(q)
+        if q <= 0:
+            return 1.0
+        return self.GREEDY_NEED_SURVIVAL.get(min(q, 10), 0.0)
+
+    def _greedy_quantities_and_gap(self, needs: int, n_partners: int):
+        """Split ``needs`` evenly over ``n_partners`` greedy partners, capped at
+        ``greedy_offer_cap`` each (the quantity that maximises q*P(accept)).
+        Returns (quantities, expected_remaining_gap) where the gap is what greedy
+        is expected to leave unfilled and should be sought from other partners."""
+        needs = int(needs)
+        n = int(n_partners)
+        if n <= 0 or needs <= 0:
+            return [], needs
+        cap = max(1, int(self.greedy_offer_cap))
+        quantities = []
+        remaining = needs
+        for i in range(n):
+            if remaining <= 0:
+                break
+            share = math.ceil(remaining / (n - i))
+            q = min(share, cap)
+            quantities.append(q)
+            remaining -= q
+        expected = sum(q * self._greedy_accept_prob(q) for q in quantities)
+        gap = max(0, needs - int(round(expected)))
+        return quantities, gap
 
     def _greedy_only_first_proposals(self, needs: int, partners: list[str]):
         proposals = {partner: None for partner in partners}
@@ -1415,7 +1630,24 @@ class BayesianAgent(SyncRandomOneShotAgent):
         strong_greedy_partners = [
             partner for partner in greedy_partners if self._strong_initial_greedy_partner(partner)
         ]
-        if len(greedy_partners) >= 2 and len(strong_greedy_partners) >= 2:
+        if greedy_partners and self.greedy_opt_quantities:
+            # Principled allocation: split need evenly over the greedy partners
+            # (the reliable fill source), capped per partner at the q that
+            # maximises expected accepted quantity.  Other partners only need to
+            # cover the expected residual gap.
+            n_sel = min(len(greedy_partners), max(1, self.greedy_max_partners))
+            selected_greedy_partners = greedy_partners[:n_sel]
+            greedy_quantities, gap = self._greedy_quantities_and_gap(needs, n_sel)
+            for greedy_partner, greedy_quantity in zip(
+                selected_greedy_partners, greedy_quantities, strict=False
+            ):
+                proposals[greedy_partner] = self._offer(
+                    greedy_partner,
+                    greedy_quantity,
+                    self._worst_price_for_me(greedy_partner),
+                )
+            scaled_target = self._success_adjusted_quantity(gap, success_rate)
+        elif len(greedy_partners) >= 2 and len(strong_greedy_partners) >= 2:
             selected_greedy_partners = strong_greedy_partners[:2]
             greedy_quantities = [
                 math.ceil(needs / 2),
@@ -1432,8 +1664,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
                     self._worst_price_for_me(greedy_partner),
                 )
             return proposals
-
-        if greedy_partners:
+        elif greedy_partners:
             if len(greedy_partners) >= 2:
                 selected_greedy_partners = greedy_partners[:2]
                 greedy_quantities = self._split_greedy_eighty_quantities(needs)
@@ -1475,12 +1706,20 @@ class BayesianAgent(SyncRandomOneShotAgent):
                 opponent_types,
             )
             if not greedy_partners:
-                self._assign_min_expected_squared_error_quantities(
-                    proposals,
-                    success_scaled_partners,
-                    int(needs),
-                    price_getter=self._best_price_for_me,
-                )
+                if self.nongreedy_alloc_mode == "util":
+                    self._assign_min_expected_cost_quantities(
+                        proposals,
+                        success_scaled_partners,
+                        int(needs),
+                        price_getter=self._best_price_for_me,
+                    )
+                else:
+                    self._assign_min_expected_squared_error_quantities(
+                        proposals,
+                        success_scaled_partners,
+                        int(needs),
+                        price_getter=self._best_price_for_me,
+                    )
             elif self._is_process_one_agent():
                 quantity_caps = self._half_quantity_caps(
                     int(needs),
@@ -1559,12 +1798,13 @@ class BayesianAgent(SyncRandomOneShotAgent):
 
     def _single_greedy_quantity(self, needs: int) -> int:
         needs = int(needs)
-        if needs == 7:
-            return 6
-        return min(7, needs)
+        cap = int(self.greedy_single_cap)
+        if needs == cap:
+            return cap - 1
+        return min(cap, needs)
 
     def _split_greedy_eighty_quantities(self, needs: int) -> list[int]:
-        total = max(0, math.ceil(int(needs) * 0.8))
+        total = max(0, math.ceil(int(needs) * float(self.greedy_two_total)))
         if total <= 0:
             return [0, 0]
 
@@ -1749,73 +1989,194 @@ class BayesianAgent(SyncRandomOneShotAgent):
         count = min(len(probabilities), len(quantity_caps))
         if count <= 0 or needs <= 0:
             return []
+        probs = [max(0.0, min(1.0, float(probabilities[i]))) for i in range(count)]
+        caps = [min(max(0, int(quantity_caps[i])), needs) for i in range(count)]
+        short_weight = max(1.0, float(self.non_greedy_shortfall_mse_weight))
+        quantities = [0] * count
 
-        best_quantities = [0] * count
-        best_key = None
-        current = [0] * count
-        max_offer_total = max(1, math.ceil(needs * 1.5))
+        def dist_excluding(exclude: int):
+            dist = {0: 1.0}
+            for i in range(count):
+                if i == exclude or quantities[i] <= 0:
+                    continue
+                qi, pi = quantities[i], probs[i]
+                nxt = defaultdict(float)
+                for total, mass in dist.items():
+                    nxt[total] += mass * (1.0 - pi)
+                    nxt[total + qi] += mass * pi
+                dist = dict(nxt)
+            return dist
 
-        def expected_error_key():
-            distribution = {0: 1.0}
-            expected_total = 0.0
-            offered_total = 0
-            offer_count = 0
-            for quantity, probability in zip(current, probabilities, strict=False):
-                quantity = int(quantity)
-                if quantity > 0:
-                    offered_total += quantity
-                    offer_count += 1
-                probability = max(0.0, min(1.0, float(probability)))
-                next_distribution = defaultdict(float)
-                for total, mass in distribution.items():
-                    next_distribution[total] += mass * (1.0 - probability)
-                    next_distribution[total + quantity] += mass * probability
-                distribution = dict(next_distribution)
-                expected_total += quantity * probability
+        def cost_adding(dist_excl, qi: int, pi: float):
+            cost = 0.0
+            for total, mass in dist_excl.items():
+                for s, w in ((total + qi, pi), (total, 1.0 - pi)):
+                    short = max(0, needs - s)
+                    over = max(0, s - needs)
+                    cost += mass * w * ((short_weight * short) ** 2 + over ** 2)
+            return cost
 
-            short_weight = max(1.0, float(self.non_greedy_shortfall_mse_weight))
-            expected_squared_error = sum(
-                (
-                    (short_weight * max(0, needs - total)) ** 2
-                    + max(0, total - needs) ** 2
+        for _sweep in range(5):
+            changed = False
+            for i in range(count):
+                dist_excl = dist_excluding(i)
+                best_qi, best_cost = quantities[i], None
+                for cand in range(0, caps[i] + 1):
+                    cost = cost_adding(dist_excl, cand, probs[i])
+                    if best_cost is None or cost < best_cost - 1e-9:
+                        best_cost, best_qi = cost, cand
+                if best_qi != quantities[i]:
+                    quantities[i] = best_qi
+                    changed = True
+            if not changed:
+                break
+        return quantities
+
+    # ------------------------------------------------------------------
+    # Improved NonGreedy opening allocation: newsvendor expected-cost.
+    # ------------------------------------------------------------------
+    def _nongreedy_unit_costs(self, partners, needs: int):
+        """Return (c_over, c_short): the true per-unit cost of ending the day
+        one unit *over* / *under* ``needs`` on this side, read from self.ufun.
+
+        c_short is normally much larger than c_over (an unfilled unit forfeits
+        its whole margin, while an over-committed unit only pays the shortfall
+        penalty for a seller / disposal for a buyer), so the newsvendor optimum
+        leans toward securing the full need.
+        """
+        needs = int(needs)
+        is_selling = bool(set(partners) & set(self.awi.my_consumers))
+        try:
+            issues = (
+                self.awi.current_output_issues
+                if is_selling
+                else self.awi.current_input_issues
+            )
+            best_price = (
+                issues[UNIT_PRICE].max_value
+                if is_selling
+                else issues[UNIT_PRICE].min_value
+            )
+            step = self.awi.current_step
+            uf = self.ufun
+
+            def u(q):
+                q = int(max(0, q))
+                if q == 0:
+                    return uf.from_offers((), (), ignore_signed_contracts=False)
+                return uf.from_offers(
+                    ((q, step, best_price),),
+                    (is_selling,),
+                    ignore_signed_contracts=False,
                 )
-                * mass
-                for total, mass in distribution.items()
-            )
-            expected_over = sum(
-                max(0, total - needs) * mass
-                for total, mass in distribution.items()
-            )
-            expected_short = sum(
-                max(0, needs - total) * mass
-                for total, mass in distribution.items()
-            )
-            return (
-                expected_squared_error,
-                expected_over,
-                expected_short,
-                abs(expected_total - needs),
-                -offer_count,
-                offered_total,
-            )
 
-        def search(index: int, offered_total: int):
-            nonlocal best_key, best_quantities
-            if index >= count:
-                key = expected_error_key()
-                if best_key is None or key < best_key:
-                    best_key = key
-                    best_quantities = list(current)
-                return
+            u0 = u(needs)
+            c_short = u0 - u(needs - 1)
+            c_over = u0 - u(needs + 1)
+        except Exception:
+            c_short, c_over = float(self.non_greedy_shortfall_mse_weight), 1.0
+        eps = 1e-6
+        c_short = max(eps, float(c_short))
+        c_over = max(eps, float(c_over))
+        return c_over, c_short
 
-            max_quantity = min(quantity_caps[index], max_offer_total - offered_total)
-            for quantity in range(max_quantity + 1):
-                current[index] = quantity
-                search(index + 1, offered_total + quantity)
-            current[index] = 0
+    def _assign_min_expected_cost_quantities(
+        self,
+        proposals,
+        partners,
+        needs: int,
+        price_getter,
+        quantity_caps=None,
+    ):
+        partners = list(partners)
+        needs = int(needs)
+        if not partners or needs <= 0:
+            return
+        if quantity_caps is None:
+            quantity_caps = [needs] * len(partners)
+        else:
+            quantity_caps = [max(0, int(cap)) for cap in list(quantity_caps)[: len(partners)]]
+            if len(quantity_caps) < len(partners):
+                quantity_caps.extend([0] * (len(partners) - len(quantity_caps)))
 
-        search(0, 0)
-        return best_quantities
+        probabilities = [
+            max(0.05, min(0.95, self._partner_non_greedy_initial_offer_success_rate(p)))
+            for p in partners
+        ]
+        c_over, c_short = self._nongreedy_unit_costs(partners, needs)
+        quantities = self._min_expected_cost_quantities(
+            needs, probabilities, quantity_caps, c_over, c_short
+        )
+        for partner, quantity in zip(partners, quantities, strict=False):
+            if quantity <= 0:
+                continue
+            proposals[partner] = self._offer(partner, quantity, price_getter(partner))
+
+    def _min_expected_cost_quantities(
+        self,
+        needs: int,
+        probabilities: list[float],
+        quantity_caps: list[int],
+        c_over: float,
+        c_short: float,
+    ) -> list[int]:
+        count = min(len(probabilities), len(quantity_caps))
+        if count <= 0 or needs <= 0:
+            return []
+
+        probs = [max(0.0, min(1.0, float(probabilities[i]))) for i in range(count)]
+        caps = [max(0, int(quantity_caps[i])) for i in range(count)]
+        # no single partner needs to be offered more than the full need
+        caps = [min(cap, needs) for cap in caps]
+        quantities = [0] * count
+
+        def dist_excluding(exclude: int):
+            """Probability distribution of the secured total over all partners
+            except ``exclude`` (convolution of all-or-nothing Bernoulli offers)."""
+            dist = {0: 1.0}
+            for i in range(count):
+                if i == exclude:
+                    continue
+                qi = quantities[i]
+                if qi <= 0:
+                    continue
+                pi = probs[i]
+                nxt = defaultdict(float)
+                for total, mass in dist.items():
+                    nxt[total] += mass * (1.0 - pi)
+                    nxt[total + qi] += mass * pi
+                dist = dict(nxt)
+            return dist
+
+        def cost_adding(dist_excl, qi: int, pi: float):
+            cost = 0.0
+            for total, mass in dist_excl.items():
+                s_acc = total + qi
+                cost += mass * pi * (
+                    c_over * max(0, s_acc - needs) + c_short * max(0, needs - s_acc)
+                )
+                cost += mass * (1.0 - pi) * (
+                    c_over * max(0, total - needs) + c_short * max(0, needs - total)
+                )
+            return cost
+
+        # coordinate descent: optimise each partner's offer size in turn
+        for _sweep in range(5):
+            changed = False
+            for i in range(count):
+                dist_excl = dist_excluding(i)
+                best_qi, best_cost = quantities[i], None
+                for cand in range(0, caps[i] + 1):
+                    cost = cost_adding(dist_excl, cand, probs[i])
+                    # tie-break toward the smaller offer (less over-ordering)
+                    if best_cost is None or cost < best_cost - 1e-9:
+                        best_cost, best_qi = cost, cand
+                if best_qi != quantities[i]:
+                    quantities[i] = best_qi
+                    changed = True
+            if not changed:
+                break
+        return quantities
 
     def _add_equal_quantities(self, proposals, partners, target_quantity, price_getter):
         partners = list(partners)
@@ -1981,7 +2342,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
                         current_offers[partner],
                     )
 
-                counter_quantities = self._equal_counter_quantities(
+                counter_quantities = self._counter_quantities(
                     remaining_needs,
                     counter_partners,
                 )
@@ -2070,7 +2431,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
                     responses[partner] = self._unneeded_response()
                 continue
 
-            counter_quantities = self._equal_counter_quantities(
+            counter_quantities = self._counter_quantities(
                 remaining_needs,
                 counter_partners,
             )
@@ -3005,6 +3366,35 @@ class BayesianAgent(SyncRandomOneShotAgent):
             if len(selected) >= count:
                 break
         return selected
+
+    def _counter_quantities(self, needs: int, partners: list[str]) -> dict[str, int]:
+        """Dispatch counter-offer quantity allocation by the configured mode."""
+        partners = list(partners)
+        if not partners or int(needs) <= 0:
+            return {}
+        mode = self.nongreedy_counter_mode
+        if mode == "auto":
+            mode = (
+                "mse"
+                if len(partners) <= self.nongreedy_counter_auto_max_partners
+                else "equal"
+            )
+        # mse is used only when enough partners remain; otherwise fall back to the
+        # equal split (and single-partner counters are overridden downstream by
+        # the dedicated conceded-quantity logic anyway).
+        if mode == "mse" and len(partners) < self.nongreedy_counter_mse_min_partners:
+            mode = "equal"
+        if mode == "mse":
+            caps = [self._clamp_quantity(p, int(needs)) for p in partners]
+            probs = [
+                max(0.05, min(0.95, self._partner_non_greedy_initial_offer_success_rate(p)))
+                for p in partners
+            ]
+            qs = self._min_expected_squared_error_quantities(int(needs), probs, caps)
+            return {
+                p: int(q) for p, q in zip(partners, qs, strict=False) if int(q) > 0
+            }
+        return self._equal_counter_quantities(needs, partners)
 
     def _equal_counter_quantities(self, needs: int, partners: list[str]) -> dict[str, int]:
         if not partners or needs <= 0:

@@ -1,0 +1,47 @@
+{
+  "compact": false,
+  "competitor_params": [
+    {},
+    {},
+    {},
+    {},
+    {}
+  ],
+  "competitors": [
+    "__main__.ChampionOneShotAgent",
+    "cautious.CautiousOneShotAgent",
+    "scml.oneshot.agents.rand.SyncRandomOneShotAgent",
+    "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+    "scml.oneshot.agents.rand.RandomOneShotAgent"
+  ],
+  "min_factories_per_level": 4,
+  "n_agents_per_competitor": 1,
+  "n_competitors_per_world": 4,
+  "n_configs": 5,
+  "n_processes": 2,
+  "n_runs_per_world": 1,
+  "n_steps": 50,
+  "n_world_per_config": null,
+  "n_worlds": 100,
+  "name": "20260614H024224868491pdU-stage-0001",
+  "non_competitor_params": [
+    {},
+    {},
+    {}
+  ],
+  "non_competitors": [
+    "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+    "scml.oneshot.agents.rand.RandDistOneShotAgent",
+    "scml.oneshot.agents.rand.EqualDistOneShotAgent"
+  ],
+  "oneshot_world": true,
+  "parallelism": "serial",
+  "publish_exogenous_summary": true,
+  "publish_trading_prices": true,
+  "scheduler_ip": null,
+  "scheduler_port": null,
+  "score_calculator_name": "scml.utils.balance_calculator_oneshot",
+  "total_timeout": null,
+  "tournament_path": "c:\\Users\\MiyamotoKouta\\scml\\scml2026_oneshot\\tmp_eval\\t_A\\20260614H024224868491pdU-stage-0001",
+  "world_generator_name": "scml.utils.anac_oneshot_world_generator"
+}

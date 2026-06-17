@@ -1,0 +1,1631 @@
+{
+  "active_lines": [
+    [
+      36,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      40,
+      39,
+      36,
+      39,
+      39,
+      32,
+      40,
+      40,
+      36,
+      33,
+      36,
+      36,
+      40,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      36,
+      33,
+      36,
+      36,
+      33,
+      36,
+      33,
+      33,
+      36,
+      36,
+      32,
+      36,
+      36,
+      33,
+      39,
+      40,
+      39,
+      36,
+      33,
+      33,
+      32,
+      40,
+      40,
+      36
+    ],
+    [
+      36,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      40,
+      39,
+      36,
+      39,
+      39,
+      32,
+      40,
+      40,
+      36,
+      33,
+      36,
+      36,
+      40,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      36,
+      33,
+      36,
+      36,
+      33,
+      36,
+      33,
+      33,
+      36,
+      36,
+      32,
+      36,
+      36,
+      33,
+      39,
+      40,
+      39,
+      36,
+      33,
+      33,
+      32,
+      40,
+      40,
+      36
+    ]
+  ],
+  "agent_initial_balances": {
+    "00Eq@0": 13365,
+    "01Ra@0": 13365,
+    "02Ra@0": 13365,
+    "03Ra@0": 13365,
+    "04Ra@1": 22771,
+    "05Gr@1": 22771,
+    "06Ca@1": 22771,
+    "07Eq@1": 22771,
+    "BUYER": 2305843009213693951,
+    "SELLER": 2305843009213693951
+  },
+  "agent_inputs": {
+    "00Eq@0": [
+      0
+    ],
+    "01Ra@0": [
+      0
+    ],
+    "02Ra@0": [
+      0
+    ],
+    "03Ra@0": [
+      0
+    ],
+    "04Ra@1": [
+      1
+    ],
+    "05Gr@1": [
+      1
+    ],
+    "06Ca@1": [
+      1
+    ],
+    "07Eq@1": [
+      1
+    ],
+    "BUYER": [
+      2
+    ],
+    "SELLER": []
+  },
+  "agent_name_reveals_position": true,
+  "agent_name_reveals_type": true,
+  "agent_outputs": {
+    "00Eq@0": [
+      1
+    ],
+    "01Ra@0": [
+      1
+    ],
+    "02Ra@0": [
+      1
+    ],
+    "03Ra@0": [
+      1
+    ],
+    "04Ra@1": [
+      2
+    ],
+    "05Gr@1": [
+      2
+    ],
+    "06Ca@1": [
+      2
+    ],
+    "07Eq@1": [
+      2
+    ],
+    "BUYER": [],
+    "SELLER": [
+      0
+    ]
+  },
+  "agent_params_final": [
+    {
+      "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "name": "_df_0_0"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.RandDistOneShotAgent",
+      "name": "_df_0_1"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.RandDistOneShotAgent",
+      "name": "_df_0_2"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.RandDistOneShotAgent",
+      "name": "_df_0_3"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.RandomOneShotAgent"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent"
+    },
+    {
+      "controller_type": "cautious.CautiousOneShotAgent"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "name": "_df_1_3"
+    }
+  ],
+  "agent_processes": {
+    "00Eq@0": [
+      0
+    ],
+    "01Ra@0": [
+      0
+    ],
+    "02Ra@0": [
+      0
+    ],
+    "03Ra@0": [
+      0
+    ],
+    "04Ra@1": [
+      1
+    ],
+    "05Gr@1": [
+      1
+    ],
+    "06Ca@1": [
+      1
+    ],
+    "07Eq@1": [
+      1
+    ],
+    "BUYER": [],
+    "SELLER": []
+  },
+  "agent_profiles": {
+    "00Eq@0": {
+      "cost": 4,
+      "disposal_cost_dev": 0.0001523632940577064,
+      "disposal_cost_mean": 0.035515978772978296,
+      "input_product": 0,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.051055080459913096,
+      "shortfall_penalty_mean": 0.9096529597291059,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "01Ra@0": {
+      "cost": 3,
+      "disposal_cost_dev": 0.00025415918067380996,
+      "disposal_cost_mean": 0.03657719471125296,
+      "input_product": 0,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.018913306107275055,
+      "shortfall_penalty_mean": 0.3374300091872325,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "02Ra@0": {
+      "cost": 1,
+      "disposal_cost_dev": 0.0004986021984777428,
+      "disposal_cost_mean": 0.0840561209519502,
+      "input_product": 0,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.015874366846065243,
+      "shortfall_penalty_mean": 0.830235484996096,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "03Ra@0": {
+      "cost": 3,
+      "disposal_cost_dev": 0.0007761938900507858,
+      "disposal_cost_mean": 0.07253808330074639,
+      "input_product": 0,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.03440139706191144,
+      "shortfall_penalty_mean": 0.3578903343469948,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "04Ra@1": {
+      "cost": 4,
+      "disposal_cost_dev": 0.0006428145959997079,
+      "disposal_cost_mean": 0.1844378253553542,
+      "input_product": 1,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.013692543592238747,
+      "shortfall_penalty_mean": 0.7056630046502912,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "05Gr@1": {
+      "cost": 6,
+      "disposal_cost_dev": 0.00014709523063003596,
+      "disposal_cost_mean": 0.02267352323060399,
+      "input_product": 1,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.03674235238791949,
+      "shortfall_penalty_mean": 0.8889179625342396,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "06Ca@1": {
+      "cost": 4,
+      "disposal_cost_dev": 0.0015340138108040407,
+      "disposal_cost_mean": 0.09331638246634572,
+      "input_product": 1,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.009604167946466883,
+      "shortfall_penalty_mean": 0.4729536366786339,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    },
+    "07Eq@1": {
+      "cost": 8,
+      "disposal_cost_dev": 8.149202257043064e-05,
+      "disposal_cost_mean": 0.006140849836985929,
+      "input_product": 1,
+      "n_lines": 10,
+      "shortfall_penalty_dev": 0.04037317136984024,
+      "shortfall_penalty_mean": 0.5977217738324625,
+      "storage_cost_dev": 0.0,
+      "storage_cost_mean": 0.0
+    }
+  },
+  "agent_types_final": [
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter",
+    "scml.oneshot.sysagents.DefaultOneShotAdapter"
+  ],
+  "allow_zero_quantity": false,
+  "bankruptcy_limit": 0.0,
+  "cap_exogenous_quantities": true,
+  "cash_availability": [
+    1.5,
+    2.5
+  ],
+  "catalog_prices": [
+    10,
+    16,
+    29
+  ],
+  "compact": true,
+  "cost_increases_with_level": true,
+  "disposal_cost": [
+    0.0,
+    0.2
+  ],
+  "disposal_cost_dev": [
+    0.0,
+    0.02
+  ],
+  "equal_exogenous_sales": false,
+  "equal_exogenous_supply": false,
+  "exogenous_control": -1,
+  "exogenous_dynamic": false,
+  "exogenous_force_max": false,
+  "exogenous_generation_method": "profitable",
+  "exogenous_price_dev": [
+    0.1,
+    0.2
+  ],
+  "exogenous_sales": [
+    [
+      9,
+      5,
+      10,
+      10
+    ],
+    [
+      7,
+      9,
+      8,
+      10
+    ],
+    [
+      10,
+      5,
+      9,
+      10
+    ],
+    [
+      10,
+      5,
+      9,
+      10
+    ],
+    [
+      10,
+      8,
+      10,
+      10
+    ],
+    [
+      7,
+      6,
+      8,
+      10
+    ],
+    [
+      10,
+      4,
+      10,
+      10
+    ],
+    [
+      10,
+      4,
+      10,
+      10
+    ],
+    [
+      8,
+      7,
+      10,
+      9
+    ],
+    [
+      10,
+      7,
+      10,
+      10
+    ],
+    [
+      10,
+      8,
+      10,
+      10
+    ],
+    [
+      9,
+      7,
+      8,
+      10
+    ],
+    [
+      6,
+      6,
+      9,
+      10
+    ],
+    [
+      9,
+      6,
+      10,
+      9
+    ],
+    [
+      10,
+      6,
+      8,
+      10
+    ],
+    [
+      10,
+      7,
+      4,
+      10
+    ],
+    [
+      8,
+      8,
+      8,
+      10
+    ],
+    [
+      10,
+      7,
+      8,
+      6
+    ],
+    [
+      10,
+      7,
+      10,
+      10
+    ],
+    [
+      9,
+      5,
+      10,
+      10
+    ],
+    [
+      8,
+      7,
+      9,
+      10
+    ],
+    [
+      9,
+      6,
+      9,
+      10
+    ],
+    [
+      8,
+      6,
+      10,
+      10
+    ],
+    [
+      10,
+      7,
+      7,
+      10
+    ],
+    [
+      9,
+      5,
+      10,
+      10
+    ],
+    [
+      8,
+      5,
+      8,
+      10
+    ],
+    [
+      10,
+      6,
+      8,
+      10
+    ],
+    [
+      9,
+      5,
+      10,
+      10
+    ],
+    [
+      10,
+      7,
+      7,
+      10
+    ],
+    [
+      6,
+      8,
+      10,
+      7
+    ],
+    [
+      10,
+      7,
+      7,
+      10
+    ],
+    [
+      10,
+      4,
+      10,
+      10
+    ],
+    [
+      10,
+      6,
+      8,
+      10
+    ],
+    [
+      10,
+      7,
+      7,
+      10
+    ],
+    [
+      6,
+      7,
+      9,
+      9
+    ],
+    [
+      10,
+      8,
+      10,
+      10
+    ],
+    [
+      10,
+      3,
+      8,
+      10
+    ],
+    [
+      8,
+      7,
+      10,
+      9
+    ],
+    [
+      7,
+      8,
+      9,
+      10
+    ],
+    [
+      9,
+      9,
+      6,
+      10
+    ],
+    [
+      9,
+      8,
+      5,
+      9
+    ],
+    [
+      8,
+      6,
+      10,
+      10
+    ],
+    [
+      10,
+      9,
+      8,
+      10
+    ],
+    [
+      7,
+      9,
+      9,
+      9
+    ],
+    [
+      10,
+      4,
+      10,
+      10
+    ],
+    [
+      8,
+      8,
+      8,
+      10
+    ],
+    [
+      7,
+      7,
+      8,
+      9
+    ],
+    [
+      9,
+      8,
+      10,
+      10
+    ],
+    [
+      10,
+      4,
+      9,
+      8
+    ],
+    [
+      10,
+      8,
+      10,
+      10
+    ]
+  ],
+  "exogenous_sales_predictability": [
+    0.6,
+    0.9
+  ],
+  "exogenous_supplies": [
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      10,
+      7,
+      6
+    ],
+    [
+      6,
+      8,
+      10,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      8,
+      10,
+      6,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      10,
+      10,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      9
+    ],
+    [
+      10,
+      7,
+      9,
+      6
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      7,
+      8,
+      10,
+      8
+    ],
+    [
+      9,
+      10,
+      10,
+      7
+    ],
+    [
+      10,
+      10,
+      9,
+      7
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      9,
+      7
+    ],
+    [
+      10,
+      10,
+      8,
+      5
+    ],
+    [
+      9,
+      10,
+      7,
+      7
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      9,
+      10,
+      4
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      7,
+      10,
+      9,
+      7
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      10,
+      8,
+      8
+    ],
+    [
+      10,
+      8,
+      9,
+      6
+    ],
+    [
+      8,
+      10,
+      10,
+      8
+    ],
+    [
+      10,
+      7,
+      8,
+      8
+    ],
+    [
+      6,
+      10,
+      8,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      7,
+      10,
+      5
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ],
+    [
+      10,
+      10,
+      9,
+      7
+    ],
+    [
+      5,
+      9,
+      10,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      9
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      9
+    ],
+    [
+      9,
+      10,
+      9,
+      8
+    ],
+    [
+      10,
+      8,
+      9,
+      6
+    ],
+    [
+      8,
+      10,
+      7,
+      8
+    ],
+    [
+      10,
+      10,
+      7,
+      5
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      10
+    ],
+    [
+      10,
+      10,
+      10,
+      6
+    ]
+  ],
+  "exogenous_supply_predictability": [
+    0.6,
+    0.9
+  ],
+  "expected_income": [
+    [
+      72,
+      72,
+      66,
+      66,
+      80,
+      72,
+      66,
+      80,
+      78,
+      72,
+      78,
+      78,
+      64,
+      80,
+      80,
+      72,
+      66,
+      72,
+      72,
+      80,
+      72,
+      66,
+      66,
+      80,
+      72,
+      66,
+      72,
+      66,
+      72,
+      72,
+      66,
+      72,
+      66,
+      66,
+      72,
+      72,
+      64,
+      72,
+      72,
+      66,
+      78,
+      80,
+      78,
+      72,
+      66,
+      66,
+      64,
+      80,
+      80,
+      72
+    ],
+    [
+      185,
+      185,
+      170,
+      170,
+      206,
+      185,
+      170,
+      206,
+      201,
+      185,
+      201,
+      201,
+      164,
+      206,
+      206,
+      185,
+      170,
+      185,
+      185,
+      206,
+      185,
+      170,
+      170,
+      206,
+      185,
+      170,
+      185,
+      170,
+      185,
+      185,
+      170,
+      185,
+      170,
+      170,
+      185,
+      185,
+      164,
+      185,
+      185,
+      170,
+      201,
+      206,
+      201,
+      185,
+      170,
+      170,
+      164,
+      206,
+      206,
+      185
+    ]
+  ],
+  "expected_income_per_process": [
+    3594,
+    9246
+  ],
+  "expected_income_per_step": [
+    257,
+    257,
+    236,
+    236,
+    286,
+    257,
+    236,
+    286,
+    279,
+    257,
+    279,
+    279,
+    228,
+    286,
+    286,
+    257,
+    236,
+    257,
+    257,
+    286,
+    257,
+    236,
+    236,
+    286,
+    257,
+    236,
+    257,
+    236,
+    257,
+    257,
+    236,
+    257,
+    236,
+    236,
+    257,
+    257,
+    228,
+    257,
+    257,
+    236,
+    279,
+    286,
+    279,
+    257,
+    236,
+    236,
+    228,
+    286,
+    286,
+    257
+  ],
+  "expected_mean_profit": 12840.0,
+  "expected_n_products": [
+    1797,
+    1797
+  ],
+  "expected_productivity": 0.8985,
+  "expected_profit_sum": 0.7106486606154527,
+  "expected_welfare": 12840.0,
+  "financial_report_period": 5,
+  "force_signing": true,
+  "horizon": 0,
+  "initial_balance": null,
+  "initial_balance_final": [
+    13365,
+    13365,
+    13365,
+    13365,
+    22771,
+    22771,
+    22771,
+    22771
+  ],
+  "input_quantities": [
+    [
+      36,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      40,
+      39,
+      36,
+      39,
+      39,
+      32,
+      40,
+      40,
+      36,
+      33,
+      36,
+      36,
+      40,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      36,
+      33,
+      36,
+      36,
+      33,
+      36,
+      33,
+      33,
+      36,
+      36,
+      32,
+      36,
+      36,
+      33,
+      39,
+      40,
+      39,
+      36,
+      33,
+      33,
+      32,
+      40,
+      40,
+      36
+    ],
+    [
+      36,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      40,
+      39,
+      36,
+      39,
+      39,
+      32,
+      40,
+      40,
+      36,
+      33,
+      36,
+      36,
+      40,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      36,
+      33,
+      36,
+      36,
+      33,
+      36,
+      33,
+      33,
+      36,
+      36,
+      32,
+      36,
+      36,
+      33,
+      39,
+      40,
+      39,
+      36,
+      33,
+      33,
+      32,
+      40,
+      40,
+      36
+    ]
+  ],
+  "inventory_valuation_catalog": 0,
+  "inventory_valuation_trading": 0,
+  "is_default": [
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    false,
+    true
+  ],
+  "max_productivity": [
+    0.8,
+    1.0
+  ],
+  "max_supply": [
+    0.8,
+    1.0
+  ],
+  "n_agents_per_process": [
+    4,
+    8
+  ],
+  "n_lines": 10,
+  "n_processes": 2,
+  "n_steps": 50,
+  "neg_n_steps": 20,
+  "neg_step_time_limit": 20,
+  "neg_time_limit": 60,
+  "negotiation_speed": 21,
+  "no_logs": true,
+  "nullify_bankrupt_contracts": false,
+  "one_time_per_negotiation": true,
+  "output_quantities": [
+    [
+      36,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      40,
+      39,
+      36,
+      39,
+      39,
+      32,
+      40,
+      40,
+      36,
+      33,
+      36,
+      36,
+      40,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      36,
+      33,
+      36,
+      36,
+      33,
+      36,
+      33,
+      33,
+      36,
+      36,
+      32,
+      36,
+      36,
+      33,
+      39,
+      40,
+      39,
+      36,
+      33,
+      33,
+      32,
+      40,
+      40,
+      36
+    ],
+    [
+      36,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      40,
+      39,
+      36,
+      39,
+      39,
+      32,
+      40,
+      40,
+      36,
+      33,
+      36,
+      36,
+      40,
+      36,
+      33,
+      33,
+      40,
+      36,
+      33,
+      36,
+      33,
+      36,
+      36,
+      33,
+      36,
+      33,
+      33,
+      36,
+      36,
+      32,
+      36,
+      36,
+      33,
+      39,
+      40,
+      39,
+      36,
+      33,
+      33,
+      32,
+      40,
+      40,
+      36
+    ]
+  ],
+  "penalize_bankrupt_for_future_contracts": true,
+  "penalties_scale": "trading",
+  "penalties_scale_final": "trading",
+  "perishable": true,
+  "price_multiplier": [
+    1.5,
+    2.0
+  ],
+  "price_range_fraction": 0.0,
+  "process_inputs": [
+    [
+      0
+    ],
+    [
+      1
+    ]
+  ],
+  "process_inputs_generator": 1,
+  "process_outputs": [
+    [
+      1
+    ],
+    [
+      2
+    ]
+  ],
+  "process_outputs_generator": 1,
+  "product_prices": [
+    [
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0,
+      10.0
+    ],
+    [
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0,
+      16.0
+    ],
+    [
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0,
+      29.0
+    ]
+  ],
+  "production_costs": [
+    1,
+    4
+  ],
+  "profit_basis": "max",
+  "profit_means": [
+    0.1,
+    0.2
+  ],
+  "profit_stddevs": 0.05,
+  "publish_assets": false,
+  "publish_exogenous_summary": true,
+  "publish_production_capacity": true,
+  "publish_trading_prices": true,
+  "quantity_multiplier": 1.0,
+  "random_agent_types": false,
+  "selected_price_multiplier": 0.0,
+  "shortfall_penalty": [
+    0.2,
+    1.0
+  ],
+  "shortfall_penalty_dev": [
+    0.0,
+    0.1
+  ],
+  "shuffle_negotiations": false,
+  "signing_delay": 0,
+  "storage_cost": 0,
+  "storage_cost_dev": 0,
+  "time_limit": 900,
+  "wide_price_range": false
+}
