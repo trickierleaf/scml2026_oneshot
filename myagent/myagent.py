@@ -665,6 +665,6 @@ if __name__ == "__main__":
     ]
 
     run(
-        [BayesianAgent024, BayesianAgent022, *winners],
+        [BayesianAgent, BayesianAgent022, *winners],
         sys.argv[1] if len(sys.argv) > 1 else "oneshot",
     )

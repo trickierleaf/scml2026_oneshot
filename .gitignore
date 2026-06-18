@@ -32,3 +32,5 @@ submission.zip
 # Local experiment outputs
 tmp_tournament_test/
 tmp_eval/
+analysis_latest/
+analysis_loss/

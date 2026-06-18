@@ -692,16 +692,35 @@ def agent_matches_filter(agent: dict[str, Any], agent_filter: str) -> bool:
     if not agent_filter:
         return True
     needle = agent_filter.lower()
-    values = [
-        str(agent.get("agent", "")),
-        str(agent.get("type", "")),
-        str(agent.get("key", "")),
-    ]
-    return any(needle in value.lower() for value in values)
+    agent_name = str(agent.get("agent", "")).lower()
+    agent_type = str(agent.get("type", "")).lower()
+    return needle in agent_name or needle == agent_type
 
 
 def filter_agents(agents: list[dict[str, Any]], agent_filter: str) -> list[dict[str, Any]]:
     return [agent for agent in agents if agent_matches_filter(agent, agent_filter)]
+
+
+def loss_amount(agent: dict[str, Any]) -> float:
+    """Total world-level loss used to keep heavy detail views compact."""
+    return float(agent.get("total_shortfall_penalty") or 0) + float(
+        agent.get("total_disposal_cost") or 0
+    )
+
+
+def high_loss_half_agents(agents: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    if len(agents) <= 1:
+        return agents
+    n_keep = math.ceil(len(agents) / 2)
+    return sorted(
+        agents,
+        key=lambda agent: (
+            loss_amount(agent),
+            float(agent.get("total_shortfall_quantity") or 0),
+            -float(agent.get("score") or 0),
+        ),
+        reverse=True,
+    )[:n_keep]
 
 
 def select_representative_agents(
@@ -805,6 +824,60 @@ def summarize_contracts(data: pd.DataFrame) -> dict[str, Any]:
     }
 
 
+def world_market_summary(contracts: pd.DataFrame, world_name: str) -> pd.DataFrame:
+    if contracts.empty:
+        return pd.DataFrame()
+
+    data = contracts.loc[contracts["world"] == world_name].copy()
+    if data.empty or "delivery_time" not in data.columns:
+        return pd.DataFrame()
+
+    data["delivery_time"] = pd.to_numeric(data["delivery_time"], errors="coerce")
+    data = data.dropna(subset=["delivery_time"]).copy()
+    data["quantity"] = pd.to_numeric(data["quantity"], errors="coerce").fillna(0)
+    seller_supply = data.loc[
+        (data["seller_name"] == "SELLER")
+        & data["buyer_name"].map(lambda name: process_of(name) == "0")
+    ]
+    buyer_demand = data.loc[
+        (data["buyer_name"] == "BUYER")
+        & data["seller_name"].map(lambda name: process_of(name) == "1")
+    ]
+    agreed = data.loc[
+        data["seller_name"].map(lambda name: process_of(name) == "0")
+        & data["buyer_name"].map(lambda name: process_of(name) == "1")
+    ]
+
+    steps = sorted(
+        set(seller_supply["delivery_time"].dropna().astype(int))
+        | set(buyer_demand["delivery_time"].dropna().astype(int))
+        | set(agreed["delivery_time"].dropna().astype(int))
+    )
+    rows = []
+    for step in steps:
+        seller_quantity = seller_supply.loc[
+            seller_supply["delivery_time"].astype(int) == step, "quantity"
+        ].sum()
+        buyer_quantity = buyer_demand.loc[
+            buyer_demand["delivery_time"].astype(int) == step, "quantity"
+        ].sum()
+        agreed_quantity = agreed.loc[
+            agreed["delivery_time"].astype(int) == step, "quantity"
+        ].sum()
+        rows.append(
+            {
+                "step": step,
+                "seller_target_quantity": safe_value(seller_quantity),
+                "buyer_target_quantity": safe_value(buyer_quantity),
+                "agreed_quantity": safe_value(agreed_quantity),
+                "seller_minus_buyer": safe_value(seller_quantity - buyer_quantity),
+                "unmet_buyer_quantity": safe_value(max(buyer_quantity - agreed_quantity, 0)),
+                "unsold_seller_quantity": safe_value(max(seller_quantity - agreed_quantity, 0)),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def agent_summary(
     key: str,
     history: pd.DataFrame,
@@ -818,6 +891,7 @@ def agent_summary(
         return {}
     world_name = selected_history["world"].iloc[0]
     agent_name = selected_history["agent"].iloc[0]
+    market_summary = world_market_summary(contracts, world_name)
     selected_contracts = contracts.loc[
         (contracts["world"] == world_name)
         & (
@@ -893,6 +967,8 @@ def agent_summary(
     steps: dict[str, Any] = {}
     for step in sorted(selected_history["step"].dropna().astype(int).unique()):
         metrics = selected_history.loc[selected_history["step"] == step].iloc[-1].to_dict()
+        market_rows = market_summary.loc[market_summary["step"] == step]
+        market = market_rows.iloc[0].to_dict() if not market_rows.empty else {}
         day_contracts = selected_contracts.loc[selected_contracts["delivery_time"] == step].copy()
         buys = day_contracts.loc[day_contracts["buyer_name"] == agent_name].copy()
         sells = day_contracts.loc[day_contracts["seller_name"] == agent_name].copy()
@@ -914,6 +990,13 @@ def agent_summary(
             if not selected_flows.empty
             else pd.DataFrame()
         )
+        raw_action_count = len(day_actions)
+        raw_flow_count = len(day_flows)
+        if max_events_per_step is not None and max_events_per_step >= 0:
+            if raw_action_count > max_events_per_step:
+                day_actions = day_actions.head(max_events_per_step).copy()
+            if raw_flow_count > max_events_per_step:
+                day_flows = day_flows.head(max_events_per_step).copy()
         action_columns = [
             column
             for column in (
@@ -1005,6 +1088,7 @@ def agent_summary(
         )
         steps[str(step)] = {
             "metrics": {k: safe_value(v) for k, v in metrics.items()},
+            "market": {k: safe_value(v) for k, v in market.items()},
             "seller": {
                 "procurement": summarize_contracts(buys),
                 "negotiated_sales": summarize_contracts(negotiated_sells),
@@ -1020,10 +1104,10 @@ def agent_summary(
             "flows": limited_records(sorted_role_flows, max_events_per_step),
             "flow_timeline": limited_records(sorted_timeline_flows, max_events_per_step),
             "truncated": {
-                "actions": max(0, len(sorted_role_actions) - max_events_per_step)
+                "actions": max(0, raw_action_count - max_events_per_step)
                 if max_events_per_step is not None
                 else 0,
-                "flows": max(0, len(sorted_role_flows) - max_events_per_step)
+                "flows": max(0, raw_flow_count - max_events_per_step)
                 if max_events_per_step is not None
                 else 0,
             },
@@ -1067,6 +1151,7 @@ def agent_summary(
         "process": selected_history["process"].iloc[0],
         "summary": {
             "daily_metrics": records(daily_summary),
+            "market_supply_demand": records(market_summary),
             "partner_contracts": records(partner_summary),
         },
         "steps": steps,
@@ -1080,11 +1165,13 @@ def build_payload(
     light_agent_filter: bool = False,
     max_events_per_step: int | None = DEFAULT_MAX_EVENTS_PER_STEP,
 ) -> dict[str, Any]:
-    stage_data = read_stage(stage_path)
-    history = agent_metric_rows(stage_data)
-    contracts = contract_rows(stage_data)
-    actions = action_rows(stage_data)
-    flows = flow_rows(stage_data)
+    ranking_stage_data = read_stage(
+        stage_path,
+        include_contracts=False,
+        include_actions=False,
+        include_flows=False,
+    )
+    history = agent_metric_rows(ranking_stage_data)
     ranking = final_ranking(history)
     ranked_agents = records(
         ranking.loc[
@@ -1123,15 +1210,30 @@ def build_payload(
 
     if agent_contains:
         matched_agents = filter_agents(ranked_agents, agent_contains)
-        detail_agents = top_bottom_agents(matched_agents) if light_agent_filter else matched_agents
+        detail_agents = (
+            top_bottom_agents(matched_agents)
+            if light_agent_filter
+            else high_loss_half_agents(matched_agents)
+        )
     elif max_details is None:
         detail_agents = ranked_agents
     else:
         detail_agents = top_bottom_agents(ranked_agents)
+
+    detail_worlds = {str(agent["world"]) for agent in detail_agents}
+    detail_stage_data = (
+        read_stage(stage_path, world_names=detail_worlds)
+        if detail_worlds
+        else {"stage": stage_path, "worlds": []}
+    )
+    detail_history = agent_metric_rows(detail_stage_data)
+    contracts = contract_rows(detail_stage_data)
+    actions = action_rows(detail_stage_data)
+    flows = flow_rows(detail_stage_data)
     details = {
         agent["key"]: agent_summary(
             agent["key"],
-            history,
+            detail_history,
             contracts,
             actions,
             flows,
@@ -1141,7 +1243,7 @@ def build_payload(
     }
     payload = {
         "stage": str(stage_path),
-        "ranking": records(ranking),
+        "ranking": ranked_agents,
         "agents": detail_agents,
         "details": details,
     }
@@ -1546,9 +1648,19 @@ def render_html(payload: dict[str, Any]) -> str:
         {{key: 'quantity', label: 'quantity'}},
         {{key: 'mean_unit_price', label: 'mean unit price'}},
       ];
+      const marketCols = [
+        {{key: 'step', label: 'step'}},
+        {{key: 'seller_target_quantity', label: '@0 sell target'}},
+        {{key: 'buyer_target_quantity', label: '@1 buy target'}},
+        {{key: 'agreed_quantity', label: '@0 -> @1 agreed'}},
+        {{key: 'seller_minus_buyer', label: 'seller - buyer'}},
+        {{key: 'unmet_buyer_quantity', label: 'buyer unmet'}},
+        {{key: 'unsold_seller_quantity', label: 'seller unsold'}},
+      ];
       return `
         <p class="subtle">${{detail.agent}} / ${{detail.type}} / process @${{detail.process}} / ${{detail.world}}</p>
         <h3>日ごとの主要指標</h3>${{table(detail.summary.daily_metrics, dailyCols)}}
+        <h3>ワールド全体の需給関係</h3>${{table(detail.summary.market_supply_demand, marketCols)}}
         <h3>相手ごとの契約集計</h3>${{table(detail.summary.partner_contracts, partnerCols)}}
       `;
     }};
@@ -1575,6 +1687,18 @@ def render_html(payload: dict[str, Any]) -> str:
     }};
     const roleActions = (actions, role) => {{
       return (actions || []).filter(row => !row.role || row.role === role);
+    }};
+    const marketCards = (market) => {{
+      if (!market || Object.keys(market).length === 0) return '';
+      return `
+        <h3>ワールド全体の需給関係</h3>
+        <div class="cards">
+          <div class="card"><div class="name">@0 が @1 に売りたい個数</div><div class="value">${{fmt(market.seller_target_quantity)}}</div></div>
+          <div class="card"><div class="name">@1 が @0 から買いたい個数</div><div class="value">${{fmt(market.buyer_target_quantity)}}</div></div>
+          <div class="card"><div class="name">@0 -> @1 成立個数</div><div class="value">${{fmt(market.agreed_quantity)}}</div></div>
+          <div class="card"><div class="name">売り手側 - 買い手側</div><div class="value">${{fmt(market.seller_minus_buyer)}}</div></div>
+        </div>
+      `;
     }};
     const stepView = (detail, step) => {{
       const data = detail.steps[step];
@@ -1647,6 +1771,7 @@ def render_html(payload: dict[str, Any]) -> str:
       return `
         <p class="subtle">${{detail.agent}} / step ${{step}} / ${{detail.world}} / 表示ロール: ${{roleLabel}}</p>
         ${{metricCards(metrics)}}
+        ${{marketCards(data.market)}}
         ${{recommendation(metrics, data, data.flows)}}
         ${{roleBlock}}
         <h3>${{roleLabel}}としての取引履歴（未成立・終了含む）</h3>
@@ -1705,8 +1830,9 @@ def main() -> None:
         nargs="*",
         default=[],
         help=(
-            "Agent name/type filter. Use '--agent light NAME' to include only "
-            "the top/bottom matching agents in the detail pane."
+            "Agent name/type filter. Matching type names are exact; matching "
+            "agent ids are partial. Details include the high-loss half by default. "
+            "Use '--agent light NAME' to include only the top/bottom matching agents."
         ),
     )
     parser.add_argument("--out", type=Path)
