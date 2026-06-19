@@ -645,6 +645,7 @@ class MyHalfOfferHistoryAgent(SyncRandomOneShotAgent):
             self._first_offers.pop(partner, None)
 
 from .bayesian_agent import BayesianAgent
+from .simple_bayesian_agent import SimpleBayesianAgent
 from .bayesian_agent_022 import BayesianAgent022
 from .bayesian_agent_024 import BayesianAgent024
 from .rdvo_agent import RDVOOneShotAgent, EINearestNeedOneShotAgent
@@ -665,6 +666,6 @@ if __name__ == "__main__":
     ]
 
     run(
-        [BayesianAgent, BayesianAgent022, *winners],
+        [SimpleBayesianAgent, BayesianAgent022, *winners],
         sys.argv[1] if len(sys.argv) > 1 else "oneshot",
     )

@@ -107,6 +107,7 @@ class BayesianAgent(SyncRandomOneShotAgent):
             lambda: defaultdict(list)
         )
         self._good_first_offer_rejection_streak = defaultdict(int)
+        self._good_first_offer_cumulative_rejection_observed = defaultdict(bool)
         for partner in self._all_partners():
             self._ensure_partner(partner)
 
@@ -864,11 +865,22 @@ class BayesianAgent(SyncRandomOneShotAgent):
         elif price_label == "good":
             self._good_first_offer_rejection_streak[partner] += 1
             self._add_evidence_count(partner, "good_first_offer_rejected")
+            if (
+                self._evidence_counts[partner]["good_first_offer_rejected"] >= 3
+                and not self._good_first_offer_cumulative_rejection_observed[partner]
+            ):
+                self._good_first_offer_cumulative_rejection_observed[partner] = True
+                self._add_logit_evidence(
+                    partner,
+                    greedy=-2.50,
+                    non_greedy=1.00,
+                    reason="good_first_offer_rejected_cumulative_3",
+                )
             if self._good_first_offer_rejection_streak[partner] >= 2:
                 self._add_logit_evidence(
                     partner,
-                    greedy=-1.20,
-                    non_greedy=0.35,
+                    greedy=-2.00,
+                    non_greedy=0.75,
                     reason="good_first_offer_rejected_streak",
                 )
             else:

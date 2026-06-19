@@ -35,6 +35,7 @@ class SimpleBayesianAgent(BayesianAgent):
         accept_base_tolerance: float = 0.20,
         accept_favorable_factor: float = 0.85,
         accept_unfavorable_factor: float = 1.25,
+        single_partner_acceptance_factor: float = 1.50,
         neutral_market_ratio: float = 1.06,
         market_band: float = 0.13,
         forced_accept_time: float = 0.90,
@@ -51,6 +52,7 @@ class SimpleBayesianAgent(BayesianAgent):
         self.accept_base_tolerance = float(accept_base_tolerance)
         self.accept_favorable_factor = float(accept_favorable_factor)
         self.accept_unfavorable_factor = float(accept_unfavorable_factor)
+        self.single_partner_acceptance_factor = float(single_partner_acceptance_factor)
         # この市場は構造的に供給>需要 (実測の供給÷需要 ≈ 1.06、供給超過が約68%)。
         # そのため需給の「中立」を 1.0 ではなく実測平均 ratio に置き、その上下に
         # band 幅の帯を作って有利/不利を判定する。
@@ -177,6 +179,8 @@ class SimpleBayesianAgent(BayesianAgent):
 
     def _nongreedy_env_first_proposals(self, needs, partners):
         proposals = {partner: None for partner in partners}
+        if self._try_process_one_exact_need_offer(proposals, int(needs), partners):
+            return proposals
 
         # 初手オファー契約成功率が閾値 (80%) 以上の相手がいるか。
         strong = [
@@ -205,6 +209,45 @@ class SimpleBayesianAgent(BayesianAgent):
         target = self._close_target_count(partners)
         self._fill_by_target(proposals, partners, int(needs), target, self._best_price_for_me)
         return proposals
+
+    def _try_process_one_exact_need_offer(self, proposals, needs: int, partners) -> bool:
+        """@1買い手で推定相手必要量10かつneedsが9/10のときだけ10個を1人に投げる。"""
+        if not self._is_process_one_buy_side(partners):
+            return False
+        if int(needs) <= 0 or not partners:
+            return False
+
+        estimated_need = self._exact_process_zero_sales_need_per_partner()
+        if estimated_need != 10 or int(needs) not in {9, 10}:
+            return False
+
+        main = max(
+            partners,
+            key=lambda partner: (self._success_rate(partner), str(partner)),
+        )
+        offer = self._raw_offer(main, 10, self._worst_price_for_me(main))
+        if offer is None:
+            return False
+        proposals[main] = offer
+        return True
+
+    def _exact_process_zero_sales_need_per_partner(self) -> int | None:
+        """Return exact (@0 total sales target / @0 count), or None if not exact."""
+        sell_target, _ = self._input_market_sell_buy_targets()
+        if sell_target <= 0:
+            return None
+
+        input_product = int(getattr(self.awi, "my_input_product", -1))
+        all_suppliers = getattr(self.awi, "all_suppliers", [])
+        try:
+            if input_product < 0 or input_product >= len(all_suppliers):
+                return None
+            count = len(all_suppliers[input_product])
+        except Exception:
+            return None
+        if count <= 0 or int(sell_target) % count != 0:
+            return None
+        return int(sell_target) // count
 
     def _close_target_count(self, partners) -> int:
         """何人で契約成立を狙うか。
@@ -374,6 +417,8 @@ class SimpleBayesianAgent(BayesianAgent):
         時間 t はここでは使わない。
         """
         threshold = self.accept_base_tolerance * (2.0 / (n_partners + 1.0))
+        if n_partners == 1:
+            threshold *= self.single_partner_acceptance_factor
 
         ratio = self._input_market_sell_buy_ratio()
         if ratio is not None:
