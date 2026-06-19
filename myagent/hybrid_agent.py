@@ -2,11 +2,12 @@ from __future__ import annotations
 
 """Hybrid agent that switches negotiation behaviour by environment.
 
-- In a **Greedy** environment (most classified opponents are greedy) it behaves
-  like :class:`BayesianAgent022` (its Bayesian classifier + greedy-aware
-  offer/counter logic).
-- In a **NonGreedy** environment it delegates offers/counters to
-  :class:`CautiousOneShotAgent`.
+- It delegates offers/counters to :class:`CautiousOneShotAgent` **only on the
+  buyer side of a NonGreedy environment** -- empirically the only segment where
+  Cautious beats BA022.
+- Everywhere else (the seller side, and any greedy environment) it behaves like
+  :class:`BayesianAgent022` (its Bayesian classifier + greedy-aware offer/counter
+  logic).
 
 The Bayesian classifier of :class:`BayesianAgent022` is always kept running
 (every ``counter_all`` observes the incoming offers) so the environment can be
@@ -106,7 +107,15 @@ class HybridBayesianCautiousAgent(BayesianAgent022):
         # the environment detection) work in the first place.
         if self._exploration_enabled():
             return True
-        return self._environment_is_greedy()
+        # Empirically, Cautious only beats BA022 in the (buyer side, NonGreedy
+        # environment) segment; sellers and greedy environments are better off
+        # with BA022.  So delegate to Cautious *only* there, and keep the
+        # ``_env_greedy_last`` estimate updated for both sides.
+        environment_is_greedy = self._environment_is_greedy()
+        is_buyer = not bool(getattr(self.awi, "is_first_level", False))
+        if is_buyer and not environment_is_greedy:
+            return False
+        return True
 
     # ------------------------------------------------------------------
     # Offer / counter routing
