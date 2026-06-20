@@ -35,7 +35,7 @@ class SimpleBayesianAgent(BayesianAgent):
         accept_base_tolerance: float = 0.20,
         accept_favorable_factor: float = 0.85,
         accept_unfavorable_factor: float = 1.25,
-        single_partner_acceptance_factor: float = 1.50,
+        single_partner_acceptance_factor: float = 2.50,
         neutral_market_ratio: float = 1.06,
         market_band: float = 0.13,
         forced_accept_time: float = 0.90,
