@@ -45,6 +45,11 @@ class SimpleBayesianAgent(BayesianAgent):
         greedy_first_offer_cap: int = 6,
         greedy_second_offer_cap: int = 4,
         min_success_rate: float = 0.05,
+        # target ブランチ(80%相手なし)の過剰調達抑制。
+        #   案A: target 算出に使う成功率の下限。
+        #   案B: 提案総量を needs の何倍までに頭打ちにするか。
+        target_success_floor: float = 0.45,
+        target_offer_cap: float = 2.3,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -70,6 +75,9 @@ class SimpleBayesianAgent(BayesianAgent):
         self.greedy_first_offer_cap = int(greedy_first_offer_cap)
         self.greedy_second_offer_cap = int(greedy_second_offer_cap)
         self.min_success_rate = float(min_success_rate)
+        # target ブランチの過剰調達抑制 (案A: 成功率下限 / 案B: 総量キャップ)。
+        self.target_success_floor = float(target_success_floor)
+        self.target_offer_cap = float(target_offer_cap)
 
     # ------------------------------------------------------------------
     # 補助
@@ -105,6 +113,51 @@ class SimpleBayesianAgent(BayesianAgent):
         return self._best_price_for_me(partner)
 
     # ------------------------------------------------------------------
+    # Greedy 分類の強化 (実測の数量別受諾率に基づく)
+    # ------------------------------------------------------------------
+
+    # 親が good価格受諾に与える既定の greedy 加点 (この値からの差分で補正する)。
+    _PARENT_GOOD_ACCEPT_WEIGHT = 1.20
+
+    def _good_accept_greedy_weight(self, quantity: int) -> float:
+        """good価格オファーの受諾に対する greedy 加点を数量で重み付け。
+
+        実測 (good価格・数量別の初手受諾率) の対数尤度比に基づく:
+          - 小口(<=2): Greedy/NonGreedy 共に受けやすく非識別的 → 弱
+          - 中数量(4〜7): NonGreedy はほぼ受けず Greedy のみ受ける → 強
+          - 大数量(>=8): Greedy 自身も needs 超過で断り始める → 弱
+        """
+        q = int(quantity)
+        if q <= 2:
+            return 0.5
+        if q == 3:
+            return 0.9
+        if q <= 7:
+            return 1.3
+        return 0.5
+
+    def _observe_first_offer_classification_result(self, partner, sent_offer, accepted):
+        # 親の分類ロジックをそのまま走らせた上で、good価格受諾の加点だけ数量補正する。
+        if sent_offer is None:
+            return super()._observe_first_offer_classification_result(
+                partner, sent_offer, accepted
+            )
+        already = sent_offer.get("first_result_observed", False)
+        price_label = sent_offer.get("price_label", "neutral")
+        offer = sent_offer.get("offer")
+        quantity = int(offer[QUANTITY]) if offer is not None and len(offer) > QUANTITY else 0
+
+        super()._observe_first_offer_classification_result(partner, sent_offer, accepted)
+
+        if (not already) and bool(accepted) and price_label == "good":
+            adjusted = self._good_accept_greedy_weight(quantity)
+            # 親は +_PARENT_GOOD_ACCEPT_WEIGHT を加点済み → 差分で目標重みに補正。
+            self._ensure_partner(partner)
+            self._opponent_logits[partner]["GreedyOneShotAgent"] += (
+                adjusted - self._PARENT_GOOD_ACCEPT_WEIGHT
+            )
+
+    # ------------------------------------------------------------------
     # 初手提案
     # ------------------------------------------------------------------
 
@@ -117,9 +170,9 @@ class SimpleBayesianAgent(BayesianAgent):
             return proposals
 
         proposals = {}
-        for needs, all_partners in (
-            (self.awi.needed_supplies, self.awi.my_suppliers),
-            (self.awi.needed_sales, self.awi.my_consumers),
+        for needs, all_partners, is_buy in (
+            (self.awi.needed_supplies, self.awi.my_suppliers, True),
+            (self.awi.needed_sales, self.awi.my_consumers, False),
         ):
             partners = [partner for partner in all_partners if partner in self.negotiators]
             if not partners:
@@ -127,16 +180,16 @@ class SimpleBayesianAgent(BayesianAgent):
             if int(needs) <= 0:
                 proposals.update({partner: None for partner in partners})
                 continue
-            proposals.update(self._simple_first_proposals(int(needs), partners))
+            proposals.update(self._simple_first_proposals(int(needs), partners, is_buy))
 
         self._record_sent_offers(proposals)
         return proposals
 
-    def _simple_first_proposals(self, needs: int, partners: list[str]):
+    def _simple_first_proposals(self, needs: int, partners: list[str], is_buy: bool):
         greedy_partners = self._greedy_partners_sorted(partners)
         if greedy_partners:
             return self._greedy_env_first_proposals(needs, partners, greedy_partners)
-        return self._nongreedy_env_first_proposals(needs, partners)
+        return self._nongreedy_env_first_proposals(needs, partners, is_buy)
 
     def _greedy_env_first_proposals(self, needs, partners, greedy_partners):
         proposals = {partner: None for partner in partners}
@@ -177,10 +230,8 @@ class SimpleBayesianAgent(BayesianAgent):
             self._fill_even(proposals, non_greedy, scaled, self._best_price_for_me)
         return proposals
 
-    def _nongreedy_env_first_proposals(self, needs, partners):
+    def _nongreedy_env_first_proposals(self, needs, partners, is_buy: bool = True):
         proposals = {partner: None for partner in partners}
-        if self._try_process_one_exact_need_offer(proposals, int(needs), partners):
-            return proposals
 
         # 初手オファー契約成功率が閾値 (80%) 以上の相手がいるか。
         strong = [
@@ -208,59 +259,49 @@ class SimpleBayesianAgent(BayesianAgent):
         # 全員に配る (= 期待充足量がちょうど needs になる)。
         target = self._close_target_count(partners)
         self._fill_by_target(proposals, partners, int(needs), target, self._best_price_for_me)
-        return proposals
-
-    def _try_process_one_exact_need_offer(self, proposals, needs: int, partners) -> bool:
-        """@1買い手で推定相手必要量10かつneedsが9/10のときだけ10個を1人に投げる。"""
-        if not self._is_process_one_buy_side(partners):
-            return False
-        if int(needs) <= 0 or not partners:
-            return False
-
-        estimated_need = self._exact_process_zero_sales_need_per_partner()
-        if estimated_need != 10 or int(needs) not in {9, 10}:
-            return False
-
-        main = max(
+        # 案B: 提案総量を needs の target_offer_cap 倍までに頭打ち (過剰調達抑制)。
+        self._cap_total_offer(
+            proposals,
             partners,
-            key=lambda partner: (self._success_rate(partner), str(partner)),
+            math.ceil(int(needs) * self.target_offer_cap),
         )
-        offer = self._raw_offer(main, 10, self._worst_price_for_me(main))
-        if offer is None:
-            return False
-        proposals[main] = offer
-        return True
-
-    def _exact_process_zero_sales_need_per_partner(self) -> int | None:
-        """Return exact (@0 total sales target / @0 count), or None if not exact."""
-        sell_target, _ = self._input_market_sell_buy_targets()
-        if sell_target <= 0:
-            return None
-
-        input_product = int(getattr(self.awi, "my_input_product", -1))
-        all_suppliers = getattr(self.awi, "all_suppliers", [])
-        try:
-            if input_product < 0 or input_product >= len(all_suppliers):
-                return None
-            count = len(all_suppliers[input_product])
-        except Exception:
-            return None
-        if count <= 0 or int(sell_target) % count != 0:
-            return None
-        return int(sell_target) // count
+        return proposals
 
     def _close_target_count(self, partners) -> int:
         """何人で契約成立を狙うか。
 
         各相手に必要量を配って期待成立件数 = 人数 × 平均成功率 とし、それを
-        狙う成立人数とする。例:
+        狙う成立人数とする。例 (下限なしのとき):
           - 4 人 / 平均 50% → round(2.0) = 2 人
-          - 4 人 / 平均 70% → round(2.8) = 3 人
-          - 6 人 / 平均 50% → round(3.0) = 3 人
           - 6 人 / 平均 30% → round(1.8) = 2 人
+        案A: 平均成功率が実測より低めに出ると target が小さくなり総量が膨張する
+        ため、target_success_floor で下限を設ける (過剰調達抑制)。
         """
-        avg = self._average_success_rate(partners)
+        avg = max(self.target_success_floor, self._average_success_rate(partners))
         return max(1, min(len(partners), round(len(partners) * avg)))
+
+    def _cap_total_offer(self, proposals, partners, max_total: int):
+        """提案総量が max_total を超える分を、成功率の低い相手から削る。"""
+        max_total = int(max_total)
+        active = [p for p in partners if proposals.get(p) is not None]
+        excess = sum(int(proposals[p][QUANTITY]) for p in active) - max_total
+        if excess <= 0:
+            return
+        # 成功率の低い相手から削る (充足への悪影響を最小化)。
+        for partner in sorted(active, key=lambda p: (self._success_rate(p), str(p))):
+            if excess <= 0:
+                break
+            offer = proposals[partner]
+            quantity = int(offer[QUANTITY])
+            cut = min(quantity, excess)
+            excess -= cut
+            new_quantity = quantity - cut
+            if new_quantity <= 0:
+                proposals[partner] = None
+            else:
+                proposals[partner] = self._raw_offer(
+                    partner, new_quantity, int(offer[UNIT_PRICE])
+                )
 
     def _success_scaled_quantity(self, quantity: int, partners) -> int:
         """quantity を相手の平均成功率で割って (= 期待充足量が quantity になる) 量に拡大。"""
