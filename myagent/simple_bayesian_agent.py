@@ -45,11 +45,12 @@ class SimpleBayesianAgent(BayesianAgent):
         greedy_first_offer_cap: int = 6,
         greedy_second_offer_cap: int = 4,
         min_success_rate: float = 0.05,
-        # target ブランチ(80%相手なし)の過剰調達抑制。
-        #   案A: target 算出に使う成功率の下限。
-        #   案B: 提案総量を needs の何倍までに頭打ちにするか。
+        # NonGreedy 買い手の過剰調達抑制。
+        #   target 算出に使う成功率の下限 (target ブランチ)。
         target_success_floor: float = 0.45,
-        target_offer_cap: float = 2.3,
+        #   提案総量キャップ = ceil(needs / max(success_cap_floor, 平均成功率))。
+        #   成功率の下限 (これ未満だとキャップが過大になり過剰調達を許すため)。
+        success_cap_floor: float = 0.45,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -77,7 +78,7 @@ class SimpleBayesianAgent(BayesianAgent):
         self.min_success_rate = float(min_success_rate)
         # target ブランチの過剰調達抑制 (案A: 成功率下限 / 案B: 総量キャップ)。
         self.target_success_floor = float(target_success_floor)
-        self.target_offer_cap = float(target_offer_cap)
+        self.success_cap_floor = float(success_cap_floor)
 
     # ------------------------------------------------------------------
     # 補助
@@ -197,21 +198,19 @@ class SimpleBayesianAgent(BayesianAgent):
 
         if len(greedy_partners) >= 2:
             # 最も Greedy らしい 1 人に min(6, needs)、次に min(4, 残り) をオファー。
+            # (B022式の「0.8分割+0.2保険」も試したが、SB は信頼できる Greedy 2人で
+            #  ちょうど needs に着地するため、保険は過剰調達になり逆効果だった。)
             first = greedy_partners[0]
             second = greedy_partners[1]
             first_quantity = min(self.greedy_first_offer_cap, int(needs))
             proposals[first] = self._raw_offer(
-                first,
-                first_quantity,
-                self._worst_price_for_me(first),
+                first, first_quantity, self._worst_price_for_me(first)
             )
             remaining = max(0, int(needs) - first_quantity)
             second_quantity = min(self.greedy_second_offer_cap, remaining)
             if second_quantity > 0:
                 proposals[second] = self._raw_offer(
-                    second,
-                    second_quantity,
-                    self._worst_price_for_me(second),
+                    second, second_quantity, self._worst_price_for_me(second)
                 )
             return proposals
 
@@ -252,19 +251,18 @@ class SimpleBayesianAgent(BayesianAgent):
             if remaining > 0 and others:
                 scaled = self._success_scaled_quantity(remaining, others)
                 self._fill_even(proposals, others, scaled, self._best_price_for_me)
-            return proposals
+        else:
+            # 80% の相手がいない場合: 何人で契約成立を狙うかを
+            # target = round(人数 × 平均成功率) で決め、必要量を target で割った量を
+            # 全員に配る (= 期待充足量がちょうど needs になる)。
+            target = self._close_target_count(partners)
+            self._fill_by_target(proposals, partners, int(needs), target, self._best_price_for_me)
 
-        # 80% の相手がいない場合: 何人で契約成立を狙うかを
-        # target = round(人数 × 平均成功率) で決め、必要量を target で割った量を
-        # 全員に配る (= 期待充足量がちょうど needs になる)。
-        target = self._close_target_count(partners)
-        self._fill_by_target(proposals, partners, int(needs), target, self._best_price_for_me)
-        # 案B: 提案総量を needs の target_offer_cap 倍までに頭打ち (過剰調達抑制)。
-        self._cap_total_offer(
-            proposals,
-            partners,
-            math.ceil(int(needs) * self.target_offer_cap),
-        )
+        # 適応キャップ: 提案総量を ceil(needs / 平均初手成功率) に頭打ちする。
+        # 期待充足量がちょうど needs になる総量で、成功率が高い環境ほど自動的に
+        # 締まる。両ブランチに適用して過剰調達を抑える。
+        avg = max(self.success_cap_floor, self._average_success_rate(partners))
+        self._cap_total_offer(proposals, partners, math.ceil(int(needs) / avg))
         return proposals
 
     def _close_target_count(self, partners) -> int:
