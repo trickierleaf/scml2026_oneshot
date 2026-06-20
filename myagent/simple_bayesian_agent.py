@@ -51,6 +51,8 @@ class SimpleBayesianAgent(BayesianAgent):
         #   提案総量キャップ = ceil(needs / max(success_cap_floor, 平均成功率))。
         #   成功率の下限 (これ未満だとキャップが過大になり過剰調達を許すため)。
         success_cap_floor: float = 0.45,
+        #   キャップを適用する最小相手人数 (これ未満では買い不足を招くため無効)。
+        cap_min_partners: int = 5,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -79,6 +81,7 @@ class SimpleBayesianAgent(BayesianAgent):
         # target ブランチの過剰調達抑制 (案A: 成功率下限 / 案B: 総量キャップ)。
         self.target_success_floor = float(target_success_floor)
         self.success_cap_floor = float(success_cap_floor)
+        self.cap_min_partners = int(cap_min_partners)
 
     # ------------------------------------------------------------------
     # 補助
@@ -261,8 +264,11 @@ class SimpleBayesianAgent(BayesianAgent):
         # 適応キャップ: 提案総量を ceil(needs / 平均初手成功率) に頭打ちする。
         # 期待充足量がちょうど needs になる総量で、成功率が高い環境ほど自動的に
         # 締まる。両ブランチに適用して過剰調達を抑える。
-        avg = max(self.success_cap_floor, self._average_success_rate(partners))
-        self._cap_total_offer(proposals, partners, math.ceil(int(needs) / avg))
+        # ただし少人数 (< cap_min_partners) では撒きすぎリスクが小さく、キャップが
+        # 買い不足を招くため適用しない。
+        if len(partners) >= self.cap_min_partners:
+            avg = max(self.success_cap_floor, self._average_success_rate(partners))
+            self._cap_total_offer(proposals, partners, math.ceil(int(needs) / avg))
         return proposals
 
     def _close_target_count(self, partners) -> int:
