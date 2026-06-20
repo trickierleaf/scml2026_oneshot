@@ -4,7 +4,6 @@ import json
 import math
 import os
 from collections import defaultdict
-from itertools import combinations
 from pathlib import Path
 from typing import Any
 
@@ -2637,39 +2636,68 @@ class BayesianAgent022(SyncRandomOneShotAgent):
             return quantity * price
         return -quantity * price
 
+    def _reachable_quantity_subsets(self, partners, offers, cap: int, better=None):
+        """Subset-sum reachability with one witness subset per reachable total.
+
+        Returns ``{total: tuple(partner_ids)}`` for every total in ``0..cap`` that
+        some subset of ``partners`` can sum to (0/1 knapsack, each partner used at
+        most once).  ``better(candidate, current)`` -> ``True`` replaces the stored
+        witness for a tie on ``total`` (used for price / size tie-breaking).
+
+        Runs in O(len(partners) * cap), replacing the O(2^n) ``combinations``
+        enumeration used previously so the subset search is no longer exponential.
+        """
+        cap = int(cap)
+        reachable = {0: ()}
+        if cap < 0:
+            return reachable
+        for partner in partners:
+            quantity = max(0, int(offers[partner][QUANTITY]))
+            nxt = dict(reachable)
+            for total, subset in reachable.items():
+                new_total = total + quantity
+                if new_total > cap:
+                    continue
+                candidate = subset + (partner,)
+                current = nxt.get(new_total)
+                if current is None or (better is not None and better(candidate, current)):
+                    nxt[new_total] = candidate
+            reachable = nxt
+        return reachable
+
     def _has_exact_offer_subset(self, partners, offers, needs: int) -> bool:
+        needs = int(needs)
         if needs <= 0:
             return False
-        for size in range(1, len(partners) + 1):
-            for partner_ids in combinations(partners, size):
-                offered = sum(int(offers[partner][QUANTITY]) for partner in partner_ids)
-                if offered == needs:
-                    return True
-        return False
+        reachable = self._reachable_quantity_subsets(partners, offers, needs)
+        subset = reachable.get(needs)
+        return subset is not None and len(subset) > 0
 
     def _eighty_percent_acceptance_subset(self, partners, offers, needs: int):
+        partners = list(partners)
         n_partners = len(partners)
         max_accept_partners = n_partners - 1
+        needs = int(needs)
         if needs <= 0 or max_accept_partners <= 0:
             return None
 
         target = min(needs, max(1, math.ceil(needs * 0.8)))
-        candidates = []
-        for size in range(1, max_accept_partners + 1):
-            for partner_ids in combinations(partners, size):
-                offered = sum(int(offers[partner][QUANTITY]) for partner in partner_ids)
-                if target <= offered < needs:
-                    candidates.append(
-                        (
-                            needs - offered,
-                            size,
-                            partner_ids,
-                        )
-                    )
-        if not candidates:
-            return None
-        candidates.sort()
-        return candidates[0][-1]
+
+        def better(candidate, current):
+            # smallest subset first, then lexicographically smallest ids
+            return (len(candidate), candidate) < (len(current), current)
+
+        # cap at needs-1 so totals that reach exactly ``needs`` are excluded (the
+        # exact-match case is handled separately by the caller).
+        reachable = self._reachable_quantity_subsets(
+            partners, offers, needs - 1, better
+        )
+        # highest reachable total => smallest gap (needs - offered)
+        for total in range(needs - 1, target - 1, -1):
+            subset = reachable.get(total)
+            if subset and 1 <= len(subset) <= max_accept_partners:
+                return subset
+        return None
 
     def _seller_greedy_fill_plan(self, partners, offers, needs: int):
         if needs <= 0:
@@ -2715,21 +2743,27 @@ class BayesianAgent022(SyncRandomOneShotAgent):
         return self.opponent_posteriors(partner).get("GreedyOneShotAgent", 0.0)
 
     def _max_under_needs_subset_for_seller(self, partners, offers, needs: int):
-        best = None
-        for size in range(0, len(partners) + 1):
-            for partner_ids in combinations(partners, size):
-                total = sum(int(offers[partner][QUANTITY]) for partner in partner_ids)
-                if total > needs:
-                    continue
-                price_value = sum(
-                    int(offers[partner][QUANTITY])
-                    * float(offers[partner][UNIT_PRICE])
-                    for partner in partner_ids
-                )
-                candidate = (total, price_value, -len(partner_ids), partner_ids)
-                if best is None or candidate > best:
-                    best = candidate
-        return tuple() if best is None else best[-1]
+        partners = list(partners)
+        needs = int(needs)
+        if needs <= 0:
+            return tuple()
+
+        def price_value(subset):
+            return sum(
+                int(offers[p][QUANTITY]) * float(offers[p][UNIT_PRICE])
+                for p in subset
+            )
+
+        def better(candidate, current):
+            # higher revenue, then fewer partners, then larger id tuple
+            key_candidate = (price_value(candidate), -len(candidate), candidate)
+            key_current = (price_value(current), -len(current), current)
+            return key_candidate > key_current
+
+        reachable = self._reachable_quantity_subsets(partners, offers, needs, better)
+        # maximise the total accepted quantity (<= needs)
+        best_total = max(reachable)
+        return reachable[best_total]
 
     def _counter_remainder_partners(self, partners, opponent_types, count: int = 2):
         if not partners or count <= 0:
