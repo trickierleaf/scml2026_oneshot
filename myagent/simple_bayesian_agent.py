@@ -304,7 +304,7 @@ class SimpleBayesianAgent(BayesianAgent):
     def _success_scaled_quantity(self, quantity: int, partners) -> int:
         """quantity を相手の平均成功率で割って (= 期待充足量が quantity になる) 量に拡大。"""
         avg = self._average_success_rate(partners)
-        return max(len(partners), math.ceil(quantity / max(self.min_success_rate, avg)))
+        return max(1, math.ceil(quantity / max(self.min_success_rate, avg)))
 
     def _fill_even(self, proposals, partners, total: int, price_getter):
         """total を partners に均等配分する。"""
