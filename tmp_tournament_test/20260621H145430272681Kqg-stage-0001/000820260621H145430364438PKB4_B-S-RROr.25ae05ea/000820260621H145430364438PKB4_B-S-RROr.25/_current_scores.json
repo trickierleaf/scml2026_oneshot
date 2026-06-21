@@ -1,0 +1,27 @@
+{
+  "extra_scores_combined_scores": [
+    {
+      "score": 0.8933103747239268,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml.std.agents.rand.SyncRandomStdAgent"
+    },
+    {
+      "score": 0.6859037988069713,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent"
+    },
+    {
+      "score": 1.1926964189161087,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:myagent.bayesian_agent_022.BayesianAgent022"
+    }
+  ],
+  "ids": "['00SRS@0', '04Ra@1', '05Ba@1']",
+  "log_file_names": "[None]",
+  "n_steps": 50,
+  "names": "['00SRS@0', '04Ra@1', '05Ba@1']",
+  "relative_time": 1.0,
+  "scores": "[np.float64(0.8933103747239268), np.float64(0.6859037988069713), np.float64(1.1926964189161087)]",
+  "step": 50,
+  "time": 2.5367795419879258,
+  "time_limit": 900,
+  "types": "['scml.oneshot.sysagents.DefaultOneShotAdapter:scml.std.agents.rand.SyncRandomStdAgent', 'scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent', 'scml.oneshot.sysagents.DefaultOneShotAdapter:myagent.bayesian_agent_022.BayesianAgent022']",
+  "world_names": "['000820260621H145430364438PKB4_B-S-RROr.25']"
+}

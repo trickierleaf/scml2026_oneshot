@@ -1,0 +1,27 @@
+{
+  "extra_scores_combined_scores": [
+    {
+      "score": 1.1357513295187978,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml_agents.scml2023.oneshot.team_poli_usp.quantity_oriented_agent.QuantityOrientedAgent"
+    },
+    {
+      "score": 1.0668011818116307,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml_agents.scml2025.oneshot.teamyuzuru.agent.CostAverseAgent"
+    },
+    {
+      "score": 0.7545293207518029,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent"
+    }
+  ],
+  "ids": "['00Qu@0', '01Co@0', '05Ra@1']",
+  "log_file_names": "[None]",
+  "n_steps": 50,
+  "names": "['00Qu@0', '01Co@0', '05Ra@1']",
+  "relative_time": 1.0,
+  "scores": "[np.float64(1.1357513295187978), np.float64(1.0668011818116307), np.float64(0.7545293207518029)]",
+  "step": 50,
+  "time": 3.9151732090394944,
+  "time_limit": 900,
+  "types": "['scml.oneshot.sysagents.DefaultOneShotAdapter:scml_agents.scml2023.oneshot.team_poli_usp.quantity_oriented_agent.QuantityOrientedAgent', 'scml.oneshot.sysagents.DefaultOneShotAdapter:scml_agents.scml2025.oneshot.teamyuzuru.agent.CostAverseAgent', 'scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent']",
+  "world_names": "['000320260621H145430311450TT6n_C-Q-R9Hf.09']"
+}

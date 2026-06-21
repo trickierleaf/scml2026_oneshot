@@ -1,0 +1,27 @@
+{
+  "extra_scores_combined_scores": [
+    {
+      "score": 1.0685497357617992,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:myagent.bayesian_agent_022.BayesianAgent022"
+    },
+    {
+      "score": 1.0943913033881676,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml_agents.scml2025.oneshot.teamyuzuru.agent.CostAverseAgent"
+    },
+    {
+      "score": 0.8861753404516657,
+      "type": "scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent"
+    }
+  ],
+  "ids": "['04Ba@1', '05Co@1', '06Ra@1']",
+  "log_file_names": "[None]",
+  "n_steps": 50,
+  "names": "['04Ba@1', '05Co@1', '06Ra@1']",
+  "relative_time": 1.0,
+  "scores": "[np.float64(1.0685497357617992), np.float64(1.0943913033881676), np.float64(0.8861753404516657)]",
+  "step": 50,
+  "time": 2.553689416963607,
+  "time_limit": 900,
+  "types": "['scml.oneshot.sysagents.DefaultOneShotAdapter:myagent.bayesian_agent_022.BayesianAgent022', 'scml.oneshot.sysagents.DefaultOneShotAdapter:scml_agents.scml2025.oneshot.teamyuzuru.agent.CostAverseAgent', 'scml.oneshot.sysagents.DefaultOneShotAdapter:scml.oneshot.agents.rand.RandomOneShotAgent']",
+  "world_names": "['000520260621H145430334654NgXB_B-C-RE85.16']"
+}
