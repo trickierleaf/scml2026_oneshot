@@ -90,7 +90,7 @@ def simulate(
     competitors=tuple(),
     competition="oneshot",
     n_steps=50,
-    n_configs=5,
+    n_configs=10,
     tournament_path=Path("tmp_tournament_test"),
 ):
     """Run a tournament and return the folder that can be analyzed later."""

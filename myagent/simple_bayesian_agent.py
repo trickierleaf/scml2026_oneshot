@@ -38,7 +38,11 @@ class SimpleBayesianAgent(BayesianAgent):
         single_partner_acceptance_factor: float = 2.50,
         neutral_market_ratio: float = 1.06,
         market_band: float = 0.13,
-        forced_accept_time: float = 0.90,
+        forced_accept_time: float = 0.925,
+        # カウンター数量の時間譲歩を開始する t (これ以降、相手量へ寄せる)。
+        quantity_concession_start: float = 0.5,
+        # 不足方向 (売り手の過剰契約) の受諾を禁止する。
+        forbid_shortfall_accept: bool = True,
         eighty_success_threshold: float = 0.80,
         eighty_main_ratio: float = 0.65,
         greedy_single_offer_cap: int = 7,
@@ -68,6 +72,8 @@ class SimpleBayesianAgent(BayesianAgent):
         self.unfavorable_market_ratio = self.neutral_market_ratio * (1.0 - self.market_band)
         # t がこの値を超えたら利益最大化の組み合わせを強制受諾する。
         self.forced_accept_time = float(forced_accept_time)
+        self.quantity_concession_start = float(quantity_concession_start)
+        self.forbid_shortfall_accept = bool(forbid_shortfall_accept)
         # 初手オファー契約成功率がこの値以上の相手を「主軸」とみなす。
         self.eighty_success_threshold = float(eighty_success_threshold)
         self.eighty_main_ratio = float(eighty_main_ratio)
@@ -388,11 +394,15 @@ class SimpleBayesianAgent(BayesianAgent):
     def _simple_side_responses(self, needs, partners, offers, t, is_sell):
         greedy_partners = self._greedy_partners_sorted(partners)
 
+        # 不足方向 (= 売り手の過剰契約) の受諾は禁止する。売り手は受諾合計が
+        # 必要量を超えないよう、受諾候補を needs 以下に制限する。
+        accept_cap = int(needs) if (is_sell and self.forbid_shortfall_accept) else None
+
         # 1. 最良の組み合わせ (誤差最小) を求める。誤差 0 なら必要量ちょうど → 受諾。
         best_subset, best_error = self._best_subset(partners, offers, needs)
         if best_error == 0 and best_subset:
             return self._accept_subset_and_counter(
-                needs, partners, offers, best_subset, greedy_partners
+                needs, partners, offers, best_subset, greedy_partners, t
             )
 
         # 2. Greedy 環境 & 売り手 & ちょうどの組み合わせなし:
@@ -423,22 +433,28 @@ class SimpleBayesianAgent(BayesianAgent):
                         responses[partner] = self._unneeded_response()
                 return responses
 
-        # 3. t > 0.9: 利益を最大化する組み合わせを強制受諾 (利益が出なければ受けない)。
+        # 3. t > forced_accept_time(0.925): 利益を最大化する組み合わせを強制受諾。
+        #    売り手は needs を超える組み合わせを除外 (過剰契約=不足を防ぐ)。
         if t > self.forced_accept_time:
-            return self._forced_profit_max_responses(partners, offers)
+            return self._forced_profit_max_responses(partners, offers, max_total=accept_cap)
 
-        # 4. 受諾閾値 (誤差÷残り必要数) 判定。
-        relative_error = best_error / max(1, int(needs))
+        # 4. 受諾閾値 (誤差÷残り必要数) 判定。売り手は needs 以下の最良部分集合で判定。
+        accept_subset, accept_error = (
+            (best_subset, best_error)
+            if accept_cap is None
+            else self._best_subset(partners, offers, needs, max_total=accept_cap)
+        )
+        relative_error = accept_error / max(1, int(needs))
         threshold = self._acceptance_threshold(len(partners), is_sell)
-        if best_subset and relative_error <= threshold:
+        if accept_subset and relative_error <= threshold:
             return self._accept_subset_and_counter(
-                needs, partners, offers, best_subset, greedy_partners
+                needs, partners, offers, accept_subset, greedy_partners, t
             )
 
         # 5. 完全受諾には至らないが、オファー内の「良い部分」だけは受諾する
         #    (部分受諾)。残りはカウンター (同じ数量なら受諾)。
         partial = self._partial_accept_set(int(needs), partners, offers)
-        return self._counter_side(needs, partners, offers, partial, greedy_partners)
+        return self._counter_side(needs, partners, offers, partial, greedy_partners, t)
 
     def _acceptance_threshold(self, n_partners: int, is_sell: bool) -> float:
         """受諾閾値 = 許容する「誤差÷残り必要数」。
@@ -473,10 +489,12 @@ class SimpleBayesianAgent(BayesianAgent):
                     threshold *= self.accept_unfavorable_factor
         return threshold
 
-    def _best_subset(self, partners, offers, needs: int):
+    def _best_subset(self, partners, offers, needs: int, max_total: int | None = None):
         """|提供量合計 - needs| を最小化する組み合わせを返す。
 
         同点では自分にとっての価値が高く、人数が少ない方を優先する。
+        ``max_total`` 指定時は合計がそれを超える組み合わせを除外する
+        (不足方向＝過剰契約の受諾を禁止するために使用)。
         返り値は ``(partner の set, 誤差)``。
         """
         candidates = [
@@ -489,6 +507,8 @@ class SimpleBayesianAgent(BayesianAgent):
         best_set: set[str] = set()
         for subset in powerset(candidates):
             offered = sum(int(offers[partner][QUANTITY]) for partner in subset)
+            if max_total is not None and offered > int(max_total):
+                continue
             error = abs(offered - int(needs))
             value = self._subset_value_for_me(subset, offers)
             key = (error, -value, len(subset))
@@ -564,11 +584,16 @@ class SimpleBayesianAgent(BayesianAgent):
                     total -= quantity * price
             return total
 
-    def _forced_profit_max_responses(self, partners, offers):
+    def _forced_profit_max_responses(self, partners, offers, max_total: int | None = None):
         # 何も受けない (空集合) を基準に、効用を最大化する組み合わせを選ぶ。
+        # max_total 指定時は合計がそれを超える組み合わせを除外 (過剰契約=不足の禁止)。
         best_set: set[str] = set()
         best_utility = self._subset_utility({})
         for subset in powerset(partners):
+            if max_total is not None and sum(
+                int(offers[p][QUANTITY]) for p in subset
+            ) > int(max_total):
+                continue
             subset_offers = {partner: offers[partner] for partner in subset}
             utility = self._subset_utility(subset_offers)
             if utility > best_utility:
@@ -585,10 +610,10 @@ class SimpleBayesianAgent(BayesianAgent):
                 responses[partner] = self._unneeded_response()
         return responses
 
-    def _accept_subset_and_counter(self, needs, partners, offers, accept_set, greedy_partners):
-        return self._counter_side(needs, partners, offers, set(accept_set), greedy_partners)
+    def _accept_subset_and_counter(self, needs, partners, offers, accept_set, greedy_partners, t=0.0):
+        return self._counter_side(needs, partners, offers, set(accept_set), greedy_partners, t)
 
-    def _counter_side(self, needs, partners, offers, accepted, greedy_partners):
+    def _counter_side(self, needs, partners, offers, accepted, greedy_partners, t=0.0):
         responses = {}
         for partner in accepted:
             responses[partner] = SAOResponse(ResponseType.ACCEPT_OFFER, offers[partner])
@@ -602,17 +627,23 @@ class SimpleBayesianAgent(BayesianAgent):
                 responses[partner] = self._unneeded_response()
             return responses
 
+        accepted_offers = {partner: offers[partner] for partner in accepted}
         quantities = self._equal_counter_quantities(remaining, counter_partners)
         for partner in counter_partners:
             quantity = quantities.get(partner, 0)
             if quantity <= 0:
                 responses[partner] = self._unneeded_response()
                 continue
-            counter = self._raw_offer(
-                partner,
-                quantity,
-                self._good_price_for(partner, greedy_partners),
+            price = self._good_price_for(partner, greedy_partners)
+            # 時間譲歩: t に応じてカウンター数量を相手のオファー量へ寄せる
+            # (損益分岐点ガード付き)。
+            quantity = self._time_conceded_quantity(
+                partner, quantity, offers[partner], t, price, accepted_offers
             )
+            if quantity <= 0:
+                responses[partner] = self._unneeded_response()
+                continue
+            counter = self._raw_offer(partner, quantity, price)
             # 同じ数量でカウンターするなら現在のオファーを受諾。
             responses[partner] = self._counter_or_accept_response(
                 partner,
@@ -620,3 +651,24 @@ class SimpleBayesianAgent(BayesianAgent):
                 counter,
             )
         return responses
+
+    def _time_conceded_quantity(self, partner, desired_q, offer, t, price, accepted_offers):
+        """カウンター数量を t に応じて相手のオファー量へ寄せる (B022 同様)。
+
+        ただし **損益分岐点を守る**: 親の ``_max_floor_quantity`` で、
+        その量を約定しても効用が無契約 (disagreement) 効用を下回らない範囲に
+        制限する。売り手は需要超過 (= 不足ペナルティ) になる増量を許さない。
+        """
+        desired_q = int(desired_q)
+        if offer is None or t <= self.quantity_concession_start or len(offer) <= QUANTITY:
+            return desired_q
+        opponent_q = int(offer[QUANTITY])
+        if opponent_q == desired_q:
+            return desired_q
+        span = max(1e-9, 0.95 - self.quantity_concession_start)
+        concession = max(0.0, min(1.0, (float(t) - self.quantity_concession_start) / span))
+        target = int(round(desired_q + (opponent_q - desired_q) * concession))
+        # 損益分岐点 (無契約効用) を下回らない量に制限。
+        return self._max_floor_quantity(
+            partner, desired_q, target, int(price), accepted_offers
+        )
