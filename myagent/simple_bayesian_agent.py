@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import math
-import random
-from collections import defaultdict
 
 from negmas import Outcome, SAOResponse, ResponseType
 from scml.oneshot import QUANTITY, TIME, UNIT_PRICE
@@ -57,18 +55,14 @@ class SimpleBayesianAgent(BayesianAgent):
         #   提案総量キャップ = ceil(needs / max(success_cap_floor, 平均成功率))。
         #   成功率の下限 (これ未満だとキャップが過大になり過剰調達を許すため)。
         success_cap_floor: float = 0.45,
-        # --- 実現スコア (充足品質) 駆動の戦略選択 (target数 / 主軸) ---
-        # 成功率の生平均で target/主軸を決めると、1サンプルの揺れで構成が
-        # 一方向に劣化し最適へ戻れない (target低下→1人当たり数量増→受諾減→
-        # さらにtarget低下 のループ。主軸も1回拒否で降格)。これを防ぐため、
-        # 各日の充足品質を報酬として記録し、過去最良のアームを選び直す。
-        strategy_explore_eps: float = 0.10,   # ε-greedy の探索率
-        strategy_prior_w: float = 2.0,        # 事前(中立)報酬の擬似カウント
-        strategy_prior_mean: float = 0.5,     # 未観測アームの既定価値
-        target_max_candidates: int = 5,       # target候補の上限 (1..min(n,needs,上限))
-        main_keep_floor: float = 0.40,        # 主軸を候補に残す成功率下限 (粘り)
-        fulfill_shortfall_weight: float = 1.0,  # 不足ペナルティ重み (重い)
-        fulfill_excess_weight: float = 0.5,     # 過剰ペナルティ重み (軽い)
+        # 主軸のヒステリシス: 昇格は成功率 >= eighty_success_threshold(0.75)、
+        # 一度主軸になった相手は降格閾値を下回るまで維持 (1サンプルの揺れで降格しない)。
+        main_demote_threshold: float = 0.70,
+        # target数変更ガード: 成功率由来の生 target が active と異なっても即変更せず、
+        # 同方向のズレが target_confirm_days 日連続したときだけ active を
+        # ±target_change_step 動かす (1日のノイズで下がらないよう様子見する)。
+        target_confirm_days: int = 2,
+        target_change_step: int = 1,
         **kwargs,
     ):
         super().__init__(*args, **kwargs)
@@ -99,101 +93,23 @@ class SimpleBayesianAgent(BayesianAgent):
         # target ブランチの過剰調達抑制 (案A: 成功率下限 / 案B: 総量キャップ)。
         self.target_success_floor = float(target_success_floor)
         self.success_cap_floor = float(success_cap_floor)
-        # 実現スコア (充足品質) 駆動の戦略選択。
-        self.strategy_explore_eps = float(strategy_explore_eps)
-        self.strategy_prior_w = float(strategy_prior_w)
-        self.strategy_prior_mean = float(strategy_prior_mean)
-        self.target_max_candidates = int(target_max_candidates)
-        self.main_keep_floor = float(main_keep_floor)
-        self.fulfill_shortfall_weight = float(fulfill_shortfall_weight)
-        self.fulfill_excess_weight = float(fulfill_excess_weight)
+        # 主軸ヒステリシス / target変更ガード。
+        self.main_demote_threshold = float(main_demote_threshold)
+        self.target_confirm_days = int(target_confirm_days)
+        self.target_change_step = int(target_change_step)
 
     # ------------------------------------------------------------------
-    # 実現スコア (充足品質) 駆動の戦略選択 (target数 / 主軸) の状態
+    # 主軸ヒステリシス / target変更ガードの状態
     # ------------------------------------------------------------------
 
     def init(self):
         super().init()
-        # (is_buy, 相手人数) -> {アーム: (件数, 報酬合計)}
-        #   アーム = ("main", 0) または ("t", target数)
-        self._tgt_stats: dict = defaultdict(dict)
-        # is_buy -> 当日採用したアームと day-initial needs (報酬計算用)
-        self._day_plan: dict = {}
-        # is_buy -> 当日その方向で確保した数量合計
-        self._day_secured: dict = {}
-        # is_buy -> 現在の主軸相手 (主軸モードの粘り/復帰用に永続)
+        # is_buy -> 現在の主軸相手 (降格閾値を下回るまで維持)。
         self._current_main: dict = {}
-
-    def step(self):
-        super().step()
-        self._finalize_strategy_rewards()
-
-    def _finalize_strategy_rewards(self):
-        """当日の充足品質を報酬としてアーム統計へ反映する。
-
-        報酬 = 1 - (不足×w_short + 過剰×w_excess) / needs (0でクランプ)。
-        不足の方を重く罰し、過剰は軽め (oneshot の penalty 構造に合わせる)。
-        """
-        for is_buy, plan in list(self._day_plan.items()):
-            needs0 = plan["needs0"]
-            arm = plan["arm"]
-            n = plan["n"]
-            secured = self._day_secured.get(is_buy, 0.0)
-            shortfall = max(0.0, needs0 - secured)
-            excess = max(0.0, secured - needs0)
-            penalty = (
-                self.fulfill_shortfall_weight * shortfall
-                + self.fulfill_excess_weight * excess
-            ) / max(1, needs0)
-            reward = max(0.0, 1.0 - penalty)
-            stats = self._tgt_stats[(is_buy, n)]
-            count, total = stats.get(arm, (0, 0.0))
-            stats[arm] = (count + 1, total + reward)
-        self._day_plan.clear()
-        self._day_secured.clear()
-
-    def _choose_strategy_arm(self, is_buy: bool, n: int, arms, incumbent):
-        """充足品質の事後平均が最大のアームを選ぶ (ε-greedy)。
-
-        - 確率 ε で候補から一様探索 (ノイズで沈んだ最適アームを再評価して復帰)。
-        - それ以外は (報酬合計 + prior_w·prior_mean)/(件数 + prior_w) が最大の
-          アームを選ぶ。未観測アームは prior_mean に縮小されるため、データが
-          無い間はインカンベント (= 従来挙動) が選ばれる。同値はインカンベント優先。
-        """
-        if self.strategy_explore_eps > 0.0 and random.random() < self.strategy_explore_eps:
-            return arms[random.randrange(len(arms))]
-        stats = self._tgt_stats[(is_buy, n)]
-        prior_w = self.strategy_prior_w
-        prior_mean = self.strategy_prior_mean
-
-        def value(arm):
-            count, total = stats.get(arm, (0, 0.0))
-            return (total + prior_w * prior_mean) / (count + prior_w)
-
-        best, best_key = incumbent, None
-        for arm in arms:
-            key = (value(arm), 1 if arm == incumbent else 0)
-            if best_key is None or key > best_key:
-                best_key, best = key, arm
-        return best
-
-    def on_negotiation_success(self, contract, mechanism):
-        super().on_negotiation_success(contract, mechanism)
-        # 当日その方向で確保した数量を積算 (充足品質の報酬計算に使う)。
-        partner = self._contract_partner(contract)
-        outcome = self._contract_outcome(contract)
-        if partner is None or outcome is None:
-            return
-        try:
-            if int(outcome[TIME]) != int(self.awi.current_step):
-                return
-            quantity = int(outcome[QUANTITY])
-        except (TypeError, ValueError, IndexError):
-            return
-        if partner in self.awi.my_suppliers:
-            self._day_secured[True] = self._day_secured.get(True, 0.0) + quantity
-        elif partner in self.awi.my_consumers:
-            self._day_secured[False] = self._day_secured.get(False, 0.0) + quantity
+        # target変更の「2日確認」ガード用の状態。
+        self._active_target: dict = {}   # is_buy -> 現在採用中の target
+        self._pending_days: dict = {}    # is_buy -> 同方向にズレた連続日数
+        self._pending_dir: dict = {}     # is_buy -> ズレの方向 (+1 / -1)
 
     # ------------------------------------------------------------------
     # 補助
@@ -347,43 +263,35 @@ class SimpleBayesianAgent(BayesianAgent):
     def _nongreedy_env_first_proposals(self, needs, partners, is_buy: bool = True):
         proposals = {partner: None for partner in partners}
         needs = int(needs)
-        n = len(partners)
 
-        # --- 候補アームを組み立てる ---
-        # target アーム: 1..min(人数, needs, 上限)。
-        max_target = max(1, min(n, needs, self.target_max_candidates))
-        arms = [("t", k) for k in range(1, max_target + 1)]
-
-        # 主軸 (eighty) アーム: 閾値以上の相手がいる、または前日までの主軸が
-        # まだ残存 (粘り floor 以上) なら候補に加える。前日主軸が 1 回拒否で
-        # 成功率 0.5 に落ちても floor(0.40) を割らない限り候補に残る → 復帰可能。
-        strong = [p for p in partners if self._success_rate(p) >= self.eighty_success_threshold]
+        # --- 主軸の選定 (ヒステリシス: 昇格0.75 / 降格0.70) ---
+        # 在席している現主軸が降格閾値を割っていれば降格 (記憶を消す)。在席でなければ
+        # 一時的な不在として記憶を残す。これにより「在席かつ閾値割れ」のときだけ降格し、
+        # 1サンプルの揺れだけで主軸を失わない。再昇格は 0.75 以上が必要。
         cur_main = self._current_main.get(is_buy)
-        cur_main_ok = (
-            cur_main in partners
-            and self._success_rate(cur_main) >= self.main_keep_floor
-        )
-        main_available = bool(strong) or cur_main_ok
-        if main_available:
-            arms = [("main", 0)] + arms
+        if (
+            cur_main is not None
+            and cur_main in partners
+            and self._success_rate(cur_main) < self.main_demote_threshold
+        ):
+            cur_main = None
+            self._current_main[is_buy] = None
 
-        # インカンベント (= 従来挙動): strong がいれば主軸、なければ成功率由来 target。
-        if main_available:
-            incumbent = ("main", 0)
+        main = None
+        if cur_main is not None and cur_main in partners:
+            # 現主軸を維持 (降格閾値以上)。
+            main = cur_main
         else:
-            incumbent = ("t", min(max_target, self._close_target_count(partners)))
-
-        # 過去の充足品質が最良のアームを選ぶ (ε-greedy)。
-        arm = self._choose_strategy_arm(is_buy, n, arms, incumbent)
-
-        if arm[0] == "main":
-            if cur_main_ok:
-                main = cur_main
-            elif strong:
+            strong = [
+                partner
+                for partner in partners
+                if self._success_rate(partner) >= self.eighty_success_threshold
+            ]
+            if strong:
                 main = max(strong, key=self._success_rate)
-            else:
-                main = max(partners, key=self._success_rate)
-            self._current_main[is_buy] = main
+                self._current_main[is_buy] = main
+
+        if main is not None:
             main_quantity = max(1, min(needs, round(needs * self.eighty_main_ratio)))
             proposals[main] = self._raw_offer(
                 main, main_quantity, self._best_price_for_me(main)
@@ -394,9 +302,9 @@ class SimpleBayesianAgent(BayesianAgent):
                 scaled = self._success_scaled_quantity(remaining, others)
                 self._fill_even(proposals, others, scaled, self._best_price_for_me)
         else:
-            # target アーム: 必要量を target 人で割った量を全員に配る
-            # (= 期待充足量がちょうど needs になる配分)。
-            target = max(1, arm[1])
+            # 主軸不在: 何人で契約成立を狙うかを target = round(人数 × 平均成功率) で
+            # 決める。ただし2日確認ガードを通し、1日のノイズでは変えない。
+            target = self._guarded_target(is_buy, partners)
             self._fill_by_target(
                 proposals, partners, needs, target, self._best_price_for_me
             )
@@ -404,9 +312,6 @@ class SimpleBayesianAgent(BayesianAgent):
         # 適応キャップ: 提案総量を ceil(needs / 平均初手成功率) に頭打ちする。
         avg = max(self.success_cap_floor, self._average_success_rate(partners))
         self._cap_total_offer(proposals, partners, math.ceil(needs / avg))
-
-        # 当日採用したアームを記録 (step で充足品質を報酬として反映)。
-        self._day_plan[is_buy] = {"arm": arm, "n": n, "needs0": needs}
         return proposals
 
     def _close_target_count(self, partners) -> int:
@@ -421,6 +326,44 @@ class SimpleBayesianAgent(BayesianAgent):
         """
         avg = max(self.target_success_floor, self._average_success_rate(partners))
         return max(1, min(len(partners), round(len(partners) * avg)))
+
+    def _guarded_target(self, is_buy: bool, partners) -> int:
+        """生 target (成功率由来) を「2日確認」してから採用 target に反映する。
+
+        - 生 target が採用中 target と一致 → ズレ確認カウントをリセットして維持。
+        - 異なる → そのズレの「向き」(+1=上げ / -1=下げ) が前回と同じなら連続日数を
+          加算、違えば 1 から数え直す。
+        - 同方向のズレが target_confirm_days(=2) 日連続した時点で、採用 target を
+          その向きに target_change_step(=1) だけ動かし、カウントをリセットする。
+
+        例: 採用 target=3 のとき、成功率が下がって生 target=2 になっても初日は
+            維持 (様子見)。翌日も生 target≤2 のままなら 3→2 に下げる。途中で生
+            target=3 に戻れば変更はキャンセルされる (1日のノイズでは下がらない)。
+        """
+        n = len(partners)
+        raw = self._close_target_count(partners)
+        active = self._active_target.get(is_buy)
+        if active is None:
+            self._active_target[is_buy] = raw
+            self._pending_days[is_buy] = 0
+            self._pending_dir[is_buy] = 0
+            return raw
+        if raw == active:
+            self._pending_days[is_buy] = 0
+            self._pending_dir[is_buy] = 0
+            return active
+        direction = 1 if raw > active else -1
+        if self._pending_dir.get(is_buy, 0) == direction:
+            self._pending_days[is_buy] = self._pending_days.get(is_buy, 0) + 1
+        else:
+            self._pending_dir[is_buy] = direction
+            self._pending_days[is_buy] = 1
+        if self._pending_days[is_buy] >= self.target_confirm_days:
+            active = max(1, min(n, active + direction * self.target_change_step))
+            self._active_target[is_buy] = active
+            self._pending_days[is_buy] = 0
+            self._pending_dir[is_buy] = 0
+        return active
 
     def _cap_total_offer(self, proposals, partners, max_total: int):
         """提案総量が max_total を超える分を、成功率の低い相手から **1個ずつ
