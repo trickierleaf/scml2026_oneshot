@@ -1,0 +1,6704 @@
+{
+  "__dir_name": "/Users/kouta/itoulab/oneshot/tmp_tournament_test/20260621H204124773136Kqg-stage-0001/000220260621H2041248027582mlu_C-Q-Syq4.073714aa/000220260621H2041248027582mlu_C-Q-Syq4.07",
+  "__score_calculator": "scml.utils.balance_calculator_oneshot",
+  "__tournament_name": "20260621H204124773136Kqg-stage-0001",
+  "__world_generator": "scml.utils.anac_oneshot_world_generator",
+  "agent_params": [
+    {},
+    {
+      "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "name": "_df_0_1"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+      "name": "_df_0_2"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "name": "_df_0_3"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "name": "_df_0_4"
+    },
+    {},
+    {},
+    {
+      "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+      "name": "_df_1_2"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+      "name": "_df_1_3"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "name": "_df_1_4"
+    },
+    {
+      "controller_type": "scml.oneshot.agents.rand.RandDistOneShotAgent",
+      "name": "_df_1_5"
+    }
+  ],
+  "agent_types": [
+    "scml_agents.scml2023.oneshot.team_poli_usp.quantity_oriented_agent.QuantityOrientedAgent",
+    "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+    "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+    "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+    "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+    "scml_agents.scml2025.oneshot.teamyuzuru.agent.CostAverseAgent",
+    "scml.std.agents.rand.SyncRandomStdAgent",
+    "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+    "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+    "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+    "scml.oneshot.agents.rand.RandDistOneShotAgent"
+  ],
+  "compact": false,
+  "config_id": "000220260621H2041248027582mlu",
+  "is_default": [
+    false,
+    true,
+    true,
+    true,
+    true,
+    false,
+    false,
+    true,
+    true,
+    true,
+    true
+  ],
+  "log_file_name": "/Users/kouta/itoulab/oneshot/tmp_tournament_test/20260621H204124773136Kqg-stage-0001/000220260621H2041248027582mlu_C-Q-Syq4.073714aa/000220260621H2041248027582mlu_C-Q-Syq4.07/log.txt",
+  "log_folder": "/Users/kouta/itoulab/oneshot/tmp_tournament_test/20260621H204124773136Kqg-stage-0001/000220260621H2041248027582mlu_C-Q-Syq4.075229cb/000220260621H2041248027582mlu_C-Q-Syq4.07",
+  "log_to_file": true,
+  "no_logs": false,
+  "non_competitor_params": [
+    {},
+    {},
+    {}
+  ],
+  "non_competitors": [
+    "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+    "scml.oneshot.agents.rand.RandDistOneShotAgent",
+    "scml.oneshot.agents.rand.EqualDistOneShotAgent"
+  ],
+  "publish_exogenous_summary": true,
+  "publish_trading_prices": true,
+  "save_negotiations": true,
+  "scoring_context": {},
+  "world_params": {
+    "__exact_params": {
+      "catalog_prices": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlYwAAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QolhgAAAAAAAAACgAAAAAAAAAPAAAAAAAAABsAAAAAAAAAlIwFbnVtcHmUjAVkdHlwZZSTlIwCaTiUiYiHlFKUKEsDjAE8lE5OTkr/////Sv////9LAHSUYksDhZSMAUOUdJRSlC4=",
+      "compact": false,
+      "exogenous_contracts": [
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 0,
+          "seller": -1,
+          "time": 0,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 4,
+          "revelation_time": 1,
+          "seller": -1,
+          "time": 1,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 2,
+          "seller": -1,
+          "time": 2,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 3,
+          "seller": -1,
+          "time": 3,
+          "unit_price": 6
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 4,
+          "seller": -1,
+          "time": 4,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 5,
+          "seller": -1,
+          "time": 5,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 6,
+          "seller": -1,
+          "time": 6,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 7,
+          "seller": -1,
+          "time": 7,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 8,
+          "seller": -1,
+          "time": 8,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 9,
+          "seller": -1,
+          "time": 9,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 10,
+          "seller": -1,
+          "time": 10,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 11,
+          "seller": -1,
+          "time": 11,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 12,
+          "seller": -1,
+          "time": 12,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 13,
+          "seller": -1,
+          "time": 13,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 14,
+          "seller": -1,
+          "time": 14,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 15,
+          "seller": -1,
+          "time": 15,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 16,
+          "seller": -1,
+          "time": 16,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 17,
+          "seller": -1,
+          "time": 17,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 18,
+          "seller": -1,
+          "time": 18,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 19,
+          "seller": -1,
+          "time": 19,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 20,
+          "seller": -1,
+          "time": 20,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 21,
+          "seller": -1,
+          "time": 21,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 22,
+          "seller": -1,
+          "time": 22,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 23,
+          "seller": -1,
+          "time": 23,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 24,
+          "seller": -1,
+          "time": 24,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 25,
+          "seller": -1,
+          "time": 25,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 26,
+          "seller": -1,
+          "time": 26,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 27,
+          "seller": -1,
+          "time": 27,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 28,
+          "seller": -1,
+          "time": 28,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 29,
+          "seller": -1,
+          "time": 29,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 30,
+          "seller": -1,
+          "time": 30,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 31,
+          "seller": -1,
+          "time": 31,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 32,
+          "seller": -1,
+          "time": 32,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 33,
+          "seller": -1,
+          "time": 33,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 34,
+          "seller": -1,
+          "time": 34,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 35,
+          "seller": -1,
+          "time": 35,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 36,
+          "seller": -1,
+          "time": 36,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 37,
+          "seller": -1,
+          "time": 37,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 38,
+          "seller": -1,
+          "time": 38,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 39,
+          "seller": -1,
+          "time": 39,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 40,
+          "seller": -1,
+          "time": 40,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 41,
+          "seller": -1,
+          "time": 41,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 42,
+          "seller": -1,
+          "time": 42,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 43,
+          "seller": -1,
+          "time": 43,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 44,
+          "seller": -1,
+          "time": 44,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 45,
+          "seller": -1,
+          "time": 45,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 46,
+          "seller": -1,
+          "time": 46,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 5,
+          "revelation_time": 47,
+          "seller": -1,
+          "time": 47,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 48,
+          "seller": -1,
+          "time": 48,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 0,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 49,
+          "seller": -1,
+          "time": 49,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 0,
+          "seller": -1,
+          "time": 0,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 1,
+          "seller": -1,
+          "time": 1,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 2,
+          "seller": -1,
+          "time": 2,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 3,
+          "seller": -1,
+          "time": 3,
+          "unit_price": 14
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 4,
+          "seller": -1,
+          "time": 4,
+          "unit_price": 14
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 5,
+          "seller": -1,
+          "time": 5,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 6,
+          "seller": -1,
+          "time": 6,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 7,
+          "seller": -1,
+          "time": 7,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 8,
+          "seller": -1,
+          "time": 8,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 9,
+          "seller": -1,
+          "time": 9,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 10,
+          "seller": -1,
+          "time": 10,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 11,
+          "seller": -1,
+          "time": 11,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 12,
+          "seller": -1,
+          "time": 12,
+          "unit_price": 14
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 13,
+          "seller": -1,
+          "time": 13,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 14,
+          "seller": -1,
+          "time": 14,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 15,
+          "seller": -1,
+          "time": 15,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 16,
+          "seller": -1,
+          "time": 16,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 17,
+          "seller": -1,
+          "time": 17,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 18,
+          "seller": -1,
+          "time": 18,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 19,
+          "seller": -1,
+          "time": 19,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 20,
+          "seller": -1,
+          "time": 20,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 21,
+          "seller": -1,
+          "time": 21,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 22,
+          "seller": -1,
+          "time": 22,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 23,
+          "seller": -1,
+          "time": 23,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 24,
+          "seller": -1,
+          "time": 24,
+          "unit_price": 14
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 25,
+          "seller": -1,
+          "time": 25,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 26,
+          "seller": -1,
+          "time": 26,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 27,
+          "seller": -1,
+          "time": 27,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 28,
+          "seller": -1,
+          "time": 28,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 29,
+          "seller": -1,
+          "time": 29,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 30,
+          "seller": -1,
+          "time": 30,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 31,
+          "seller": -1,
+          "time": 31,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 32,
+          "seller": -1,
+          "time": 32,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": -1,
+          "time": 33,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 34,
+          "seller": -1,
+          "time": 34,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 35,
+          "seller": -1,
+          "time": 35,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 36,
+          "seller": -1,
+          "time": 36,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 37,
+          "seller": -1,
+          "time": 37,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 38,
+          "seller": -1,
+          "time": 38,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 39,
+          "seller": -1,
+          "time": 39,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 40,
+          "seller": -1,
+          "time": 40,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 41,
+          "seller": -1,
+          "time": 41,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 42,
+          "seller": -1,
+          "time": 42,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 43,
+          "seller": -1,
+          "time": 43,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 44,
+          "seller": -1,
+          "time": 44,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 45,
+          "seller": -1,
+          "time": 45,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 46,
+          "seller": -1,
+          "time": 46,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 47,
+          "seller": -1,
+          "time": 47,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 48,
+          "seller": -1,
+          "time": 48,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 1,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 49,
+          "seller": -1,
+          "time": 49,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 0,
+          "seller": -1,
+          "time": 0,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 1,
+          "seller": -1,
+          "time": 1,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 2,
+          "seller": -1,
+          "time": 2,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 3,
+          "seller": -1,
+          "time": 3,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 4,
+          "seller": -1,
+          "time": 4,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 5,
+          "seller": -1,
+          "time": 5,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 6,
+          "seller": -1,
+          "time": 6,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 7,
+          "seller": -1,
+          "time": 7,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 8,
+          "seller": -1,
+          "time": 8,
+          "unit_price": 6
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 9,
+          "seller": -1,
+          "time": 9,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 10,
+          "seller": -1,
+          "time": 10,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 11,
+          "seller": -1,
+          "time": 11,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 12,
+          "seller": -1,
+          "time": 12,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 13,
+          "seller": -1,
+          "time": 13,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 14,
+          "seller": -1,
+          "time": 14,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 15,
+          "seller": -1,
+          "time": 15,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 16,
+          "seller": -1,
+          "time": 16,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 17,
+          "seller": -1,
+          "time": 17,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 18,
+          "seller": -1,
+          "time": 18,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 19,
+          "seller": -1,
+          "time": 19,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 20,
+          "seller": -1,
+          "time": 20,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 21,
+          "seller": -1,
+          "time": 21,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 22,
+          "seller": -1,
+          "time": 22,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 23,
+          "seller": -1,
+          "time": 23,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 24,
+          "seller": -1,
+          "time": 24,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 25,
+          "seller": -1,
+          "time": 25,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 26,
+          "seller": -1,
+          "time": 26,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 27,
+          "seller": -1,
+          "time": 27,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 28,
+          "seller": -1,
+          "time": 28,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 29,
+          "seller": -1,
+          "time": 29,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 30,
+          "seller": -1,
+          "time": 30,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 31,
+          "seller": -1,
+          "time": 31,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 32,
+          "seller": -1,
+          "time": 32,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": -1,
+          "time": 33,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 34,
+          "seller": -1,
+          "time": 34,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 6,
+          "revelation_time": 35,
+          "seller": -1,
+          "time": 35,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 36,
+          "seller": -1,
+          "time": 36,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 37,
+          "seller": -1,
+          "time": 37,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 38,
+          "seller": -1,
+          "time": 38,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 39,
+          "seller": -1,
+          "time": 39,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 40,
+          "seller": -1,
+          "time": 40,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 41,
+          "seller": -1,
+          "time": 41,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 42,
+          "seller": -1,
+          "time": 42,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 43,
+          "seller": -1,
+          "time": 43,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 44,
+          "seller": -1,
+          "time": 44,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 45,
+          "seller": -1,
+          "time": 45,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 46,
+          "seller": -1,
+          "time": 46,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 47,
+          "seller": -1,
+          "time": 47,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 48,
+          "seller": -1,
+          "time": 48,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 2,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 49,
+          "seller": -1,
+          "time": 49,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 0,
+          "seller": -1,
+          "time": 0,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 1,
+          "seller": -1,
+          "time": 1,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 2,
+          "seller": -1,
+          "time": 2,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 3,
+          "seller": -1,
+          "time": 3,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 4,
+          "seller": -1,
+          "time": 4,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 5,
+          "seller": -1,
+          "time": 5,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 6,
+          "seller": -1,
+          "time": 6,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 7,
+          "seller": -1,
+          "time": 7,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 8,
+          "seller": -1,
+          "time": 8,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 9,
+          "seller": -1,
+          "time": 9,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 10,
+          "seller": -1,
+          "time": 10,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 11,
+          "seller": -1,
+          "time": 11,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 12,
+          "seller": -1,
+          "time": 12,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 13,
+          "seller": -1,
+          "time": 13,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 14,
+          "seller": -1,
+          "time": 14,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 15,
+          "seller": -1,
+          "time": 15,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 16,
+          "seller": -1,
+          "time": 16,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 17,
+          "seller": -1,
+          "time": 17,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 18,
+          "seller": -1,
+          "time": 18,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 19,
+          "seller": -1,
+          "time": 19,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 20,
+          "seller": -1,
+          "time": 20,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 21,
+          "seller": -1,
+          "time": 21,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 22,
+          "seller": -1,
+          "time": 22,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 23,
+          "seller": -1,
+          "time": 23,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 24,
+          "seller": -1,
+          "time": 24,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 25,
+          "seller": -1,
+          "time": 25,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 26,
+          "seller": -1,
+          "time": 26,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 27,
+          "seller": -1,
+          "time": 27,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 28,
+          "seller": -1,
+          "time": 28,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 29,
+          "seller": -1,
+          "time": 29,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 30,
+          "seller": -1,
+          "time": 30,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 31,
+          "seller": -1,
+          "time": 31,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 32,
+          "seller": -1,
+          "time": 32,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": -1,
+          "time": 33,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 34,
+          "seller": -1,
+          "time": 34,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 35,
+          "seller": -1,
+          "time": 35,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 36,
+          "seller": -1,
+          "time": 36,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 37,
+          "seller": -1,
+          "time": 37,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 38,
+          "seller": -1,
+          "time": 38,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 39,
+          "seller": -1,
+          "time": 39,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 40,
+          "seller": -1,
+          "time": 40,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 41,
+          "seller": -1,
+          "time": 41,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 42,
+          "seller": -1,
+          "time": 42,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 43,
+          "seller": -1,
+          "time": 43,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 44,
+          "seller": -1,
+          "time": 44,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 45,
+          "seller": -1,
+          "time": 45,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 46,
+          "seller": -1,
+          "time": 46,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 47,
+          "seller": -1,
+          "time": 47,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 48,
+          "seller": -1,
+          "time": 48,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 3,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 49,
+          "seller": -1,
+          "time": 49,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 0,
+          "seller": -1,
+          "time": 0,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 1,
+          "seller": -1,
+          "time": 1,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 2,
+          "seller": -1,
+          "time": 2,
+          "unit_price": 5
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 3,
+          "seller": -1,
+          "time": 3,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 4,
+          "seller": -1,
+          "time": 4,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 5,
+          "seller": -1,
+          "time": 5,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 6,
+          "seller": -1,
+          "time": 6,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 7,
+          "seller": -1,
+          "time": 7,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 8,
+          "seller": -1,
+          "time": 8,
+          "unit_price": 4
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 9,
+          "seller": -1,
+          "time": 9,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 10,
+          "seller": -1,
+          "time": 10,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 11,
+          "seller": -1,
+          "time": 11,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 12,
+          "seller": -1,
+          "time": 12,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 13,
+          "seller": -1,
+          "time": 13,
+          "unit_price": 5
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 14,
+          "seller": -1,
+          "time": 14,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 15,
+          "seller": -1,
+          "time": 15,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 16,
+          "seller": -1,
+          "time": 16,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 17,
+          "seller": -1,
+          "time": 17,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 18,
+          "seller": -1,
+          "time": 18,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 19,
+          "seller": -1,
+          "time": 19,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 20,
+          "seller": -1,
+          "time": 20,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 21,
+          "seller": -1,
+          "time": 21,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 22,
+          "seller": -1,
+          "time": 22,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 23,
+          "seller": -1,
+          "time": 23,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 24,
+          "seller": -1,
+          "time": 24,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 25,
+          "seller": -1,
+          "time": 25,
+          "unit_price": 6
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 7,
+          "revelation_time": 26,
+          "seller": -1,
+          "time": 26,
+          "unit_price": 12
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 27,
+          "seller": -1,
+          "time": 27,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 28,
+          "seller": -1,
+          "time": 28,
+          "unit_price": 13
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 29,
+          "seller": -1,
+          "time": 29,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 30,
+          "seller": -1,
+          "time": 30,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 8,
+          "revelation_time": 31,
+          "seller": -1,
+          "time": 31,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 32,
+          "seller": -1,
+          "time": 32,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": -1,
+          "time": 33,
+          "unit_price": 15
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 34,
+          "seller": -1,
+          "time": 34,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 35,
+          "seller": -1,
+          "time": 35,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 36,
+          "seller": -1,
+          "time": 36,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 37,
+          "seller": -1,
+          "time": 37,
+          "unit_price": 6
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 9,
+          "revelation_time": 38,
+          "seller": -1,
+          "time": 38,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 39,
+          "seller": -1,
+          "time": 39,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 40,
+          "seller": -1,
+          "time": 40,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 41,
+          "seller": -1,
+          "time": 41,
+          "unit_price": 8
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 42,
+          "seller": -1,
+          "time": 42,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 43,
+          "seller": -1,
+          "time": 43,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 44,
+          "seller": -1,
+          "time": 44,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 45,
+          "seller": -1,
+          "time": 45,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 46,
+          "seller": -1,
+          "time": 46,
+          "unit_price": 9
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 47,
+          "seller": -1,
+          "time": 47,
+          "unit_price": 10
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 48,
+          "seller": -1,
+          "time": 48,
+          "unit_price": 11
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": 4,
+          "product": 0,
+          "quantity": 10,
+          "revelation_time": 49,
+          "seller": -1,
+          "time": 49,
+          "unit_price": 7
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 0,
+          "seller": 5,
+          "time": 0,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 1,
+          "seller": 5,
+          "time": 1,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 2,
+          "seller": 5,
+          "time": 2,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 3,
+          "seller": 5,
+          "time": 3,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 4,
+          "seller": 5,
+          "time": 4,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 5,
+          "seller": 5,
+          "time": 5,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 6,
+          "seller": 5,
+          "time": 6,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 7,
+          "seller": 5,
+          "time": 7,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 8,
+          "seller": 5,
+          "time": 8,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 9,
+          "seller": 5,
+          "time": 9,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 10,
+          "seller": 5,
+          "time": 10,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 11,
+          "seller": 5,
+          "time": 11,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 12,
+          "seller": 5,
+          "time": 12,
+          "unit_price": 17
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 13,
+          "seller": 5,
+          "time": 13,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 14,
+          "seller": 5,
+          "time": 14,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 15,
+          "seller": 5,
+          "time": 15,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 16,
+          "seller": 5,
+          "time": 16,
+          "unit_price": 19
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 17,
+          "seller": 5,
+          "time": 17,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 18,
+          "seller": 5,
+          "time": 18,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 19,
+          "seller": 5,
+          "time": 19,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 20,
+          "seller": 5,
+          "time": 20,
+          "unit_price": 16
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 21,
+          "seller": 5,
+          "time": 21,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 22,
+          "seller": 5,
+          "time": 22,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 23,
+          "seller": 5,
+          "time": 23,
+          "unit_price": 37
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 24,
+          "seller": 5,
+          "time": 24,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 25,
+          "seller": 5,
+          "time": 25,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 26,
+          "seller": 5,
+          "time": 26,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 27,
+          "seller": 5,
+          "time": 27,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 28,
+          "seller": 5,
+          "time": 28,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 29,
+          "seller": 5,
+          "time": 29,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 30,
+          "seller": 5,
+          "time": 30,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 31,
+          "seller": 5,
+          "time": 31,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 32,
+          "seller": 5,
+          "time": 32,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": 5,
+          "time": 33,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 34,
+          "seller": 5,
+          "time": 34,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 35,
+          "seller": 5,
+          "time": 35,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 36,
+          "seller": 5,
+          "time": 36,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 37,
+          "seller": 5,
+          "time": 37,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 38,
+          "seller": 5,
+          "time": 38,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 39,
+          "seller": 5,
+          "time": 39,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 40,
+          "seller": 5,
+          "time": 40,
+          "unit_price": 39
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 41,
+          "seller": 5,
+          "time": 41,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 42,
+          "seller": 5,
+          "time": 42,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 43,
+          "seller": 5,
+          "time": 43,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 44,
+          "seller": 5,
+          "time": 44,
+          "unit_price": 19
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 45,
+          "seller": 5,
+          "time": 45,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 46,
+          "seller": 5,
+          "time": 46,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 47,
+          "seller": 5,
+          "time": 47,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 48,
+          "seller": 5,
+          "time": 48,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 49,
+          "seller": 5,
+          "time": 49,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 0,
+          "seller": 6,
+          "time": 0,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 1,
+          "seller": 6,
+          "time": 1,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 2,
+          "seller": 6,
+          "time": 2,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 3,
+          "seller": 6,
+          "time": 3,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 4,
+          "seller": 6,
+          "time": 4,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 5,
+          "seller": 6,
+          "time": 5,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 6,
+          "seller": 6,
+          "time": 6,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 7,
+          "seller": 6,
+          "time": 7,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 8,
+          "seller": 6,
+          "time": 8,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 9,
+          "seller": 6,
+          "time": 9,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 10,
+          "seller": 6,
+          "time": 10,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 11,
+          "seller": 6,
+          "time": 11,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 12,
+          "seller": 6,
+          "time": 12,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 13,
+          "seller": 6,
+          "time": 13,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 14,
+          "seller": 6,
+          "time": 14,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 15,
+          "seller": 6,
+          "time": 15,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 16,
+          "seller": 6,
+          "time": 16,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 17,
+          "seller": 6,
+          "time": 17,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 18,
+          "seller": 6,
+          "time": 18,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 19,
+          "seller": 6,
+          "time": 19,
+          "unit_price": 19
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 20,
+          "seller": 6,
+          "time": 20,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 21,
+          "seller": 6,
+          "time": 21,
+          "unit_price": 36
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 22,
+          "seller": 6,
+          "time": 22,
+          "unit_price": 36
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 23,
+          "seller": 6,
+          "time": 23,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 24,
+          "seller": 6,
+          "time": 24,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 25,
+          "seller": 6,
+          "time": 25,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 26,
+          "seller": 6,
+          "time": 26,
+          "unit_price": 19
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 27,
+          "seller": 6,
+          "time": 27,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 28,
+          "seller": 6,
+          "time": 28,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 29,
+          "seller": 6,
+          "time": 29,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 30,
+          "seller": 6,
+          "time": 30,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 2,
+          "revelation_time": 31,
+          "seller": 6,
+          "time": 31,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 32,
+          "seller": 6,
+          "time": 32,
+          "unit_price": 14
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": 6,
+          "time": 33,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 34,
+          "seller": 6,
+          "time": 34,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 35,
+          "seller": 6,
+          "time": 35,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 36,
+          "seller": 6,
+          "time": 36,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 37,
+          "seller": 6,
+          "time": 37,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 38,
+          "seller": 6,
+          "time": 38,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 39,
+          "seller": 6,
+          "time": 39,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 40,
+          "seller": 6,
+          "time": 40,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 41,
+          "seller": 6,
+          "time": 41,
+          "unit_price": 41
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 42,
+          "seller": 6,
+          "time": 42,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 43,
+          "seller": 6,
+          "time": 43,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 44,
+          "seller": 6,
+          "time": 44,
+          "unit_price": 17
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 45,
+          "seller": 6,
+          "time": 45,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 46,
+          "seller": 6,
+          "time": 46,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 47,
+          "seller": 6,
+          "time": 47,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 48,
+          "seller": 6,
+          "time": 48,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 49,
+          "seller": 6,
+          "time": 49,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 0,
+          "seller": 7,
+          "time": 0,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 1,
+          "seller": 7,
+          "time": 1,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 2,
+          "seller": 7,
+          "time": 2,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 3,
+          "seller": 7,
+          "time": 3,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 4,
+          "seller": 7,
+          "time": 4,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 5,
+          "seller": 7,
+          "time": 5,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 6,
+          "seller": 7,
+          "time": 6,
+          "unit_price": 20
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 7,
+          "seller": 7,
+          "time": 7,
+          "unit_price": 35
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 8,
+          "seller": 7,
+          "time": 8,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 9,
+          "seller": 7,
+          "time": 9,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 10,
+          "seller": 7,
+          "time": 10,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 11,
+          "seller": 7,
+          "time": 11,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 12,
+          "seller": 7,
+          "time": 12,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 13,
+          "seller": 7,
+          "time": 13,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 14,
+          "seller": 7,
+          "time": 14,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 15,
+          "seller": 7,
+          "time": 15,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 16,
+          "seller": 7,
+          "time": 16,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 17,
+          "seller": 7,
+          "time": 17,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 18,
+          "seller": 7,
+          "time": 18,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 3,
+          "revelation_time": 19,
+          "seller": 7,
+          "time": 19,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 20,
+          "seller": 7,
+          "time": 20,
+          "unit_price": 19
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 21,
+          "seller": 7,
+          "time": 21,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 22,
+          "seller": 7,
+          "time": 22,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 23,
+          "seller": 7,
+          "time": 23,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 24,
+          "seller": 7,
+          "time": 24,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 25,
+          "seller": 7,
+          "time": 25,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 26,
+          "seller": 7,
+          "time": 26,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 27,
+          "seller": 7,
+          "time": 27,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 28,
+          "seller": 7,
+          "time": 28,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 29,
+          "seller": 7,
+          "time": 29,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 30,
+          "seller": 7,
+          "time": 30,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 31,
+          "seller": 7,
+          "time": 31,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 32,
+          "seller": 7,
+          "time": 32,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 33,
+          "seller": 7,
+          "time": 33,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 34,
+          "seller": 7,
+          "time": 34,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 35,
+          "seller": 7,
+          "time": 35,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 36,
+          "seller": 7,
+          "time": 36,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 37,
+          "seller": 7,
+          "time": 37,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 38,
+          "seller": 7,
+          "time": 38,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 39,
+          "seller": 7,
+          "time": 39,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 40,
+          "seller": 7,
+          "time": 40,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 41,
+          "seller": 7,
+          "time": 41,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 42,
+          "seller": 7,
+          "time": 42,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 43,
+          "seller": 7,
+          "time": 43,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 44,
+          "seller": 7,
+          "time": 44,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 45,
+          "seller": 7,
+          "time": 45,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 46,
+          "seller": 7,
+          "time": 46,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 47,
+          "seller": 7,
+          "time": 47,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 48,
+          "seller": 7,
+          "time": 48,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 49,
+          "seller": 7,
+          "time": 49,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 0,
+          "seller": 8,
+          "time": 0,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 1,
+          "seller": 8,
+          "time": 1,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 2,
+          "seller": 8,
+          "time": 2,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 2,
+          "revelation_time": 3,
+          "seller": 8,
+          "time": 3,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 4,
+          "seller": 8,
+          "time": 4,
+          "unit_price": 20
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 5,
+          "seller": 8,
+          "time": 5,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 3,
+          "revelation_time": 6,
+          "seller": 8,
+          "time": 6,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 2,
+          "revelation_time": 7,
+          "seller": 8,
+          "time": 7,
+          "unit_price": 18
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 8,
+          "seller": 8,
+          "time": 8,
+          "unit_price": 20
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 9,
+          "seller": 8,
+          "time": 9,
+          "unit_price": 35
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 3,
+          "revelation_time": 10,
+          "seller": 8,
+          "time": 10,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 11,
+          "seller": 8,
+          "time": 11,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 12,
+          "seller": 8,
+          "time": 12,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 13,
+          "seller": 8,
+          "time": 13,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 14,
+          "seller": 8,
+          "time": 14,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 15,
+          "seller": 8,
+          "time": 15,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 16,
+          "seller": 8,
+          "time": 16,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 17,
+          "seller": 8,
+          "time": 17,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 18,
+          "seller": 8,
+          "time": 18,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 19,
+          "seller": 8,
+          "time": 19,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 20,
+          "seller": 8,
+          "time": 20,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 21,
+          "seller": 8,
+          "time": 21,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 22,
+          "seller": 8,
+          "time": 22,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 23,
+          "seller": 8,
+          "time": 23,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 24,
+          "seller": 8,
+          "time": 24,
+          "unit_price": 16
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 25,
+          "seller": 8,
+          "time": 25,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 26,
+          "seller": 8,
+          "time": 26,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 27,
+          "seller": 8,
+          "time": 27,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 28,
+          "seller": 8,
+          "time": 28,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 29,
+          "seller": 8,
+          "time": 29,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 30,
+          "seller": 8,
+          "time": 30,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 31,
+          "seller": 8,
+          "time": 31,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 32,
+          "seller": 8,
+          "time": 32,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 33,
+          "seller": 8,
+          "time": 33,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 34,
+          "seller": 8,
+          "time": 34,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 35,
+          "seller": 8,
+          "time": 35,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 36,
+          "seller": 8,
+          "time": 36,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 37,
+          "seller": 8,
+          "time": 37,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 38,
+          "seller": 8,
+          "time": 38,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 39,
+          "seller": 8,
+          "time": 39,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 40,
+          "seller": 8,
+          "time": 40,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 41,
+          "seller": 8,
+          "time": 41,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 42,
+          "seller": 8,
+          "time": 42,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 43,
+          "seller": 8,
+          "time": 43,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 44,
+          "seller": 8,
+          "time": 44,
+          "unit_price": 20
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 45,
+          "seller": 8,
+          "time": 45,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 46,
+          "seller": 8,
+          "time": 46,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 47,
+          "seller": 8,
+          "time": 47,
+          "unit_price": 36
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 48,
+          "seller": 8,
+          "time": 48,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 49,
+          "seller": 8,
+          "time": 49,
+          "unit_price": 37
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 0,
+          "seller": 9,
+          "time": 0,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 1,
+          "seller": 9,
+          "time": 1,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 2,
+          "seller": 9,
+          "time": 2,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 3,
+          "seller": 9,
+          "time": 3,
+          "unit_price": 20
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 4,
+          "seller": 9,
+          "time": 4,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 5,
+          "seller": 9,
+          "time": 5,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 6,
+          "seller": 9,
+          "time": 6,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 7,
+          "seller": 9,
+          "time": 7,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 8,
+          "seller": 9,
+          "time": 8,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 9,
+          "seller": 9,
+          "time": 9,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 10,
+          "seller": 9,
+          "time": 10,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 11,
+          "seller": 9,
+          "time": 11,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 12,
+          "seller": 9,
+          "time": 12,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 13,
+          "seller": 9,
+          "time": 13,
+          "unit_price": 16
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 14,
+          "seller": 9,
+          "time": 14,
+          "unit_price": 34
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 15,
+          "seller": 9,
+          "time": 15,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 16,
+          "seller": 9,
+          "time": 16,
+          "unit_price": 20
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 17,
+          "seller": 9,
+          "time": 17,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 18,
+          "seller": 9,
+          "time": 18,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 19,
+          "seller": 9,
+          "time": 19,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 20,
+          "seller": 9,
+          "time": 20,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 21,
+          "seller": 9,
+          "time": 21,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 22,
+          "seller": 9,
+          "time": 22,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 23,
+          "seller": 9,
+          "time": 23,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 24,
+          "seller": 9,
+          "time": 24,
+          "unit_price": 36
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 25,
+          "seller": 9,
+          "time": 25,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 26,
+          "seller": 9,
+          "time": 26,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 27,
+          "seller": 9,
+          "time": 27,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 28,
+          "seller": 9,
+          "time": 28,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 29,
+          "seller": 9,
+          "time": 29,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 30,
+          "seller": 9,
+          "time": 30,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 31,
+          "seller": 9,
+          "time": 31,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 32,
+          "seller": 9,
+          "time": 32,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 33,
+          "seller": 9,
+          "time": 33,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 34,
+          "seller": 9,
+          "time": 34,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 35,
+          "seller": 9,
+          "time": 35,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 36,
+          "seller": 9,
+          "time": 36,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 37,
+          "seller": 9,
+          "time": 37,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 38,
+          "seller": 9,
+          "time": 38,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 39,
+          "seller": 9,
+          "time": 39,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 40,
+          "seller": 9,
+          "time": 40,
+          "unit_price": 35
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 41,
+          "seller": 9,
+          "time": 41,
+          "unit_price": 17
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 42,
+          "seller": 9,
+          "time": 42,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 43,
+          "seller": 9,
+          "time": 43,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 44,
+          "seller": 9,
+          "time": 44,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 45,
+          "seller": 9,
+          "time": 45,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 46,
+          "seller": 9,
+          "time": 46,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 47,
+          "seller": 9,
+          "time": 47,
+          "unit_price": 15
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 48,
+          "seller": 9,
+          "time": 48,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 49,
+          "seller": 9,
+          "time": 49,
+          "unit_price": 18
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 0,
+          "seller": 10,
+          "time": 0,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 1,
+          "seller": 10,
+          "time": 1,
+          "unit_price": 38
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 2,
+          "seller": 10,
+          "time": 2,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 3,
+          "seller": 10,
+          "time": 3,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 4,
+          "seller": 10,
+          "time": 4,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 3,
+          "revelation_time": 5,
+          "seller": 10,
+          "time": 5,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 6,
+          "seller": 10,
+          "time": 6,
+          "unit_price": 23
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 7,
+          "seller": 10,
+          "time": 7,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 8,
+          "seller": 10,
+          "time": 8,
+          "unit_price": 39
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 9,
+          "seller": 10,
+          "time": 9,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 10,
+          "seller": 10,
+          "time": 10,
+          "unit_price": 42
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 11,
+          "seller": 10,
+          "time": 11,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 12,
+          "seller": 10,
+          "time": 12,
+          "unit_price": 39
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 13,
+          "seller": 10,
+          "time": 13,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 14,
+          "seller": 10,
+          "time": 14,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 15,
+          "seller": 10,
+          "time": 15,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 16,
+          "seller": 10,
+          "time": 16,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 17,
+          "seller": 10,
+          "time": 17,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 18,
+          "seller": 10,
+          "time": 18,
+          "unit_price": 19
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 19,
+          "seller": 10,
+          "time": 19,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 20,
+          "seller": 10,
+          "time": 20,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 21,
+          "seller": 10,
+          "time": 21,
+          "unit_price": 38
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 22,
+          "seller": 10,
+          "time": 22,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 23,
+          "seller": 10,
+          "time": 23,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 24,
+          "seller": 10,
+          "time": 24,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 25,
+          "seller": 10,
+          "time": 25,
+          "unit_price": 30
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 26,
+          "seller": 10,
+          "time": 26,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 27,
+          "seller": 10,
+          "time": 27,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 28,
+          "seller": 10,
+          "time": 28,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 29,
+          "seller": 10,
+          "time": 29,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 1,
+          "revelation_time": 30,
+          "seller": 10,
+          "time": 30,
+          "unit_price": 17
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 31,
+          "seller": 10,
+          "time": 31,
+          "unit_price": 21
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 10,
+          "revelation_time": 32,
+          "seller": 10,
+          "time": 32,
+          "unit_price": 33
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 33,
+          "seller": 10,
+          "time": 33,
+          "unit_price": 28
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 34,
+          "seller": 10,
+          "time": 34,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 35,
+          "seller": 10,
+          "time": 35,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 36,
+          "seller": 10,
+          "time": 36,
+          "unit_price": 36
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 37,
+          "seller": 10,
+          "time": 37,
+          "unit_price": 27
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 38,
+          "seller": 10,
+          "time": 38,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 3,
+          "revelation_time": 39,
+          "seller": 10,
+          "time": 39,
+          "unit_price": 31
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 9,
+          "revelation_time": 40,
+          "seller": 10,
+          "time": 40,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 3,
+          "revelation_time": 41,
+          "seller": 10,
+          "time": 41,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 42,
+          "seller": 10,
+          "time": 42,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 43,
+          "seller": 10,
+          "time": 43,
+          "unit_price": 24
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 4,
+          "revelation_time": 44,
+          "seller": 10,
+          "time": 44,
+          "unit_price": 32
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 45,
+          "seller": 10,
+          "time": 45,
+          "unit_price": 25
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 8,
+          "revelation_time": 46,
+          "seller": 10,
+          "time": 46,
+          "unit_price": 22
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 5,
+          "revelation_time": 47,
+          "seller": 10,
+          "time": 47,
+          "unit_price": 29
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 6,
+          "revelation_time": 48,
+          "seller": 10,
+          "time": 48,
+          "unit_price": 26
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotExogenousContract",
+          "buyer": -1,
+          "product": 2,
+          "quantity": 7,
+          "revelation_time": 49,
+          "seller": 10,
+          "time": 49,
+          "unit_price": 31
+        }
+      ],
+      "force_signing": true,
+      "info": {
+        "active_lines": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlZYDAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QoliADAAAAAAAALQAAAAAAAAApAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAAAtAAAAAAAAADEAAAAAAAAALQAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAADEAAAAAAAAAKQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAMgAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMgAAAAAAAAAyAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAAoAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAKQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAADEAAAAAAAAALQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAACkAAAAAAAAALQAAAAAAAAApAAAAAAAAADIAAAAAAAAALQAAAAAAAAAxAAAAAAAAADIAAAAAAAAAMgAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAKAAAAAAAAAAtAAAAAAAAADEAAAAAAAAALQAAAAAAAAApAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAACUjAVudW1weZSMBWR0eXBllJOUjAJpOJSJiIeUUpQoSwOMATyUTk5OSv////9K/////0sAdJRiSwJLMoaUjAFDlHSUUpQu",
+        "agent_processes": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1
+        ],
+        "cap_exogenous_quantities": true,
+        "cash_availability": [
+          1.5,
+          2.5
+        ],
+        "cost_increases_with_level": true,
+        "disposal_cost": [
+          0.0,
+          0.2
+        ],
+        "disposal_cost_dev": [
+          0.0,
+          0.02
+        ],
+        "equal_exogenous_sales": false,
+        "equal_exogenous_supply": false,
+        "exogenous_control": -1,
+        "exogenous_generation_method": "profitable",
+        "exogenous_price_dev": [
+          0.1,
+          0.2
+        ],
+        "exogenous_sales": [
+          [
+            5,
+            8,
+            6,
+            7,
+            9,
+            7
+          ],
+          [
+            8,
+            9,
+            7,
+            5,
+            4,
+            9
+          ],
+          [
+            10,
+            6,
+            6,
+            4,
+            7,
+            5
+          ],
+          [
+            8,
+            8,
+            7,
+            2,
+            9,
+            10
+          ],
+          [
+            10,
+            7,
+            6,
+            7,
+            9,
+            5
+          ],
+          [
+            10,
+            9,
+            7,
+            7,
+            10,
+            3
+          ],
+          [
+            10,
+            10,
+            9,
+            3,
+            6,
+            6
+          ],
+          [
+            10,
+            10,
+            8,
+            2,
+            9,
+            5
+          ],
+          [
+            10,
+            8,
+            4,
+            6,
+            6,
+            4
+          ],
+          [
+            10,
+            8,
+            5,
+            5,
+            7,
+            9
+          ],
+          [
+            8,
+            10,
+            8,
+            3,
+            9,
+            6
+          ],
+          [
+            9,
+            9,
+            9,
+            7,
+            10,
+            6
+          ],
+          [
+            10,
+            8,
+            8,
+            7,
+            7,
+            4
+          ],
+          [
+            8,
+            6,
+            6,
+            7,
+            9,
+            6
+          ],
+          [
+            9,
+            8,
+            7,
+            6,
+            7,
+            5
+          ],
+          [
+            9,
+            10,
+            6,
+            6,
+            8,
+            5
+          ],
+          [
+            8,
+            10,
+            9,
+            7,
+            8,
+            8
+          ],
+          [
+            8,
+            9,
+            5,
+            7,
+            5,
+            10
+          ],
+          [
+            10,
+            7,
+            9,
+            4,
+            6,
+            8
+          ],
+          [
+            10,
+            5,
+            3,
+            10,
+            9,
+            7
+          ],
+          [
+            10,
+            10,
+            7,
+            6,
+            4,
+            7
+          ],
+          [
+            10,
+            9,
+            8,
+            5,
+            6,
+            4
+          ],
+          [
+            10,
+            6,
+            8,
+            5,
+            8,
+            7
+          ],
+          [
+            10,
+            10,
+            8,
+            7,
+            7,
+            8
+          ],
+          [
+            10,
+            8,
+            6,
+            8,
+            5,
+            7
+          ],
+          [
+            9,
+            10,
+            7,
+            5,
+            7,
+            6
+          ],
+          [
+            10,
+            7,
+            5,
+            5,
+            9,
+            8
+          ],
+          [
+            8,
+            10,
+            4,
+            5,
+            8,
+            7
+          ],
+          [
+            9,
+            10,
+            6,
+            7,
+            7,
+            5
+          ],
+          [
+            7,
+            9,
+            8,
+            7,
+            5,
+            8
+          ],
+          [
+            10,
+            10,
+            8,
+            8,
+            7,
+            1
+          ],
+          [
+            7,
+            2,
+            7,
+            5,
+            10,
+            7
+          ],
+          [
+            10,
+            7,
+            6,
+            7,
+            4,
+            10
+          ],
+          [
+            10,
+            10,
+            10,
+            6,
+            8,
+            6
+          ],
+          [
+            9,
+            7,
+            5,
+            7,
+            10,
+            6
+          ],
+          [
+            7,
+            5,
+            10,
+            8,
+            8,
+            6
+          ],
+          [
+            8,
+            8,
+            5,
+            7,
+            6,
+            8
+          ],
+          [
+            10,
+            8,
+            8,
+            7,
+            5,
+            6
+          ],
+          [
+            8,
+            8,
+            7,
+            5,
+            10,
+            6
+          ],
+          [
+            10,
+            7,
+            8,
+            7,
+            9,
+            3
+          ],
+          [
+            10,
+            9,
+            6,
+            6,
+            6,
+            9
+          ],
+          [
+            10,
+            9,
+            8,
+            6,
+            8,
+            3
+          ],
+          [
+            7,
+            7,
+            7,
+            7,
+            8,
+            8
+          ],
+          [
+            7,
+            4,
+            10,
+            8,
+            9,
+            6
+          ],
+          [
+            10,
+            9,
+            9,
+            5,
+            7,
+            4
+          ],
+          [
+            10,
+            6,
+            7,
+            6,
+            7,
+            8
+          ],
+          [
+            10,
+            9,
+            9,
+            6,
+            8,
+            8
+          ],
+          [
+            10,
+            7,
+            9,
+            8,
+            5,
+            5
+          ],
+          [
+            10,
+            10,
+            5,
+            8,
+            7,
+            6
+          ],
+          [
+            10,
+            9,
+            8,
+            6,
+            10,
+            7
+          ]
+        ],
+        "exogenous_sales_predictability": [
+          0.6,
+          0.9
+        ],
+        "exogenous_supplies": [
+          [
+            7,
+            8,
+            10,
+            10,
+            10
+          ],
+          [
+            4,
+            8,
+            10,
+            10,
+            9
+          ],
+          [
+            6,
+            10,
+            8,
+            8,
+            9
+          ],
+          [
+            8,
+            10,
+            8,
+            9,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            7,
+            9,
+            10,
+            10,
+            9
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            6,
+            9,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            6,
+            10,
+            10,
+            10,
+            9
+          ],
+          [
+            5,
+            7,
+            10,
+            10,
+            9
+          ],
+          [
+            6,
+            10,
+            9,
+            10,
+            10
+          ],
+          [
+            6,
+            10,
+            10,
+            9,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            7,
+            9,
+            8,
+            10,
+            7
+          ],
+          [
+            6,
+            10,
+            10,
+            9,
+            10
+          ],
+          [
+            6,
+            10,
+            9,
+            8,
+            8
+          ],
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            6,
+            10,
+            10,
+            10,
+            9
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            10,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            9,
+            7
+          ],
+          [
+            7,
+            8,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            6,
+            9,
+            8,
+            10,
+            8
+          ],
+          [
+            6,
+            10,
+            7,
+            9,
+            8
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            8,
+            7,
+            10,
+            10,
+            10
+          ],
+          [
+            7,
+            10,
+            6,
+            9,
+            9
+          ],
+          [
+            5,
+            10,
+            10,
+            7,
+            9
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            7,
+            9,
+            10,
+            10,
+            9
+          ],
+          [
+            6,
+            10,
+            9,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            6,
+            9,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            5,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ],
+          [
+            9,
+            10,
+            10,
+            10,
+            10
+          ]
+        ],
+        "exogenous_supply_predictability": [
+          0.6,
+          0.9
+        ],
+        "expected_income": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlZYDAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QoliADAAAAAAAAWgAAAAAAAABSAAAAAAAAAFIAAAAAAAAAWgAAAAAAAABaAAAAAAAAAFoAAAAAAAAAWgAAAAAAAABaAAAAAAAAAGIAAAAAAAAAYgAAAAAAAABaAAAAAAAAAGIAAAAAAAAAWgAAAAAAAABSAAAAAAAAAFoAAAAAAAAAWgAAAAAAAABiAAAAAAAAAGIAAAAAAAAAUgAAAAAAAABaAAAAAAAAAFIAAAAAAAAAZAAAAAAAAABaAAAAAAAAAGIAAAAAAAAAZAAAAAAAAABkAAAAAAAAAFIAAAAAAAAAWgAAAAAAAABaAAAAAAAAAFoAAAAAAAAAUgAAAAAAAABQAAAAAAAAAFoAAAAAAAAAYgAAAAAAAABaAAAAAAAAAFIAAAAAAAAAUgAAAAAAAABaAAAAAAAAAFoAAAAAAAAAWgAAAAAAAABiAAAAAAAAAFoAAAAAAAAAWgAAAAAAAABaAAAAAAAAAFoAAAAAAAAAYgAAAAAAAABiAAAAAAAAAFoAAAAAAAAAYgAAAAAAAABiAAAAAAAAAMUAAAAAAAAAswAAAAAAAACzAAAAAAAAAMUAAAAAAAAAxQAAAAAAAADFAAAAAAAAAMUAAAAAAAAAxQAAAAAAAADXAAAAAAAAANcAAAAAAAAAxQAAAAAAAADXAAAAAAAAAMUAAAAAAAAAswAAAAAAAADFAAAAAAAAAMUAAAAAAAAA1wAAAAAAAADXAAAAAAAAALMAAAAAAAAAxQAAAAAAAACzAAAAAAAAANsAAAAAAAAAxQAAAAAAAADXAAAAAAAAANsAAAAAAAAA2wAAAAAAAACzAAAAAAAAAMUAAAAAAAAAxQAAAAAAAADFAAAAAAAAALMAAAAAAAAArwAAAAAAAADFAAAAAAAAANcAAAAAAAAAxQAAAAAAAACzAAAAAAAAALMAAAAAAAAAxQAAAAAAAADFAAAAAAAAAMUAAAAAAAAA1wAAAAAAAADFAAAAAAAAAMUAAAAAAAAAxQAAAAAAAADFAAAAAAAAANcAAAAAAAAA1wAAAAAAAADFAAAAAAAAANcAAAAAAAAA1wAAAAAAAACUjAVudW1weZSMBWR0eXBllJOUjAJpOJSJiIeUUpQoSwOMATyUTk5OSv////9K/////0sAdJRiSwJLMoaUjAFDlHSUUpQu",
+        "expected_income_per_process": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlYQAAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QolhAAAAAAAAAAwBEAAAAAAADcJgAAAAAAAJSMBW51bXB5lIwFZHR5cGWUk5SMAmk4lImIh5RSlChLA4wBPJROTk5K/////0r/////SwB0lGJLAoWUjAFDlHSUUpQu",
+        "expected_income_per_step": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlQQCAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QolpABAAAAAAAAHwEAAAAAAAAFAQAAAAAAAAUBAAAAAAAAHwEAAAAAAAAfAQAAAAAAAB8BAAAAAAAAHwEAAAAAAAAfAQAAAAAAADkBAAAAAAAAOQEAAAAAAAAfAQAAAAAAADkBAAAAAAAAHwEAAAAAAAAFAQAAAAAAAB8BAAAAAAAAHwEAAAAAAAA5AQAAAAAAADkBAAAAAAAABQEAAAAAAAAfAQAAAAAAAAUBAAAAAAAAPwEAAAAAAAAfAQAAAAAAADkBAAAAAAAAPwEAAAAAAAA/AQAAAAAAAAUBAAAAAAAAHwEAAAAAAAAfAQAAAAAAAB8BAAAAAAAABQEAAAAAAAD/AAAAAAAAAB8BAAAAAAAAOQEAAAAAAAAfAQAAAAAAAAUBAAAAAAAABQEAAAAAAAAfAQAAAAAAAB8BAAAAAAAAHwEAAAAAAAA5AQAAAAAAAB8BAAAAAAAAHwEAAAAAAAAfAQAAAAAAAB8BAAAAAAAAOQEAAAAAAAA5AQAAAAAAAB8BAAAAAAAAOQEAAAAAAAA5AQAAAAAAAJSMBW51bXB5lIwFZHR5cGWUk5SMAmk4lImIh5RSlChLA4wBPJROTk5K/////0r/////SwB0lGJLMoWUjAFDlHSUUpQu",
+        "expected_mean_profit": 14492.0,
+        "expected_n_products": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlYQAAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QolhAAAAAAAAAA4AgAAAAAAADgCAAAAAAAAJSMBW51bXB5lIwFZHR5cGWUk5SMAmk4lImIh5RSlChLA4wBPJROTk5K/////0r/////SwB0lGJLAoWUjAFDlHSUUpQu",
+        "expected_productivity": 0.8261818181818181,
+        "expected_profit_sum": 1.0368462474064535,
+        "expected_welfare": 14492.0,
+        "force_signing": true,
+        "initial_balance": null,
+        "input_quantities": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlZYDAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QoliADAAAAAAAALQAAAAAAAAApAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAAAtAAAAAAAAADEAAAAAAAAALQAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAADEAAAAAAAAAKQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAMgAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMgAAAAAAAAAyAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAAoAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAKQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAADEAAAAAAAAALQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAACkAAAAAAAAALQAAAAAAAAApAAAAAAAAADIAAAAAAAAALQAAAAAAAAAxAAAAAAAAADIAAAAAAAAAMgAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAKAAAAAAAAAAtAAAAAAAAADEAAAAAAAAALQAAAAAAAAApAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAACUjAVudW1weZSMBWR0eXBllJOUjAJpOJSJiIeUUpQoSwOMATyUTk5OSv////9K/////0sAdJRiSwJLMoaUjAFDlHSUUpQu",
+        "max_productivity": [
+          0.8,
+          1.0
+        ],
+        "max_supply": [
+          0.8,
+          1.0
+        ],
+        "n_agents_per_process": [
+          4,
+          8
+        ],
+        "n_lines": 10,
+        "n_processes": 2,
+        "n_steps": 50,
+        "output_quantities": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlZYDAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QoliADAAAAAAAALQAAAAAAAAApAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAAAtAAAAAAAAADEAAAAAAAAALQAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAADEAAAAAAAAAKQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAMgAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMgAAAAAAAAAyAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAAoAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAKQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAxAAAAAAAAADEAAAAAAAAALQAAAAAAAAAxAAAAAAAAAC0AAAAAAAAAKQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAxAAAAAAAAACkAAAAAAAAALQAAAAAAAAApAAAAAAAAADIAAAAAAAAALQAAAAAAAAAxAAAAAAAAADIAAAAAAAAAMgAAAAAAAAApAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAACkAAAAAAAAAKAAAAAAAAAAtAAAAAAAAADEAAAAAAAAALQAAAAAAAAApAAAAAAAAACkAAAAAAAAALQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAAMQAAAAAAAAAtAAAAAAAAAC0AAAAAAAAALQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAAAtAAAAAAAAADEAAAAAAAAAMQAAAAAAAACUjAVudW1weZSMBWR0eXBllJOUjAJpOJSJiIeUUpQoSwOMATyUTk5OSv////9K/////0sAdJRiSwJLMoaUjAFDlHSUUpQu",
+        "penalties_scale": "trading",
+        "perishable": true,
+        "price_multiplier": [
+          1.5,
+          2.0
+        ],
+        "process_inputs": 1,
+        "process_inputs_generator": 1,
+        "process_outputs": 1,
+        "process_outputs_generator": 1,
+        "product_prices": "__BYTES__:X19DTE9VRFBJQ0tMRV9TVEFSVF9fOoAFlSYFAAAAAAAAjBNudW1weS5fY29yZS5udW1lcmljlIwLX2Zyb21idWZmZXKUk5QolrAEAAAAAAAAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAACRAAAAAAAAAJEAAAAAAAAAkQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAAuQAAAAAAAAC5AAAAAAAAALkAAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAAAAAAAAAO0AAAAAAAAA7QAAAAAAAADtAlIwFbnVtcHmUjAVkdHlwZZSTlIwCZjiUiYiHlFKUKEsDjAE8lE5OTkr/////Sv////9LAHSUYksDSzKGlIwBQ5R0lFKULg==",
+        "production_costs": [
+          1,
+          4
+        ],
+        "profit_basis": "max",
+        "profit_means": [
+          0.1,
+          0.2
+        ],
+        "profit_stddevs": 0.05,
+        "random_agent_types": false,
+        "shortfall_penalty": [
+          0.2,
+          1.0
+        ],
+        "shortfall_penalty_dev": [
+          0.0,
+          0.1
+        ],
+        "storage_cost": 0,
+        "storage_cost_dev": 0
+      },
+      "initial_balance": [
+        11223,
+        11223,
+        11223,
+        11223,
+        11223,
+        16272,
+        16272,
+        16272,
+        16272,
+        16272,
+        16272
+      ],
+      "inventory_valuation_catalog": 0,
+      "inventory_valuation_trading": 0,
+      "n_steps": 50,
+      "name": "20260621H2041248027582mlu",
+      "neg_hidden_time_limit": 60,
+      "neg_n_steps": 20,
+      "neg_step_time_limit": 20,
+      "neg_time_limit": 60,
+      "negotiation_speed": 21,
+      "no_logs": false,
+      "penalties_scale": "trading",
+      "perishable": true,
+      "price_multiplier": 1.9411238988748727,
+      "profiles": [
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 3,
+          "disposal_cost_dev": 0.0010198438546271562,
+          "disposal_cost_mean": 0.07605834309205478,
+          "input_product": 0,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.02122939725738132,
+          "shortfall_penalty_mean": 0.3369275620117671,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 2,
+          "disposal_cost_dev": 0.002996724764711773,
+          "disposal_cost_mean": 0.18462771104855263,
+          "input_product": 0,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.036646865938070934,
+          "shortfall_penalty_mean": 0.615032399898714,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 1,
+          "disposal_cost_dev": 0.0008518258209881906,
+          "disposal_cost_mean": 0.08303984924025323,
+          "input_product": 0,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.04677347826461295,
+          "shortfall_penalty_mean": 0.7421322049632499,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 1,
+          "disposal_cost_dev": 0.00036613893317155024,
+          "disposal_cost_mean": 0.03999559333666243,
+          "input_product": 0,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.016010191927479805,
+          "shortfall_penalty_mean": 0.8699264575732171,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 1,
+          "disposal_cost_dev": 1.7009545226069624e-05,
+          "disposal_cost_mean": 0.007135959267660175,
+          "input_product": 0,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.027094975438898054,
+          "shortfall_penalty_mean": 0.3577601087830085,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 4,
+          "disposal_cost_dev": 0.00017539479522873643,
+          "disposal_cost_mean": 0.060950120977014445,
+          "input_product": 1,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.02674186820098824,
+          "shortfall_penalty_mean": 0.4639610215002347,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 8,
+          "disposal_cost_dev": 8.457434956995227e-05,
+          "disposal_cost_mean": 0.011052967526384783,
+          "input_product": 1,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.04297032665227217,
+          "shortfall_penalty_mean": 0.5320686237556291,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 4,
+          "disposal_cost_dev": 0.0033432605983144768,
+          "disposal_cost_mean": 0.1949478340039585,
+          "input_product": 1,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.04008489883768141,
+          "shortfall_penalty_mean": 0.8054181430867324,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 4,
+          "disposal_cost_dev": 0.0012881181614910794,
+          "disposal_cost_mean": 0.15707777771647907,
+          "input_product": 1,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.03228439191302319,
+          "shortfall_penalty_mean": 0.833900871157605,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 2,
+          "disposal_cost_dev": 0.0011027547273747284,
+          "disposal_cost_mean": 0.0885123415047706,
+          "input_product": 1,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.052738649707468624,
+          "shortfall_penalty_mean": 0.6480760015954672,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        },
+        {
+          "__python_class__": "scml.oneshot.common.OneShotProfile",
+          "cost": 6,
+          "disposal_cost_dev": 0.0013504911346646407,
+          "disposal_cost_mean": 0.12866528573160546,
+          "input_product": 1,
+          "n_lines": 10,
+          "shortfall_penalty_dev": 0.020183399267162137,
+          "shortfall_penalty_mean": 0.9351755442977328,
+          "storage_cost_dev": 0.0,
+          "storage_cost_mean": 0.0
+        }
+      ],
+      "publish_exogenous_summary": true,
+      "publish_trading_prices": true,
+      "start_negotiations_immediately": false,
+      "time_limit": 900
+    },
+    "agent_params": [
+      {},
+      {
+        "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+        "name": "_df_0_1"
+      },
+      {
+        "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+        "name": "_df_0_2"
+      },
+      {
+        "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+        "name": "_df_0_3"
+      },
+      {
+        "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+        "name": "_df_0_4"
+      },
+      {},
+      {},
+      {
+        "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+        "name": "_df_1_2"
+      },
+      {
+        "controller_type": "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+        "name": "_df_1_3"
+      },
+      {
+        "controller_type": "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+        "name": "_df_1_4"
+      },
+      {
+        "controller_type": "scml.oneshot.agents.rand.RandDistOneShotAgent",
+        "name": "_df_1_5"
+      }
+    ],
+    "agent_processes": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "agent_types": [
+      "scml_agents.scml2023.oneshot.team_poli_usp.quantity_oriented_agent.QuantityOrientedAgent",
+      "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+      "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "scml_agents.scml2025.oneshot.teamyuzuru.agent.CostAverseAgent",
+      "scml.std.agents.rand.SyncRandomStdAgent",
+      "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+      "scml.oneshot.agents.greedy.GreedyOneShotAgent",
+      "scml.oneshot.agents.rand.EqualDistOneShotAgent",
+      "scml.oneshot.agents.rand.RandDistOneShotAgent"
+    ],
+    "compact": false,
+    "log_file_name": "log.txt",
+    "log_folder": "/Users/kouta/itoulab/oneshot/tmp_tournament_test/20260621H204124773136Kqg-stage-0001/000220260621H2041248027582mlu_C-Q-Syq4.073714aa/000220260621H2041248027582mlu_C-Q-Syq4.07",
+    "log_to_file": true,
+    "n_lines": 10,
+    "n_processes": 2,
+    "n_steps": 50,
+    "name": "000220260621H2041248027582mlu_C-Q-Syq4.07",
+    "neg_hidden_time_limit": 60,
+    "neg_n_steps": 20,
+    "neg_step_time_limit": 20,
+    "neg_time_limit": 60,
+    "negotiation_speed": 21,
+    "no_logs": false,
+    "publish_exogenous_summary": true,
+    "publish_trading_prices": true,
+    "random_agent_types": false,
+    "save_negotiations": true,
+    "start_negotiations_immediately": false,
+    "time_limit": 900
+  }
+}
