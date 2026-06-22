@@ -3188,7 +3188,7 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
             return proposals
 
         # Greedy が 1 人: min(7, needs) を Greedy に。残りを Greedy 以外に
-        # 「成功率で割った個数」で分配する。
+        # 「成功率で割った個数」で分配する。ただし最低でも残り+1は出す。
         greedy_partner = greedy_partners[0]
         greedy_quantity = min(self.greedy_single_offer_cap, int(needs))
         proposals[greedy_partner] = self._raw_offer(
@@ -3198,7 +3198,10 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
         )
         remaining = max(0, int(needs) - greedy_quantity)
         if remaining > 0 and non_greedy:
-            scaled = self._success_scaled_quantity(remaining, non_greedy)
+            scaled = max(
+                self._success_scaled_quantity(remaining, non_greedy),
+                remaining + 1,
+            )
             self._fill_even(proposals, non_greedy, scaled, self._best_price_for_me)
         return proposals
 
@@ -3479,7 +3482,11 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
             else self._best_subset(partners, offers, needs, max_total=accept_cap)
         )
         relative_error = accept_error / max(1, int(needs))
-        threshold = self._acceptance_threshold(len(partners), is_sell)
+        threshold = self._acceptance_threshold(
+            len(partners),
+            is_sell,
+            has_greedy_partner=bool(greedy_partners),
+        )
         if accept_subset and relative_error <= threshold:
             return self._accept_subset_and_counter(
                 needs, partners, offers, accept_subset, greedy_partners, t
@@ -3490,7 +3497,9 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
         partial = self._partial_accept_set(int(needs), partners, offers)
         return self._counter_side(needs, partners, offers, partial, greedy_partners, t)
 
-    def _acceptance_threshold(self, n_partners: int, is_sell: bool) -> float:
+    def _acceptance_threshold(
+        self, n_partners: int, is_sell: bool, has_greedy_partner: bool = False
+    ) -> float:
         """受諾閾値 = 許容する「誤差÷残り必要数」。
 
         - 相手人数が多いほど厳しく (まだ良い相手を探せるため小さく)、少ないほど
@@ -3506,7 +3515,7 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
         時間 t はここでは使わない。
         """
         threshold = self.accept_base_tolerance * (2.0 / (n_partners + 1.0))
-        if n_partners == 1:
+        if n_partners == 1 and not has_greedy_partner:
             threshold *= self.single_partner_acceptance_factor
 
         ratio = self._input_market_sell_buy_ratio()

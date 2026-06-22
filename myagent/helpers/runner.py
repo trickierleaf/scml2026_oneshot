@@ -20,7 +20,7 @@ def run(
     competition="oneshot",
     reveal_names=True,
     n_steps=50,
-    n_configs=20,
+    n_configs=10,
     tournament_path=Path("tmp_tournament_test"),
     display=True,
 ):
