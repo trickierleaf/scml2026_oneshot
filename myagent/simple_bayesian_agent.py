@@ -3442,7 +3442,14 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
                 needs, partners, offers, best_subset, greedy_partners, t
             )
 
-        # 2. Greedy 環境 & 売り手 & ちょうどの組み合わせなし:
+        # 2. floor(needs / 相手数) + 1 以上の良いオファーがあれば先に受諾し、
+        #    残り必要量に対してカウンターを作る。同じ数量でカウンターする相手は
+        #    _counter_or_accept_response() 側で受諾に変わる。
+        partial = self._partial_accept_set(int(needs), partners, offers)
+        if partial:
+            return self._counter_side(needs, partners, offers, partial, greedy_partners, t)
+
+        # 3. Greedy 環境 & 売り手 & ちょうどの組み合わせなし:
         #    最も Greedy らしい 1 人を除き、必要量以下で最大の組み合わせを受諾し、
         #    残りを Greedy にオファー。
         if greedy_partners and is_sell:
@@ -3470,12 +3477,12 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
                         responses[partner] = self._unneeded_response()
                 return responses
 
-        # 3. t > forced_accept_time(0.925): 利益を最大化する組み合わせを強制受諾。
+        # 4. t > forced_accept_time(0.925): 利益を最大化する組み合わせを強制受諾。
         #    売り手は needs を超える組み合わせを除外 (過剰契約=不足を防ぐ)。
         if t > self.forced_accept_time:
             return self._forced_profit_max_responses(partners, offers, max_total=accept_cap)
 
-        # 4. 受諾閾値 (誤差÷残り必要数) 判定。売り手は needs 以下の最良部分集合で判定。
+        # 5. 受諾閾値 (誤差÷残り必要数) 判定。売り手は needs 以下の最良部分集合で判定。
         accept_subset, accept_error = (
             (best_subset, best_error)
             if accept_cap is None
@@ -3492,10 +3499,8 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
                 needs, partners, offers, accept_subset, greedy_partners, t
             )
 
-        # 5. 完全受諾には至らないが、オファー内の「良い部分」だけは受諾する
-        #    (部分受諾)。残りはカウンター (同じ数量なら受諾)。
-        partial = self._partial_accept_set(int(needs), partners, offers)
-        return self._counter_side(needs, partners, offers, partial, greedy_partners, t)
+        # 6. 受諾なしで残り全量をカウンターする。
+        return self._counter_side(needs, partners, offers, set(), greedy_partners, t)
 
     def _acceptance_threshold(
         self, n_partners: int, is_sell: bool, has_greedy_partner: bool = False
@@ -3672,12 +3677,12 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
 
         accepted_offers = {partner: offers[partner] for partner in accepted}
         quantities = self._equal_counter_quantities(remaining, counter_partners)
-        for partner in counter_partners:
+        for index, partner in enumerate(counter_partners):
             quantity = quantities.get(partner, 0)
             if quantity <= 0:
                 responses[partner] = self._unneeded_response()
                 continue
-            price = self._good_price_for(partner, greedy_partners)
+            price = self._counter_price_for(partner, greedy_partners, index)
             # 時間譲歩: t に応じてカウンター数量を相手のオファー量へ寄せる
             # (損益分岐点ガード付き)。
             quantity = self._time_conceded_quantity(
@@ -3694,6 +3699,11 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
                 counter,
             )
         return responses
+
+    def _counter_price_for(self, partner, greedy_partners, index: int = 0) -> int:
+        if self._is_seller_to(partner) and self.awi.current_step < self.exploration_days:
+            return self._exploration_probe_price(partner, index)
+        return self._good_price_for(partner, greedy_partners)
 
     def _time_conceded_quantity(self, partner, desired_q, offer, t, price, accepted_offers):
         """カウンター数量を t に応じて相手のオファー量へ寄せる (B022 同様)。
@@ -3715,4 +3725,3 @@ class SimpleBayesianAgent(SyncRandomOneShotAgent):
         return self._max_floor_quantity(
             partner, desired_q, target, int(price), accepted_offers
         )
-
